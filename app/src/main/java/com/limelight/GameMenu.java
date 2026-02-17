@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.limelight.binding.input.GameInputDevice;
 import com.limelight.binding.input.KeyboardTranslator;
+import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.utils.KeyConfigHelper;
 import com.limelight.utils.KeyMapper;
@@ -302,7 +304,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
         options.add(new MenuOption(getString(R.string.game_menu_disconnect), game::disconnect));
 
         if (!game.isOnExternalDisplay()) {
-            options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_model), true, game::toggleVirtualController));
+            options.add(new MenuOption(getString(R.string.game_menu_gamepad_layouts), true, () -> {
+                hideMenu();
+                showGamepadLayoutMenu();
+            }));
         }
 
         options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true, game::toggleKeyboard));
@@ -341,5 +346,118 @@ public class GameMenu implements Game.GameMenuCallbacks {
     @Override
     public boolean isMenuOpen() {
         return currentDialog != null && currentDialog.isShowing();
+    }
+
+    private void showGamepadLayoutMenu() {
+        GamepadLayoutManager layoutManager = game.getLayoutManager();
+        if (layoutManager == null) {
+            return;
+        }
+
+        List<MenuOption> options = new ArrayList<>();
+
+        // Toggle gamepad visibility
+        options.add(new MenuOption(getString(R.string.gamepad_layout_toggle_gamepad), true, game::toggleVirtualController));
+
+        // List existing layouts
+        List<String> layoutIds = layoutManager.getLayoutIds();
+        String activeId = layoutManager.getActiveLayoutId();
+
+        for (String layoutId : layoutIds) {
+            String name = layoutManager.getLayoutName(layoutId);
+            String label = layoutId.equals(activeId) ? "✓ " + name : "   " + name;
+            final String lid = layoutId;
+            options.add(new MenuOption(label, true, () -> {
+                game.switchGamepadLayout(lid);
+                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_switched), layoutManager.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
+            }));
+        }
+
+        // Create new layout
+        options.add(new MenuOption("➕ " + getString(R.string.gamepad_layout_create), () -> {
+            hideMenu();
+            showLayoutNameInputDialog(getString(R.string.gamepad_layout_create), "", name -> {
+                String newId = layoutManager.createLayout(name);
+                game.switchGamepadLayout(newId);
+                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_created), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Duplicate current layout
+        options.add(new MenuOption("🔄 " + getString(R.string.gamepad_layout_duplicate), () -> {
+            hideMenu();
+            String currentName = layoutManager.getLayoutName(activeId);
+            showLayoutNameInputDialog(getString(R.string.gamepad_layout_duplicate), currentName + " (2)", name -> {
+                String newId = layoutManager.duplicateLayout(activeId, name);
+                game.switchGamepadLayout(newId);
+                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_created), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Rename current layout
+        options.add(new MenuOption("✏️ " + getString(R.string.gamepad_layout_rename), () -> {
+            hideMenu();
+            String currentName = layoutManager.getLayoutName(activeId);
+            showLayoutNameInputDialog(getString(R.string.gamepad_layout_rename), currentName, name -> {
+                layoutManager.renameLayout(activeId, name);
+                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_renamed), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Delete current layout
+        if (!GamepadLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
+            options.add(new MenuOption("🗑️ " + getString(R.string.gamepad_layout_delete), () -> {
+                hideMenu();
+                String currentName = layoutManager.getLayoutName(activeId);
+                showDeleteConfirmDialog(currentName, () -> {
+                    layoutManager.deleteLayout(activeId);
+                    game.switchGamepadLayout(layoutManager.getActiveLayoutId());
+                    Toast.makeText(game, String.format(getString(R.string.gamepad_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
+                });
+            }));
+        }
+
+        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
+
+        showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
+    }
+
+    private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {
+        int themeResId = game.getApplicationInfo().theme;
+        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
+
+        EditText input = new EditText(themedContext);
+        input.setText(defaultValue);
+        input.setSelectAllOnFocus(true);
+
+        new AlertDialog.Builder(themedContext)
+                .setTitle(title)
+                .setView(input)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        Toast.makeText(game, getString(R.string.gamepad_layout_name_empty), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    callback.onNameEntered(name);
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void showDeleteConfirmDialog(String layoutName, Runnable onConfirm) {
+        int themeResId = game.getApplicationInfo().theme;
+        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
+
+        new AlertDialog.Builder(themedContext)
+                .setTitle(getString(R.string.gamepad_layout_delete))
+                .setMessage(String.format(getString(R.string.gamepad_layout_delete_confirm), layoutName))
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> onConfirm.run())
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private interface LayoutNameCallback {
+        void onNameEntered(String name);
     }
 }

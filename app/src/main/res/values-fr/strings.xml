@@ -590,4 +590,21 @@
     <string name="title_checkbox_remember_zoom_pan">Mémoriser le zoom et le panoramique</string>
     <string name="summary_checkbox_remember_zoom_pan">Enregistre la position de zoom et de panoramique entre les sessions.</string>
     <string name="title_edit_profile">Modifier le profil</string>
+
+    <!-- Gamepad Layout Manager -->
+    <string name="game_menu_gamepad_layouts">Dispositions Gamepad</string>
+    <string name="gamepad_layout_create">Créer une nouvelle disposition</string>
+    <string name="gamepad_layout_duplicate">Dupliquer la disposition actuelle</string>
+    <string name="gamepad_layout_rename">Renommer la disposition actuelle</string>
+    <string name="gamepad_layout_delete">Supprimer la disposition actuelle</string>
+    <string name="gamepad_layout_name_hint">Nom de la disposition</string>
+    <string name="gamepad_layout_default_name">Par défaut</string>
+    <string name="gamepad_layout_cannot_delete_default">Impossible de supprimer la disposition par défaut</string>
+    <string name="gamepad_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
+    <string name="gamepad_layout_switched">Disposition changée : %s</string>
+    <string name="gamepad_layout_created">Disposition créée : %s</string>
+    <string name="gamepad_layout_deleted">Disposition supprimée : %s</string>
+    <string name="gamepad_layout_renamed">Renommé en : %s</string>
+    <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
+    <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
 </resources>

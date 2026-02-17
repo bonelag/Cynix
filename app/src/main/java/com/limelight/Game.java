@@ -21,6 +21,7 @@ import com.limelight.binding.input.driver.UsbDriverService;
 import com.limelight.binding.input.evdev.EvdevListener;
 import com.limelight.binding.input.touch.TouchContext;
 import com.limelight.binding.input.touch.TrackpadContext;
+import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
 import com.limelight.binding.input.virtual_controller.VirtualController;
 import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
 import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
@@ -167,6 +168,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private ControllerHandler controllerHandler;
     private KeyboardTranslator keyboardTranslator;
     private VirtualController virtualController;
+    private GamepadLayoutManager layoutManager;
 
     private KeyBoardController keyBoardController;
 
@@ -979,7 +981,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     }
 
     private void initVirtualController(){
+        if (layoutManager == null) {
+            layoutManager = new GamepadLayoutManager(this);
+            layoutManager.migrateFromLegacy(this);
+        }
         virtualController = new VirtualController(controllerHandler, (FrameLayout)rootView, this);
+        virtualController.setCurrentLayoutId(layoutManager.getActiveLayoutId());
         virtualController.refreshLayout();
         virtualController.show();
     }
@@ -1019,6 +1026,30 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             return;
         }
         prefConfig.onscreenController= virtualController.switchShowHide() != 0;
+    }
+
+    public void switchGamepadLayout(String layoutId) {
+        if (layoutManager == null) {
+            layoutManager = new GamepadLayoutManager(this);
+            layoutManager.migrateFromLegacy(this);
+        }
+        layoutManager.setActiveLayoutId(layoutId);
+        if (virtualController != null) {
+            virtualController.setCurrentLayoutId(layoutId);
+            virtualController.refreshLayout();
+            virtualController.show();
+        } else {
+            initVirtualController();
+        }
+        prefConfig.onscreenController = true;
+    }
+
+    public GamepadLayoutManager getLayoutManager() {
+        if (layoutManager == null) {
+            layoutManager = new GamepadLayoutManager(this);
+            layoutManager.migrateFromLegacy(this);
+        }
+        return layoutManager;
     }
 
     private void setPreferredOrientationForActivity() {

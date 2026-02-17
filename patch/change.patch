@@ -1,0 +1,392 @@
+﻿diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
+index a52c855..3c6df56 100644
+--- a/app/src/main/java/com/limelight/Game.java
++++ b/app/src/main/java/com/limelight/Game.java
+@@ -21,6 +21,7 @@ import com.limelight.binding.input.driver.UsbDriverService;
+ import com.limelight.binding.input.evdev.EvdevListener;
+ import com.limelight.binding.input.touch.TouchContext;
+ import com.limelight.binding.input.touch.TrackpadContext;
++import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
+ import com.limelight.binding.input.virtual_controller.VirtualController;
+ import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
+ import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
+@@ -167,6 +168,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     private ControllerHandler controllerHandler;
+     private KeyboardTranslator keyboardTranslator;
+     private VirtualController virtualController;
++    private GamepadLayoutManager layoutManager;
+ 
+     private KeyBoardController keyBoardController;
+ 
+@@ -979,7 +981,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     }
+ 
+     private void initVirtualController(){
++        if (layoutManager == null) {
++            layoutManager = new GamepadLayoutManager(this);
++            layoutManager.migrateFromLegacy(this);
++        }
+         virtualController = new VirtualController(controllerHandler, (FrameLayout)rootView, this);
++        virtualController.setCurrentLayoutId(layoutManager.getActiveLayoutId());
+         virtualController.refreshLayout();
+         virtualController.show();
+     }
+@@ -1021,6 +1028,30 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+         prefConfig.onscreenController= virtualController.switchShowHide() != 0;
+     }
+ 
++    public void switchGamepadLayout(String layoutId) {
++        if (layoutManager == null) {
++            layoutManager = new GamepadLayoutManager(this);
++            layoutManager.migrateFromLegacy(this);
++        }
++        layoutManager.setActiveLayoutId(layoutId);
++        if (virtualController != null) {
++            virtualController.setCurrentLayoutId(layoutId);
++            virtualController.refreshLayout();
++            virtualController.show();
++        } else {
++            initVirtualController();
++        }
++        prefConfig.onscreenController = true;
++    }
++
++    public GamepadLayoutManager getLayoutManager() {
++        if (layoutManager == null) {
++            layoutManager = new GamepadLayoutManager(this);
++            layoutManager.migrateFromLegacy(this);
++        }
++        return layoutManager;
++    }
++
+     private void setPreferredOrientationForActivity() {
+         Display display = getActiveDisplay(Game.this, prefConfig);
+ 
+diff --git a/app/src/main/java/com/limelight/GameMenu.java b/app/src/main/java/com/limelight/GameMenu.java
+index b818c84..9cc207f 100644
+--- a/app/src/main/java/com/limelight/GameMenu.java
++++ b/app/src/main/java/com/limelight/GameMenu.java
+@@ -12,10 +12,12 @@ import android.view.View;
+ import android.view.ViewTreeObserver;
+ import android.view.Window;
+ import android.widget.ArrayAdapter;
++import android.widget.EditText;
+ import android.widget.Toast;
+ 
+ import com.limelight.binding.input.GameInputDevice;
+ import com.limelight.binding.input.KeyboardTranslator;
++import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
+ import com.limelight.preferences.PreferenceConfiguration;
+ import com.limelight.utils.KeyConfigHelper;
+ import com.limelight.utils.KeyMapper;
+@@ -302,7 +304,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
+         options.add(new MenuOption(getString(R.string.game_menu_disconnect), game::disconnect));
+ 
+         if (!game.isOnExternalDisplay()) {
+-            options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_model), true, game::toggleVirtualController));
++            options.add(new MenuOption(getString(R.string.game_menu_gamepad_layouts), true, () -> {
++                hideMenu();
++                showGamepadLayoutMenu();
++            }));
+         }
+ 
+         options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true, game::toggleKeyboard));
+@@ -342,4 +347,117 @@ public class GameMenu implements Game.GameMenuCallbacks {
+     public boolean isMenuOpen() {
+         return currentDialog != null && currentDialog.isShowing();
+     }
++
++    private void showGamepadLayoutMenu() {
++        GamepadLayoutManager layoutManager = game.getLayoutManager();
++        if (layoutManager == null) {
++            return;
++        }
++
++        List<MenuOption> options = new ArrayList<>();
++
++        // Toggle gamepad visibility
++        options.add(new MenuOption(getString(R.string.gamepad_layout_toggle_gamepad), true, game::toggleVirtualController));
++
++        // List existing layouts
++        List<String> layoutIds = layoutManager.getLayoutIds();
++        String activeId = layoutManager.getActiveLayoutId();
++
++        for (String layoutId : layoutIds) {
++            String name = layoutManager.getLayoutName(layoutId);
++            String label = layoutId.equals(activeId) ? "âœ“ " + name : "   " + name;
++            final String lid = layoutId;
++            options.add(new MenuOption(label, true, () -> {
++                game.switchGamepadLayout(lid);
++                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_switched), layoutManager.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
++            }));
++        }
++
++        // Create new layout
++        options.add(new MenuOption("â• " + getString(R.string.gamepad_layout_create), () -> {
++            hideMenu();
++            showLayoutNameInputDialog(getString(R.string.gamepad_layout_create), "", name -> {
++                String newId = layoutManager.createLayout(name);
++                game.switchGamepadLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Duplicate current layout
++        options.add(new MenuOption("đŸ”„ " + getString(R.string.gamepad_layout_duplicate), () -> {
++            hideMenu();
++            String currentName = layoutManager.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.gamepad_layout_duplicate), currentName + " (2)", name -> {
++                String newId = layoutManager.duplicateLayout(activeId, name);
++                game.switchGamepadLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Rename current layout
++        options.add(new MenuOption("âœï¸ " + getString(R.string.gamepad_layout_rename), () -> {
++            hideMenu();
++            String currentName = layoutManager.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.gamepad_layout_rename), currentName, name -> {
++                layoutManager.renameLayout(activeId, name);
++                Toast.makeText(game, String.format(getString(R.string.gamepad_layout_renamed), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Delete current layout
++        if (!GamepadLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
++            options.add(new MenuOption("đŸ—‘ï¸ " + getString(R.string.gamepad_layout_delete), () -> {
++                hideMenu();
++                String currentName = layoutManager.getLayoutName(activeId);
++                showDeleteConfirmDialog(currentName, () -> {
++                    layoutManager.deleteLayout(activeId);
++                    game.switchGamepadLayout(layoutManager.getActiveLayoutId());
++                    Toast.makeText(game, String.format(getString(R.string.gamepad_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
++                });
++            }));
++        }
++
++        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
++
++        showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
++    }
++
++    private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {
++        int themeResId = game.getApplicationInfo().theme;
++        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
++
++        EditText input = new EditText(themedContext);
++        input.setText(defaultValue);
++        input.setSelectAllOnFocus(true);
++
++        new AlertDialog.Builder(themedContext)
++                .setTitle(title)
++                .setView(input)
++                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
++                    String name = input.getText().toString().trim();
++                    if (name.isEmpty()) {
++                        Toast.makeText(game, getString(R.string.gamepad_layout_name_empty), Toast.LENGTH_SHORT).show();
++                        return;
++                    }
++                    callback.onNameEntered(name);
++                })
++                .setNegativeButton(android.R.string.cancel, null)
++                .show();
++    }
++
++    private void showDeleteConfirmDialog(String layoutName, Runnable onConfirm) {
++        int themeResId = game.getApplicationInfo().theme;
++        Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
++
++        new AlertDialog.Builder(themedContext)
++                .setTitle(getString(R.string.gamepad_layout_delete))
++                .setMessage(String.format(getString(R.string.gamepad_layout_delete_confirm), layoutName))
++                .setPositiveButton(android.R.string.ok, (dialog, which) -> onConfirm.run())
++                .setNegativeButton(android.R.string.cancel, null)
++                .show();
++    }
++
++    private interface LayoutNameCallback {
++        void onNameEntered(String name);
++    }
+ }
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
+index c0f7f09..e69396b 100644
+--- a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
+@@ -62,6 +62,8 @@ public class VirtualController {
+     ControllerMode currentMode = ControllerMode.Active;
+     ControllerInputContext inputContext = new ControllerInputContext();
+ 
++    private String currentLayoutId = GamepadLayoutManager.DEFAULT_LAYOUT_ID;
++
+     private Button buttonConfigure = null;
+ 
+     private List<VirtualControllerElement> elements = new ArrayList<>();
+@@ -105,7 +107,7 @@ public class VirtualController {
+                     message = context.getString(R.string.configuration_mode_resize_buttons);
+                 } else {
+                     currentMode = ControllerMode.Active;
+-                    VirtualControllerConfigurationLoader.saveProfile(VirtualController.this, context);
++                    VirtualControllerConfigurationLoader.saveProfile(VirtualController.this, context, currentLayoutId);
+                     message = context.getString(R.string.configuration_mode_exiting);
+                 }
+ 
+@@ -195,6 +197,14 @@ public class VirtualController {
+         }
+     }
+ 
++    public void setCurrentLayoutId(String layoutId) {
++        this.currentLayoutId = layoutId;
++    }
++
++    public String getCurrentLayoutId() {
++        return currentLayoutId;
++    }
++
+     public void refreshLayout() {
+         removeElements();
+ 
+@@ -210,7 +220,7 @@ public class VirtualController {
+         VirtualControllerConfigurationLoader.createDefaultLayout(this, context);
+ 
+         // Apply user preferences onto the default layout
+-        VirtualControllerConfigurationLoader.loadFromPreferences(this, context);
++        VirtualControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
+     }
+ 
+     public ControllerMode getControllerMode() {
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java
+index e543ed1..f01ca5e 100644
+--- a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualControllerConfigurationLoader.java
+@@ -412,8 +412,10 @@ public class VirtualControllerConfigurationLoader {
+     }
+ 
+     public static void saveProfile(final VirtualController controller,
+-                                   final Context context) {
+-        SharedPreferences.Editor prefEditor = context.getSharedPreferences(OSC_PREFERENCE, Activity.MODE_PRIVATE).edit();
++                                   final Context context,
++                                   final String layoutId) {
++        String prefName = GamepadLayoutManager.getLayoutPreferenceName(layoutId);
++        SharedPreferences.Editor prefEditor = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE).edit();
+ 
+         for (VirtualControllerElement element : controller.getElements()) {
+             String prefKey = ""+element.elementId;
+@@ -427,8 +429,9 @@ public class VirtualControllerConfigurationLoader {
+         prefEditor.apply();
+     }
+ 
+-    public static void loadFromPreferences(final VirtualController controller, final Context context) {
+-        SharedPreferences pref = context.getSharedPreferences(OSC_PREFERENCE, Activity.MODE_PRIVATE);
++    public static void loadFromPreferences(final VirtualController controller, final Context context, final String layoutId) {
++        String prefName = GamepadLayoutManager.getLayoutPreferenceName(layoutId);
++        SharedPreferences pref = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE);
+ 
+         for (VirtualControllerElement element : controller.getElements()) {
+             String prefKey = ""+element.elementId;
+diff --git a/app/src/main/res/values-fr/strings.xml b/app/src/main/res/values-fr/strings.xml
+index 70947c2..9aaa0a0 100644
+--- a/app/src/main/res/values-fr/strings.xml
++++ b/app/src/main/res/values-fr/strings.xml
+@@ -590,4 +590,21 @@
+     <string name="title_checkbox_remember_zoom_pan">MĂ©moriser le zoom et le panoramique</string>
+     <string name="summary_checkbox_remember_zoom_pan">Enregistre la position de zoom et de panoramique entre les sessions.</string>
+     <string name="title_edit_profile">Modifier le profil</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Dispositions Gamepad</string>
++    <string name="gamepad_layout_create">CrĂ©er une nouvelle disposition</string>
++    <string name="gamepad_layout_duplicate">Dupliquer la disposition actuelle</string>
++    <string name="gamepad_layout_rename">Renommer la disposition actuelle</string>
++    <string name="gamepad_layout_delete">Supprimer la disposition actuelle</string>
++    <string name="gamepad_layout_name_hint">Nom de la disposition</string>
++    <string name="gamepad_layout_default_name">Par dĂ©faut</string>
++    <string name="gamepad_layout_cannot_delete_default">Impossible de supprimer la disposition par dĂ©faut</string>
++    <string name="gamepad_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
++    <string name="gamepad_layout_switched">Disposition changĂ©e : %s</string>
++    <string name="gamepad_layout_created">Disposition crĂ©Ă©e : %s</string>
++    <string name="gamepad_layout_deleted">Disposition supprimĂ©e : %s</string>
++    <string name="gamepad_layout_renamed">RenommĂ© en : %s</string>
++    <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
++    <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
+ </resources>
+diff --git a/app/src/main/res/values-vi/strings.xml b/app/src/main/res/values-vi/strings.xml
+index 0a7a002..cf85663 100644
+--- a/app/src/main/res/values-vi/strings.xml
++++ b/app/src/main/res/values-vi/strings.xml
+@@ -638,4 +638,21 @@
+     <!-- New Strings -->
+     <string name="title_enable_commit_text">Báº­t nháº­p commit-text (vuá»‘t/giá»ng nĂ³i)</string>
+     <string name="summary_enable_commit_text">Chuyá»ƒn tiáº¿p vÄƒn báº£n nhiá»u kĂ½ tá»± tá»« bĂ n phĂ­m áº£o (gĂµ vuá»‘t, gá»£i Ă½, nháº­p giá»ng nĂ³i). CĂ³ thá»ƒ gĂ¢y lá»—i vá»›i trĂ² chÆ¡i yĂªu cáº§u nháº­p tá»«ng phĂ­m.</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Bá»‘ cá»¥c Gamepad</string>
++    <string name="gamepad_layout_create">Táº¡o bá»‘ cá»¥c má»›i</string>
++    <string name="gamepad_layout_duplicate">NhĂ¢n Ä‘Ă´i bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="gamepad_layout_rename">Äá»•i tĂªn bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="gamepad_layout_delete">XĂ³a bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="gamepad_layout_name_hint">TĂªn bá»‘ cá»¥c</string>
++    <string name="gamepad_layout_default_name">Máº·c Ä‘á»‹nh</string>
++    <string name="gamepad_layout_cannot_delete_default">KhĂ´ng thá»ƒ xĂ³a bá»‘ cá»¥c máº·c Ä‘á»‹nh</string>
++    <string name="gamepad_layout_delete_confirm">XĂ³a bá»‘ cá»¥c \"%s\"?</string>
++    <string name="gamepad_layout_switched">ÄĂ£ chuyá»ƒn sang bá»‘ cá»¥c: %s</string>
++    <string name="gamepad_layout_created">ÄĂ£ táº¡o bá»‘ cá»¥c: %s</string>
++    <string name="gamepad_layout_deleted">ÄĂ£ xĂ³a bá»‘ cá»¥c: %s</string>
++    <string name="gamepad_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
++    <string name="gamepad_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
++    <string name="gamepad_layout_toggle_gamepad">Báº­t/Táº¯t Gamepad</string>
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-zh-rCN/strings.xml b/app/src/main/res/values-zh-rCN/strings.xml
+index 48fda73..f6ad92a 100644
+--- a/app/src/main/res/values-zh-rCN/strings.xml
++++ b/app/src/main/res/values-zh-rCN/strings.xml
+@@ -677,4 +677,21 @@
+     <string name="profile_manager_active_profile">å½“å‰é…ç½®ï¼%s</string>
+     <string name="rename">é‡å‘½å</string>
+     <string name="save">ä¿å­˜</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">æ‰‹æŸ„å¸ƒå±€</string>
++    <string name="gamepad_layout_create">åˆ›å»ºæ–°å¸ƒå±€</string>
++    <string name="gamepad_layout_duplicate">å¤åˆ¶å½“å‰å¸ƒå±€</string>
++    <string name="gamepad_layout_rename">é‡å‘½åå½“å‰å¸ƒå±€</string>
++    <string name="gamepad_layout_delete">åˆ é™¤å½“å‰å¸ƒå±€</string>
++    <string name="gamepad_layout_name_hint">å¸ƒå±€åç§°</string>
++    <string name="gamepad_layout_default_name">é»˜è®¤</string>
++    <string name="gamepad_layout_cannot_delete_default">æ— æ³•åˆ é™¤é»˜è®¤å¸ƒå±€</string>
++    <string name="gamepad_layout_delete_confirm">åˆ é™¤å¸ƒå±€ \"%s\"ï¼Ÿ</string>
++    <string name="gamepad_layout_switched">å·²åˆ‡æ¢åˆ°å¸ƒå±€ï¼%s</string>
++    <string name="gamepad_layout_created">å·²åˆ›å»ºå¸ƒå±€ï¼%s</string>
++    <string name="gamepad_layout_deleted">å·²åˆ é™¤å¸ƒå±€ï¼%s</string>
++    <string name="gamepad_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
++    <string name="gamepad_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
++    <string name="gamepad_layout_toggle_gamepad">æ˜¾ç¤º/éè—æ‰‹æŸ„</string>
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 13b0a64..6119f93 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -701,4 +701,21 @@
+     <string name="profile_manager_active_profile">Active profile: %s</string>
+     <string name="rename">Rename</string>
+     <string name="save">Save</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Gamepad Layouts</string>
++    <string name="gamepad_layout_create">Create New Layout</string>
++    <string name="gamepad_layout_duplicate">Duplicate Current Layout</string>
++    <string name="gamepad_layout_rename">Rename Current Layout</string>
++    <string name="gamepad_layout_delete">Delete Current Layout</string>
++    <string name="gamepad_layout_name_hint">Layout name</string>
++    <string name="gamepad_layout_default_name">Default</string>
++    <string name="gamepad_layout_cannot_delete_default">Cannot delete the default layout</string>
++    <string name="gamepad_layout_delete_confirm">Delete layout \"%s\"?</string>
++    <string name="gamepad_layout_switched">Switched to layout: %s</string>
++    <string name="gamepad_layout_created">Created layout: %s</string>
++    <string name="gamepad_layout_deleted">Deleted layout: %s</string>
++    <string name="gamepad_layout_renamed">Renamed to: %s</string>
++    <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
++    <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
+ </resources>

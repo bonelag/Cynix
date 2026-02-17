@@ -677,4 +677,21 @@
     <string name="profile_manager_active_profile">当前配置：%s</string>
     <string name="rename">重命名</string>
     <string name="save">保存</string>
+
+    <!-- Gamepad Layout Manager -->
+    <string name="game_menu_gamepad_layouts">手柄布局</string>
+    <string name="gamepad_layout_create">创建新布局</string>
+    <string name="gamepad_layout_duplicate">复制当前布局</string>
+    <string name="gamepad_layout_rename">重命名当前布局</string>
+    <string name="gamepad_layout_delete">删除当前布局</string>
+    <string name="gamepad_layout_name_hint">布局名称</string>
+    <string name="gamepad_layout_default_name">默认</string>
+    <string name="gamepad_layout_cannot_delete_default">无法删除默认布局</string>
+    <string name="gamepad_layout_delete_confirm">删除布局 \"%s\"？</string>
+    <string name="gamepad_layout_switched">已切换到布局：%s</string>
+    <string name="gamepad_layout_created">已创建布局：%s</string>
+    <string name="gamepad_layout_deleted">已删除布局：%s</string>
+    <string name="gamepad_layout_renamed">已重命名为：%s</string>
+    <string name="gamepad_layout_name_empty">布局名称不能为空</string>
+    <string name="gamepad_layout_toggle_gamepad">显示/隐藏手柄</string>
 </resources>

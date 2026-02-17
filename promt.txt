@@ -32,3 +32,20 @@ Yêu cầu khi sửa code:
 - Chỉ thay đổi **thứ tự addItem()** trong back menu và submenu.
 - Không làm mất các điều kiện hiển thị (ví dụ: chỉ hiển thị Rotate nếu context = game).
 - Xuất code sau khi chỉnh sửa, không giải thích thêm.
+
+
+
+
+# Multi Layout gamepad
+
+* Hãy đọc và nắm rõ dự án
+- bây giờ hãy tập trung vào tính năng virtual gamepad, hãy tìm hiểu kỹ
+
+
+* Vấn đề hiện tại là: setting layout cho gamepad là chung cho tất cả app/game, do là điều khiển gamepad ảo trên điện thoại nên layout này là thực sự cần thiết để chơi game/làm việc, nhưng việc chỉ có thể sử dụng 1 layout duy nhất, chỉ dùng được cho đúng một app, nếu sử dụng app/game khác lại phải đổi layout rất phiền phức, bây giờ hãy lên kế hoạch triển khai tính năng Multi Layouts, để thêm/sửa/xóa layout tùy ý cho từng app
+# Các yêu cầu:
+- Không được làm mất logic của các tính năng khác của app, chỉ tập trung duy nhất vào LAYOUT GAMEPAD
+- Code sạch/ không bug/ không lỗi build
+# Kết quả dự kiến:
+- Trong floatmenu (back menu), nút "Hiển thị gamepad" hiện tại sẽ trở thành nút "Lựa chọn gamepad layout", ấn vào sẽ mở ra sub menu để lựa chọn gamepad, gồm các tính năng thêm/xóa/sửa layout hiện có (không làm mất đi biểu tượng setting để sửa layout khi đang sử dụng 1 layout bất kỳ - hiện tại đang dùng cái đó là chính để sửa layout )
+- Lưu trữ setting các layout trong bộ nhớ riêng của app, đảm bảo tính nhất quán và nhanh chóng

@@ -701,4 +701,21 @@
     <string name="profile_manager_active_profile">Active profile: %s</string>
     <string name="rename">Rename</string>
     <string name="save">Save</string>
+
+    <!-- Gamepad Layout Manager -->
+    <string name="game_menu_gamepad_layouts">Gamepad Layouts</string>
+    <string name="gamepad_layout_create">Create New Layout</string>
+    <string name="gamepad_layout_duplicate">Duplicate Current Layout</string>
+    <string name="gamepad_layout_rename">Rename Current Layout</string>
+    <string name="gamepad_layout_delete">Delete Current Layout</string>
+    <string name="gamepad_layout_name_hint">Layout name</string>
+    <string name="gamepad_layout_default_name">Default</string>
+    <string name="gamepad_layout_cannot_delete_default">Cannot delete the default layout</string>
+    <string name="gamepad_layout_delete_confirm">Delete layout \"%s\"?</string>
+    <string name="gamepad_layout_switched">Switched to layout: %s</string>
+    <string name="gamepad_layout_created">Created layout: %s</string>
+    <string name="gamepad_layout_deleted">Deleted layout: %s</string>
+    <string name="gamepad_layout_renamed">Renamed to: %s</string>
+    <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
+    <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
 </resources>

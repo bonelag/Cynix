@@ -97,9 +97,9 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            resValue "string", "app_label", "FireDeb"
-            resValue "string", "app_label_root", "FireDeb (Root)"
-            resValue "string", "app_label_game", "FireDeb (Game)"
+            resValue "string", "app_label", "Cynix Debug"
+            resValue "string", "app_label_root", "Cynix Debug (Root)"
+            resValue "string", "app_label_game", "Cynix Debug (Game)"
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

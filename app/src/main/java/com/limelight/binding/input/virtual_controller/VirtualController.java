@@ -62,6 +62,8 @@ public class VirtualController {
     ControllerMode currentMode = ControllerMode.Active;
     ControllerInputContext inputContext = new ControllerInputContext();
 
+    private String currentLayoutId = GamepadLayoutManager.DEFAULT_LAYOUT_ID;
+
     private Button buttonConfigure = null;
 
     private List<VirtualControllerElement> elements = new ArrayList<>();
@@ -105,7 +107,7 @@ public class VirtualController {
                     message = context.getString(R.string.configuration_mode_resize_buttons);
                 } else {
                     currentMode = ControllerMode.Active;
-                    VirtualControllerConfigurationLoader.saveProfile(VirtualController.this, context);
+                    VirtualControllerConfigurationLoader.saveProfile(VirtualController.this, context, currentLayoutId);
                     message = context.getString(R.string.configuration_mode_exiting);
                 }
 
@@ -195,6 +197,14 @@ public class VirtualController {
         }
     }
 
+    public void setCurrentLayoutId(String layoutId) {
+        this.currentLayoutId = layoutId;
+    }
+
+    public String getCurrentLayoutId() {
+        return currentLayoutId;
+    }
+
     public void refreshLayout() {
         removeElements();
 
@@ -210,7 +220,7 @@ public class VirtualController {
         VirtualControllerConfigurationLoader.createDefaultLayout(this, context);
 
         // Apply user preferences onto the default layout
-        VirtualControllerConfigurationLoader.loadFromPreferences(this, context);
+        VirtualControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
     }
 
     public ControllerMode getControllerMode() {
