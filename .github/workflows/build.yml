@@ -6,6 +6,7 @@ on:
       - main
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -41,11 +42,23 @@ jobs:
     - name: Build APK
       run: ./gradlew assembleNonRoot_gameRelease
 
+    - name: Get versionName and rename APK
+      id: get_version
+      run: |
+        VERSION=$(grep 'versionName' app/build.gradle | head -1 | sed 's/.*versionName "\(.*\)"/\1/')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+        APK_DIR="app/build/outputs/apk/nonRoot_game/release"
+        cp "$APK_DIR/app-nonRoot_game-release.apk" "$APK_DIR/Cynix_${VERSION}.apk"
+        echo "apk_path=$APK_DIR/Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
+        echo "apk_name=Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
+        echo "Renamed APK to Cynix_${VERSION}.apk"
+
     - name: Upload APK (Artifact or GitHub Release)
       if: github.event_name == 'release'
       uses: softprops/action-gh-release@v2
       with:
-        files: app/build/outputs/apk/nonRoot_game/release/app-nonRoot_game-release.apk
+        files: ${{ steps.get_version.outputs.apk_path }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -54,4 +67,27 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: APK-Build
-        path: app/build/outputs/apk/nonRoot_game/release/app-nonRoot_game-release.apk
+        path: ${{ steps.get_version.outputs.apk_path }}
+
+    - name: Check and update existing release
+      if: github.event_name == 'workflow_dispatch'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: ${{ steps.get_version.outputs.tag }}
+        VERSION: ${{ steps.get_version.outputs.version }}
+        APK_PATH: ${{ steps.get_version.outputs.apk_path }}
+        APK_NAME: ${{ steps.get_version.outputs.apk_name }}
+      run: |
+        # Check if release with this tag exists
+        RELEASE_ID=$(gh release view "$TAG" --json id --jq '.id' 2>/dev/null || echo "")
+
+        if [ -n "$RELEASE_ID" ]; then
+          echo "Release $TAG already exists. Replacing APK asset..."
+          gh release delete-asset "$TAG" "$APK_NAME" --yes 2>/dev/null || true
+          gh release upload "$TAG" "$APK_PATH" --clobber
+          echo "APK replaced successfully in release $TAG"
+        else
+          echo "Creating new release $TAG..."
+          gh release create "$TAG" "$APK_PATH" --title "Cynix $VERSION" --notes "Build $VERSION" --latest
+          echo "Release $TAG created successfully"
+        fi
