@@ -25,6 +25,7 @@ import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
 import com.limelight.binding.input.virtual_controller.VirtualController;
 import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
 import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
 import com.limelight.binding.video.CrashListener;
 import com.limelight.binding.video.MediaCodecDecoderRenderer;
 import com.limelight.binding.video.MediaCodecHelper;
@@ -171,6 +172,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private GamepadLayoutManager layoutManager;
 
     private KeyBoardController keyBoardController;
+    private KeyboardLayoutManager keyboardLayoutManager;
 
     private KeyBoardLayoutController keyBoardLayoutController;
 
@@ -971,7 +973,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     }
 
     private void initKeyboardController(){
+        if (keyboardLayoutManager == null) {
+            keyboardLayoutManager = new KeyboardLayoutManager(this);
+            keyboardLayoutManager.migrateFromLegacy(this);
+        }
         keyBoardController = new KeyBoardController(conn,(FrameLayout)rootView, this);
+        keyBoardController.setCurrentLayoutId(keyboardLayoutManager.getActiveLayoutId());
         keyBoardController.refreshLayout();
         keyBoardController.show();
     }
@@ -1004,6 +1011,29 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             return;
         }
         keyBoardController.toggleVisibility();
+    }
+
+    public void switchKeyboardLayout(String layoutId) {
+        if (keyboardLayoutManager == null) {
+            keyboardLayoutManager = new KeyboardLayoutManager(this);
+            keyboardLayoutManager.migrateFromLegacy(this);
+        }
+        keyboardLayoutManager.setActiveLayoutId(layoutId);
+        if (keyBoardController != null) {
+            keyBoardController.setCurrentLayoutId(layoutId);
+            keyBoardController.refreshLayout();
+            keyBoardController.show();
+        } else {
+            initKeyboardController();
+        }
+    }
+
+    public KeyboardLayoutManager getKeyboardLayoutManager() {
+        if (keyboardLayoutManager == null) {
+            keyboardLayoutManager = new KeyboardLayoutManager(this);
+            keyboardLayoutManager.migrateFromLegacy(this);
+        }
+        return keyboardLayoutManager;
     }
 
     public void toggleFullKeyboard() {

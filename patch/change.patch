@@ -1,4 +1,4 @@
-﻿diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
+diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
 index a52c855..3c6df56 100644
 --- a/app/src/main/java/com/limelight/Game.java
 +++ b/app/src/main/java/com/limelight/Game.java
@@ -389,4 +389,376 @@ index 13b0a64..6119f93 100644
 +    <string name="gamepad_layout_renamed">Renamed to: %s</string>
 +    <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
 +    <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
+ </resources>
+
+
+# ========================================
+# KEYBOARD MULTI LAYOUTS PATCH (2026-02-19)
+# ========================================
+
+diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
+index 3c6df56..cd90c58 100644
+--- a/app/src/main/java/com/limelight/Game.java
++++ b/app/src/main/java/com/limelight/Game.java
+@@ -25,6 +25,7 @@ import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
+ import com.limelight.binding.input.virtual_controller.VirtualController;
+ import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
+ import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
++import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
+ import com.limelight.binding.video.CrashListener;
+ import com.limelight.binding.video.MediaCodecDecoderRenderer;
+ import com.limelight.binding.video.MediaCodecHelper;
+@@ -171,6 +172,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     private GamepadLayoutManager layoutManager;
+ 
+     private KeyBoardController keyBoardController;
++    private KeyboardLayoutManager keyboardLayoutManager;
+ 
+     private KeyBoardLayoutController keyBoardLayoutController;
+ 
+@@ -971,7 +973,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     }
+ 
+     private void initKeyboardController(){
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
+         keyBoardController = new KeyBoardController(conn,(FrameLayout)rootView, this);
++        keyBoardController.setCurrentLayoutId(keyboardLayoutManager.getActiveLayoutId());
+         keyBoardController.refreshLayout();
+         keyBoardController.show();
+     }
+@@ -1006,6 +1013,29 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+         keyBoardController.toggleVisibility();
+     }
+ 
++    public void switchKeyboardLayout(String layoutId) {
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
++        keyboardLayoutManager.setActiveLayoutId(layoutId);
++        if (keyBoardController != null) {
++            keyBoardController.setCurrentLayoutId(layoutId);
++            keyBoardController.refreshLayout();
++            keyBoardController.show();
++        } else {
++            initKeyboardController();
++        }
++    }
++
++    public KeyboardLayoutManager getKeyboardLayoutManager() {
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
++        return keyboardLayoutManager;
++    }
++
+     public void toggleFullKeyboard() {
+         if (isOnExternalDisplay()) {
+             ExternalDisplayControlActivity.toggleFullKeyboard();
+diff --git a/app/src/main/java/com/limelight/GameMenu.java b/app/src/main/java/com/limelight/GameMenu.java
+index 9cc207f..8dbd6f4 100644
+--- a/app/src/main/java/com/limelight/GameMenu.java
++++ b/app/src/main/java/com/limelight/GameMenu.java
+@@ -18,6 +18,7 @@ import android.widget.Toast;
+ import com.limelight.binding.input.GameInputDevice;
+ import com.limelight.binding.input.KeyboardTranslator;
+ import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
++import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
+ import com.limelight.preferences.PreferenceConfiguration;
+ import com.limelight.utils.KeyConfigHelper;
+ import com.limelight.utils.KeyMapper;
+@@ -314,7 +315,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
+ 
+         options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
+ 
+-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
++        options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
++            hideMenu();
++            showKeyboardLayoutMenu();
++        }));
+ 
+         if (game.allowChangeMouseMode) {
+             options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
+@@ -422,6 +426,80 @@ public class GameMenu implements Game.GameMenuCallbacks {
+         showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
+     }
+ 
++    private void showKeyboardLayoutMenu() {
++        KeyboardLayoutManager layoutMgr = game.getKeyboardLayoutManager();
++        if (layoutMgr == null) {
++            return;
++        }
++
++        List<MenuOption> options = new ArrayList<>();
++
++        // Toggle keyboard visibility
++        options.add(new MenuOption(getString(R.string.keyboard_layout_toggle_keyboard), true, game::toggleKeyboardController));
++
++        // List existing layouts
++        List<String> layoutIds = layoutMgr.getLayoutIds();
++        String activeId = layoutMgr.getActiveLayoutId();
++
++        for (String layoutId : layoutIds) {
++            String name = layoutMgr.getLayoutName(layoutId);
++            String label = layoutId.equals(activeId) ? "\u2713 " + name : "   " + name;
++            final String lid = layoutId;
++            options.add(new MenuOption(label, true, () -> {
++                game.switchKeyboardLayout(lid);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_switched), layoutMgr.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
++            }));
++        }
++
++        // Create new layout
++        options.add(new MenuOption("\u2795 " + getString(R.string.keyboard_layout_create), () -> {
++            hideMenu();
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_create), "", name -> {
++                String newId = layoutMgr.createLayout(name);
++                game.switchKeyboardLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Duplicate current layout
++        options.add(new MenuOption("\uD83D\uDD04 " + getString(R.string.keyboard_layout_duplicate), () -> {
++            hideMenu();
++            String currentName = layoutMgr.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_duplicate), currentName + " (2)", name -> {
++                String newId = layoutMgr.duplicateLayout(activeId, name);
++                game.switchKeyboardLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Rename current layout
++        options.add(new MenuOption("\u270F\uFE0F " + getString(R.string.keyboard_layout_rename), () -> {
++            hideMenu();
++            String currentName = layoutMgr.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_rename), currentName, name -> {
++                layoutMgr.renameLayout(activeId, name);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_renamed), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Delete current layout (only if not default)
++        if (!KeyboardLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
++            options.add(new MenuOption("\uD83D\uDDD1\uFE0F " + getString(R.string.keyboard_layout_delete), () -> {
++                hideMenu();
++                String currentName = layoutMgr.getLayoutName(activeId);
++                showDeleteConfirmDialog(currentName, () -> {
++                    layoutMgr.deleteLayout(activeId);
++                    game.switchKeyboardLayout(layoutMgr.getActiveLayoutId());
++                    Toast.makeText(game, String.format(getString(R.string.keyboard_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
++                });
++            }));
++        }
++
++        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
++
++        showMenuDialog(getString(R.string.game_menu_keyboard_layouts), options.toArray(new MenuOption[0]));
++    }
++
+     private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {
+         int themeResId = game.getApplicationInfo().theme;
+         Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
+index 37726a2..c4088c5 100644
+--- a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
+@@ -68,6 +68,8 @@ public class KeyBoardController {
+ 
+     ControllerMode currentMode = ControllerMode.Active;
+ 
++    private String currentLayoutId = KeyboardLayoutManager.DEFAULT_LAYOUT_ID;
++
+     private Map<Integer, Runnable> keyEventRunnableMap = new HashMap<>();
+ 
+     private Button buttonConfigure = null;
+@@ -174,7 +176,7 @@ public class KeyBoardController {
+                     message = context.getString(R.string.configuration_mode_resize_buttons);
+                 } else {
+                     currentMode = ControllerMode.Active;
+-                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
++                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
+                     message = context.getString(R.string.configuration_mode_exiting);
+                 }
+ 
+@@ -205,7 +207,7 @@ public class KeyBoardController {
+                     element.setVisibility(View.GONE);
+                 }
+                 // Save the new state
+-                KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
++                KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
+                 vibrate(KeyEvent.ACTION_DOWN);
+             });
+             builder.setNegativeButton(context.getString(R.string.no), null);
+@@ -356,7 +358,15 @@ public class KeyBoardController {
+ 
+         // Apply default layout
+         KeyBoardControllerConfigurationLoader.createDefaultLayout(this, context, conn);
+-        KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context);
++        KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
++    }
++
++    public String getCurrentLayoutId() {
++        return currentLayoutId;
++    }
++
++    public void setCurrentLayoutId(String layoutId) {
++        this.currentLayoutId = layoutId;
+     }
+ 
+     public ControllerMode getControllerMode() {
+@@ -675,7 +685,7 @@ public class KeyBoardController {
+                 // Build feedback message
+                 StringBuilder feedback = new StringBuilder();
+                 if (elementsAdded > 0) {
+-                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
++                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
+                     feedback.append(context.getString(R.string.keyboard_keys_added, elementsAdded));
+                 }
+                 if (duplicatesFound > 0) {
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
+index 760352d..d3bf92c 100644
+--- a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
+@@ -552,8 +552,18 @@ public class KeyBoardControllerConfigurationLoader {
+     public static void saveProfile(final KeyBoardController controller,
+                                    final Context context) {
+         String name = PreferenceManager.getDefaultSharedPreferences(context).getString(OSC_PREFERENCE, OSC_PREFERENCE_VALUE);
++        saveProfileInternal(controller, context, name);
++    }
++
++    public static void saveProfile(final KeyBoardController controller,
++                                   final Context context, final String layoutId) {
++        String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
++        saveProfileInternal(controller, context, name);
++    }
+ 
+-        SharedPreferences.Editor prefEditor = context.getSharedPreferences(name, Activity.MODE_PRIVATE).edit();
++    private static void saveProfileInternal(final KeyBoardController controller,
++                                            final Context context, final String preferenceName) {
++        SharedPreferences.Editor prefEditor = context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE).edit();
+ 
+         for (keyBoardVirtualControllerElement element : controller.getElements()) {
+             String prefKey = "" + element.elementId;
+@@ -568,8 +578,16 @@ public class KeyBoardControllerConfigurationLoader {
+ 
+     public static void loadFromPreferences(final KeyBoardController controller, final Context context) {
+         String name = PreferenceManager.getDefaultSharedPreferences(context).getString(OSC_PREFERENCE, OSC_PREFERENCE_VALUE);
++        loadFromPreferencesInternal(controller, context, name);
++    }
++
++    public static void loadFromPreferences(final KeyBoardController controller, final Context context, final String layoutId) {
++        String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
++        loadFromPreferencesInternal(controller, context, name);
++    }
+ 
+-        SharedPreferences pref = context.getSharedPreferences(name, Activity.MODE_PRIVATE);
++    private static void loadFromPreferencesInternal(final KeyBoardController controller, final Context context, final String preferenceName) {
++        SharedPreferences pref = context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
+ 
+         for (keyBoardVirtualControllerElement element : controller.getElements()) {
+             String prefKey = "" + element.elementId;
+diff --git a/app/src/main/res/values-fr/strings.xml b/app/src/main/res/values-fr/strings.xml
+index 9aaa0a0..1067aa6 100644
+--- a/app/src/main/res/values-fr/strings.xml
++++ b/app/src/main/res/values-fr/strings.xml
+@@ -607,4 +607,20 @@
+     <string name="gamepad_layout_renamed">RenommĂ© en : %s</string>
+     <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
+     <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
++
++    <!-- Keyboard Layout Manager -->
++    <string name="game_menu_keyboard_layouts">Dispositions Clavier</string>
++    <string name="keyboard_layout_create">CrĂ©er une nouvelle disposition</string>
++    <string name="keyboard_layout_duplicate">Dupliquer la disposition actuelle</string>
++    <string name="keyboard_layout_rename">Renommer la disposition actuelle</string>
++    <string name="keyboard_layout_delete">Supprimer la disposition actuelle</string>
++    <string name="keyboard_layout_default_name">Par dĂ©faut</string>
++    <string name="keyboard_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
++    <string name="keyboard_layout_switched">Disposition changĂ©e : %s</string>
++    <string name="keyboard_layout_created">Disposition crĂ©Ă©e : %s</string>
++    <string name="keyboard_layout_deleted">Disposition supprimĂ©e : %s</string>
++    <string name="keyboard_layout_renamed">RenommĂ© en : %s</string>
++    <string name="keyboard_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
++    <string name="keyboard_layout_toggle_keyboard">Basculer le Clavier</string>
+ </resources>
++
+diff --git a/app/src/main/res/values-vi/strings.xml b/app/src/main/res/values-vi/strings.xml
+index cf85663..591515c 100644
+--- a/app/src/main/res/values-vi/strings.xml
++++ b/app/src/main/res/values-vi/strings.xml
+@@ -655,4 +655,19 @@
+     <string name="gamepad_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
+     <string name="gamepad_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
+     <string name="gamepad_layout_toggle_gamepad">Báº­t/Táº¯t Gamepad</string>
++
++    <!-- Keyboard Layout Manager -->
++    <string name="game_menu_keyboard_layouts">Bá»‘ cá»¥c Keyboard</string>
++    <string name="keyboard_layout_create">Táº¡o bá»‘ cá»¥c má»›i</string>
++    <string name="keyboard_layout_duplicate">NhĂ¢n Ä‘Ă´i bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="keyboard_layout_rename">Äá»•i tĂªn bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="keyboard_layout_delete">XĂ³a bá»‘ cá»¥c hiá»‡n táº¡i</string>
++    <string name="keyboard_layout_default_name">Máº·c Ä‘á»‹nh</string>
++    <string name="keyboard_layout_delete_confirm">XĂ³a bá»‘ cá»¥c \"%s\"?</string>
++    <string name="keyboard_layout_switched">ÄĂ£ chuyá»ƒn sang bá»‘ cá»¥c: %s</string>
++    <string name="keyboard_layout_created">ÄĂ£ táº¡o bá»‘ cá»¥c: %s</string>
++    <string name="keyboard_layout_deleted">ÄĂ£ xĂ³a bá»‘ cá»¥c: %s</string>
++    <string name="keyboard_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
++    <string name="keyboard_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
++    <string name="keyboard_layout_toggle_keyboard">Báº­t/Táº¯t Keyboard</string>
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-zh-rCN/strings.xml b/app/src/main/res/values-zh-rCN/strings.xml
+index f6ad92a..ed585eb 100644
+--- a/app/src/main/res/values-zh-rCN/strings.xml
++++ b/app/src/main/res/values-zh-rCN/strings.xml
+@@ -694,4 +694,19 @@
+     <string name="gamepad_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
+     <string name="gamepad_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
+     <string name="gamepad_layout_toggle_gamepad">æ˜¾ç¤º/éè—æ‰‹æŸ„</string>
++
++    <!-- Keyboard Layout Manager -->
++    <string name="game_menu_keyboard_layouts">é”®ç›˜å¸ƒå±€</string>
++    <string name="keyboard_layout_create">åˆ›å»ºæ–°å¸ƒå±€</string>
++    <string name="keyboard_layout_duplicate">å¤åˆ¶å½“å‰å¸ƒå±€</string>
++    <string name="keyboard_layout_rename">é‡å‘½åå½“å‰å¸ƒå±€</string>
++    <string name="keyboard_layout_delete">åˆ é™¤å½“å‰å¸ƒå±€</string>
++    <string name="keyboard_layout_default_name">é»˜è®¤</string>
++    <string name="keyboard_layout_delete_confirm">åˆ é™¤å¸ƒå±€ \"%s\"ï¼Ÿ</string>
++    <string name="keyboard_layout_switched">å·²åˆ‡æ¢åˆ°å¸ƒå±€ï¼%s</string>
++    <string name="keyboard_layout_created">å·²åˆ›å»ºå¸ƒå±€ï¼%s</string>
++    <string name="keyboard_layout_deleted">å·²åˆ é™¤å¸ƒå±€ï¼%s</string>
++    <string name="keyboard_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
++    <string name="keyboard_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
++    <string name="keyboard_layout_toggle_keyboard">æ˜¾ç¤º/éè—é”®ç›˜</string>
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 6119f93..1a1ba74 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -718,4 +718,19 @@
+     <string name="gamepad_layout_renamed">Renamed to: %s</string>
+     <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
+     <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
++
++    <!-- Keyboard Layout Manager -->
++    <string name="game_menu_keyboard_layouts">Keyboard Layouts</string>
++    <string name="keyboard_layout_create">Create New Layout</string>
++    <string name="keyboard_layout_duplicate">Duplicate Current Layout</string>
++    <string name="keyboard_layout_rename">Rename Current Layout</string>
++    <string name="keyboard_layout_delete">Delete Current Layout</string>
++    <string name="keyboard_layout_default_name">Default</string>
++    <string name="keyboard_layout_delete_confirm">Delete layout \"%s\"?</string>
++    <string name="keyboard_layout_switched">Switched to layout: %s</string>
++    <string name="keyboard_layout_created">Created layout: %s</string>
++    <string name="keyboard_layout_deleted">Deleted layout: %s</string>
++    <string name="keyboard_layout_renamed">Renamed to: %s</string>
++    <string name="keyboard_layout_name_empty">Layout name cannot be empty</string>
++    <string name="keyboard_layout_toggle_keyboard">Toggle Keyboard</string>
  </resources>

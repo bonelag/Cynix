@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.limelight.binding.input.GameInputDevice;
 import com.limelight.binding.input.KeyboardTranslator;
 import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
 import com.limelight.preferences.PreferenceConfiguration;
 import com.limelight.utils.KeyConfigHelper;
 import com.limelight.utils.KeyMapper;
@@ -314,7 +315,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
         options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
 
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
+        options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
+            hideMenu();
+            showKeyboardLayoutMenu();
+        }));
 
         if (game.allowChangeMouseMode) {
             options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
@@ -420,6 +424,80 @@ public class GameMenu implements Game.GameMenuCallbacks {
         options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
 
         showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
+    }
+
+    private void showKeyboardLayoutMenu() {
+        KeyboardLayoutManager layoutMgr = game.getKeyboardLayoutManager();
+        if (layoutMgr == null) {
+            return;
+        }
+
+        List<MenuOption> options = new ArrayList<>();
+
+        // Toggle keyboard visibility
+        options.add(new MenuOption(getString(R.string.keyboard_layout_toggle_keyboard), true, game::toggleKeyboardController));
+
+        // List existing layouts
+        List<String> layoutIds = layoutMgr.getLayoutIds();
+        String activeId = layoutMgr.getActiveLayoutId();
+
+        for (String layoutId : layoutIds) {
+            String name = layoutMgr.getLayoutName(layoutId);
+            String label = layoutId.equals(activeId) ? "\u2713 " + name : "   " + name;
+            final String lid = layoutId;
+            options.add(new MenuOption(label, true, () -> {
+                game.switchKeyboardLayout(lid);
+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_switched), layoutMgr.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
+            }));
+        }
+
+        // Create new layout
+        options.add(new MenuOption("\u2795 " + getString(R.string.keyboard_layout_create), () -> {
+            hideMenu();
+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_create), "", name -> {
+                String newId = layoutMgr.createLayout(name);
+                game.switchKeyboardLayout(newId);
+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Duplicate current layout
+        options.add(new MenuOption("\uD83D\uDD04 " + getString(R.string.keyboard_layout_duplicate), () -> {
+            hideMenu();
+            String currentName = layoutMgr.getLayoutName(activeId);
+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_duplicate), currentName + " (2)", name -> {
+                String newId = layoutMgr.duplicateLayout(activeId, name);
+                game.switchKeyboardLayout(newId);
+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Rename current layout
+        options.add(new MenuOption("\u270F\uFE0F " + getString(R.string.keyboard_layout_rename), () -> {
+            hideMenu();
+            String currentName = layoutMgr.getLayoutName(activeId);
+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_rename), currentName, name -> {
+                layoutMgr.renameLayout(activeId, name);
+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_renamed), name), Toast.LENGTH_SHORT).show();
+            });
+        }));
+
+        // Delete current layout (only if not default)
+        if (!KeyboardLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
+            options.add(new MenuOption("\uD83D\uDDD1\uFE0F " + getString(R.string.keyboard_layout_delete), () -> {
+                hideMenu();
+                String currentName = layoutMgr.getLayoutName(activeId);
+                showDeleteConfirmDialog(currentName, () -> {
+                    layoutMgr.deleteLayout(activeId);
+                    game.switchKeyboardLayout(layoutMgr.getActiveLayoutId());
+                    Toast.makeText(game, String.format(getString(R.string.keyboard_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
+                });
+            }));
+        }
+
+        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
+
+        showMenuDialog(getString(R.string.game_menu_keyboard_layouts), options.toArray(new MenuOption[0]));
     }
 
     private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {

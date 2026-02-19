@@ -607,4 +607,20 @@
     <string name="gamepad_layout_renamed">Renommé en : %s</string>
     <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
     <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
+
+    <!-- Keyboard Layout Manager -->
+    <string name="game_menu_keyboard_layouts">Dispositions Clavier</string>
+    <string name="keyboard_layout_create">Créer une nouvelle disposition</string>
+    <string name="keyboard_layout_duplicate">Dupliquer la disposition actuelle</string>
+    <string name="keyboard_layout_rename">Renommer la disposition actuelle</string>
+    <string name="keyboard_layout_delete">Supprimer la disposition actuelle</string>
+    <string name="keyboard_layout_default_name">Par défaut</string>
+    <string name="keyboard_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
+    <string name="keyboard_layout_switched">Disposition changée : %s</string>
+    <string name="keyboard_layout_created">Disposition créée : %s</string>
+    <string name="keyboard_layout_deleted">Disposition supprimée : %s</string>
+    <string name="keyboard_layout_renamed">Renommé en : %s</string>
+    <string name="keyboard_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
+    <string name="keyboard_layout_toggle_keyboard">Basculer le Clavier</string>
 </resources>
+

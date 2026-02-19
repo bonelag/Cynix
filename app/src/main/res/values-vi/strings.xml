@@ -655,4 +655,19 @@
     <string name="gamepad_layout_renamed">Đã đổi tên thành: %s</string>
     <string name="gamepad_layout_name_empty">Tên bố cục không được để trống</string>
     <string name="gamepad_layout_toggle_gamepad">Bật/Tắt Gamepad</string>
+
+    <!-- Keyboard Layout Manager -->
+    <string name="game_menu_keyboard_layouts">Bố cục Keyboard</string>
+    <string name="keyboard_layout_create">Tạo bố cục mới</string>
+    <string name="keyboard_layout_duplicate">Nhân đôi bố cục hiện tại</string>
+    <string name="keyboard_layout_rename">Đổi tên bố cục hiện tại</string>
+    <string name="keyboard_layout_delete">Xóa bố cục hiện tại</string>
+    <string name="keyboard_layout_default_name">Mặc định</string>
+    <string name="keyboard_layout_delete_confirm">Xóa bố cục \"%s\"?</string>
+    <string name="keyboard_layout_switched">Đã chuyển sang bố cục: %s</string>
+    <string name="keyboard_layout_created">Đã tạo bố cục: %s</string>
+    <string name="keyboard_layout_deleted">Đã xóa bố cục: %s</string>
+    <string name="keyboard_layout_renamed">Đã đổi tên thành: %s</string>
+    <string name="keyboard_layout_name_empty">Tên bố cục không được để trống</string>
+    <string name="keyboard_layout_toggle_keyboard">Bật/Tắt Keyboard</string>
 </resources>

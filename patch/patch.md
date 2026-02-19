@@ -345,3 +345,271 @@ Thêm 17 string mới vào **cuối** mỗi file (trước `</resources>`):
    4. Sửa `Game.java` (tích hợp layout manager)
    5. Sửa `GameMenu.java` (UI menu)
    6. Thêm strings vào tất cả file ngôn ngữ
+
+---
+---
+
+# Patch: Multi Layouts cho Keyboard (Phím Tùy Chỉnh)
+
+## Mô tả tính năng
+
+Thêm hệ thống đa bố cục (multi-layout) cho bàn phím phím tùy chỉnh (Special Keys / `KeyBoardController`). Cho phép người dùng tạo, chọn, nhân đôi, đổi tên và xóa nhiều keyboard layout khác nhau thông qua sub-menu trong game.
+
+**Trước khi có patch:** Chỉ có 1 bố cục keyboard duy nhất, lưu trong `SharedPreferences("OSC_Keyboard")`.
+
+**Sau khi áp dụng patch:** Người dùng có thể quản lý nhiều bố cục, mỗi bố cục lưu trong `SharedPreferences("keyboard_layout_<UUID>")`, metadata lưu trong `SharedPreferences("keyboard_layouts_meta")`.
+
+> **Pattern:** Thiết kế hoàn toàn giống `GamepadLayoutManager` (patch trước), áp dụng cho keyboard.
+
+---
+
+## Cấu trúc thư mục patch (cập nhật)
+
+```
+patch/
+├── patch.md                         ← File này
+├── change.patch                     ← Git diff (gamepad + keyboard)
+└── file/
+    ├── GamepadLayoutManager.java    ← File mới (gamepad - patch trước)
+    └── KeyboardLayoutManager.java   ← File mới (keyboard - patch này)
+```
+
+---
+
+## Cách áp dụng patch
+
+### Bước 1: Thêm file mới
+
+Copy file `patch/file/KeyboardLayoutManager.java` vào:
+```
+app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyboardLayoutManager.java
+```
+
+### Bước 2: Áp dụng diff
+
+```bash
+git apply patch/change.patch
+```
+
+Nếu thất bại, áp dụng thủ công theo hướng dẫn bên dưới.
+
+---
+
+## Chi tiết thay đổi từng file
+
+### 1. [FILE MỚI] `KeyboardLayoutManager.java`
+
+**Đường dẫn:** `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyboardLayoutManager.java`
+
+**Nguồn:** `patch/file/KeyboardLayoutManager.java`
+
+**Package:** `com.limelight.binding.input.virtual_controller.keyboard`
+
+**Mục đích:** Quản lý CRUD cho keyboard layout (tạo, xóa, đổi tên, nhân đôi, chọn active).
+
+**Thiết kế lưu trữ:**
+- **Metadata** lưu trong `SharedPreferences("keyboard_layouts_meta")`:
+  - `layout_ids`: JSONArray chứa danh sách UUID
+  - `layout_name_<id>`: Tên hiển thị
+  - `active_layout_id`: UUID layout đang active
+  - `migrated_from_legacy`: Boolean đánh dấu đã migration
+- **Dữ liệu layout** lưu trong `SharedPreferences("keyboard_layout_<UUID>")` — cùng format key với `SharedPreferences("OSC_Keyboard")` cũ.
+
+**Hằng số quan trọng:**
+- `DEFAULT_LAYOUT_ID = "default"`
+- `META_PREFERENCE = "keyboard_layouts_meta"`
+- `LAYOUT_PREFERENCE_PREFIX = "keyboard_layout_"`
+
+**Method chính:**
+- `getLayoutIds()` → Danh sách tất cả layout ID
+- `getLayoutName(String id)` → Lấy tên hiển thị
+- `getActiveLayoutId()` / `setActiveLayoutId(String id)` → Active layout
+- `createLayout(String name)` → Tạo layout mới, trả về UUID
+- `duplicateLayout(String sourceId, String name)` → Copy layout
+- `renameLayout(String layoutId, String newName)` → Đổi tên
+- `deleteLayout(String layoutId)` → Xóa (không xóa được default)
+- `migrateFromLegacy(Context context)` → Chạy 1 lần, copy từ `SharedPreferences("OSC_Keyboard")` sang layout "default"
+- `getLayoutPreferenceName(String layoutId)` → Static, trả về `"keyboard_layout_" + layoutId`
+
+---
+
+### 2. [SỬA] `KeyBoardControllerConfigurationLoader.java`
+
+**Đường dẫn:** `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java`
+
+**Thay đổi:** Thêm overload `saveProfile` và `loadFromPreferences` nhận `layoutId`.
+
+#### a) Method `saveProfile` — Thêm overload với `layoutId`
+
+```java
+// Overload mới:
+public static void saveProfile(KeyBoardController controller, Context context, String layoutId) {
+    String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
+    saveProfileInternal(controller, context, name);
+}
+// Method cũ giữ nguyên (backward compatible), gọi saveProfileInternal()
+```
+
+#### b) Method `loadFromPreferences` — Thêm overload với `layoutId`
+
+```java
+// Overload mới:
+public static void loadFromPreferences(KeyBoardController controller, Context context, String layoutId) {
+    String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
+    loadFromPreferencesInternal(controller, context, name);
+}
+// Method cũ giữ nguyên, gọi loadFromPreferencesInternal()
+```
+
+> **Lưu ý:** Logic bên trong extract ra `saveProfileInternal()` và `loadFromPreferencesInternal()`, cả method cũ và mới đều gọi chung.
+
+---
+
+### 3. [SỬA] `KeyBoardController.java`
+
+**Đường dẫn:** `app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java`
+
+**Thay đổi:**
+
+#### a) Thêm field `currentLayoutId`
+
+```java
+private String currentLayoutId = KeyboardLayoutManager.DEFAULT_LAYOUT_ID;
+```
+
+#### b) Thêm getter/setter
+
+```java
+public String getCurrentLayoutId() { return currentLayoutId; }
+public void setCurrentLayoutId(String layoutId) { this.currentLayoutId = layoutId; }
+```
+
+#### c) Sửa `refreshLayout()` — dùng `currentLayoutId`
+
+```diff
+-KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context);
++KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
+```
+
+#### d) Sửa 3 chỗ save — dùng `currentLayoutId`
+
+```diff
+-KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
++KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
+```
+
+Có 3 vị trí save: buttonConfigure onClick, buttonClearAll onClick, và sau addKeys.
+
+---
+
+### 4. [SỬA] `Game.java`
+
+**Đường dẫn:** `app/src/main/java/com/limelight/Game.java`
+
+**Thay đổi:**
+
+#### a) Thêm import
+
+```java
+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
+```
+
+#### b) Thêm field
+
+```java
+private KeyboardLayoutManager keyboardLayoutManager;
+```
+
+#### c) Sửa `initKeyboardController()`
+
+Thêm init `keyboardLayoutManager` + migration + set active layout cho controller trước khi refresh.
+
+#### d) Thêm 2 method mới
+
+```java
+public void switchKeyboardLayout(String layoutId) { ... }
+public KeyboardLayoutManager getKeyboardLayoutManager() { ... }
+```
+
+---
+
+### 5. [SỬA] `GameMenu.java`
+
+**Đường dẫn:** `app/src/main/java/com/limelight/GameMenu.java`
+
+**Thay đổi:**
+
+#### a) Thêm import
+
+```java
+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
+```
+
+#### b) Thay menu item toggle keyboard bằng sub-menu
+
+```diff
+-options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
++options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
++    hideMenu();
++    showKeyboardLayoutMenu();
++}));
+```
+
+#### c) Thêm method `showKeyboardLayoutMenu()`
+
+Sub-menu gồm:
+- Toggle Keyboard visibility
+- Danh sách layout (layout active có dấu ✓)
+- Tạo mới / Nhân đôi / Đổi tên / Xóa (không xóa Default)
+- Cancel
+
+Tái sử dụng `showLayoutNameInputDialog()` và `showDeleteConfirmDialog()` từ Gamepad.
+
+---
+
+### 6. [SỬA] String resources — 4 file ngôn ngữ
+
+Thêm 14 string mới vào **cuối** mỗi file (trước `</resources>`):
+
+| Key | EN | VI |
+|-----|----|----|
+| `game_menu_keyboard_layouts` | Keyboard Layouts | Bố cục Keyboard |
+| `keyboard_layout_create` | Create New Layout | Tạo bố cục mới |
+| `keyboard_layout_duplicate` | Duplicate Current Layout | Nhân đôi bố cục hiện tại |
+| `keyboard_layout_rename` | Rename Current Layout | Đổi tên bố cục hiện tại |
+| `keyboard_layout_delete` | Delete Current Layout | Xóa bố cục hiện tại |
+| `keyboard_layout_default_name` | Default | Mặc định |
+| `keyboard_layout_delete_confirm` | Delete layout "%s"? | Xóa bố cục "%s"? |
+| `keyboard_layout_switched` | Switched to layout: %s | Đã chuyển sang bố cục: %s |
+| `keyboard_layout_created` | Created layout: %s | Đã tạo bố cục: %s |
+| `keyboard_layout_deleted` | Deleted layout: %s | Đã xóa bố cục: %s |
+| `keyboard_layout_renamed` | Renamed to: %s | Đã đổi tên thành: %s |
+| `keyboard_layout_name_empty` | Layout name cannot be empty | Tên bố cục không được để trống |
+| `keyboard_layout_toggle_keyboard` | Toggle Keyboard | Bật/Tắt Keyboard |
+
+#### Các file cần sửa:
+- `app/src/main/res/values/strings.xml` (English)
+- `app/src/main/res/values-vi/strings.xml` (Tiếng Việt)
+- `app/src/main/res/values-zh-rCN/strings.xml` (中文简体)
+- `app/src/main/res/values-fr/strings.xml` (Français)
+
+---
+
+## Lưu ý khi áp dụng lên bản cập nhật mới
+
+1. **Migration tự động:** `migrateFromLegacy()` nhận biết đã migrate chưa (flag `migrated_from_legacy`). Không lo duplicate.
+
+2. **Phụ thuộc patch Gamepad:** Patch này dùng chung `showLayoutNameInputDialog()` và `showDeleteConfirmDialog()` từ `GameMenu.java` đã được thêm bởi patch Gamepad. **Phải áp dụng patch Gamepad trước.**
+
+3. **Xung đột có thể xảy ra tại:**
+   - `GameMenu.showMenu()` — dòng `game_menu_toggle_keyboard_model` bị thay thế
+   - `Game.initKeyboardController()` — block init được mở rộng
+   - `KeyBoardControllerConfigurationLoader.saveProfile/loadFromPreferences` — extract thành internal methods
+
+4. **Thứ tự áp dụng an toàn:**
+   1. Copy `KeyboardLayoutManager.java` (file mới, không phụ thuộc)
+   2. Sửa `KeyBoardControllerConfigurationLoader.java` (thêm overload)
+   3. Sửa `KeyBoardController.java` (dùng layoutId)
+   4. Sửa `Game.java` (tích hợp layout manager)
+   5. Sửa `GameMenu.java` (UI sub-menu)
+   6. Thêm strings vào 4 file ngôn ngữ

@@ -68,6 +68,8 @@ public class KeyBoardController {
 
     ControllerMode currentMode = ControllerMode.Active;
 
+    private String currentLayoutId = KeyboardLayoutManager.DEFAULT_LAYOUT_ID;
+
     private Map<Integer, Runnable> keyEventRunnableMap = new HashMap<>();
 
     private Button buttonConfigure = null;
@@ -174,7 +176,7 @@ public class KeyBoardController {
                     message = context.getString(R.string.configuration_mode_resize_buttons);
                 } else {
                     currentMode = ControllerMode.Active;
-                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
+                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
                     message = context.getString(R.string.configuration_mode_exiting);
                 }
 
@@ -205,7 +207,7 @@ public class KeyBoardController {
                     element.setVisibility(View.GONE);
                 }
                 // Save the new state
-                KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
+                KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
                 vibrate(KeyEvent.ACTION_DOWN);
             });
             builder.setNegativeButton(context.getString(R.string.no), null);
@@ -356,7 +358,15 @@ public class KeyBoardController {
 
         // Apply default layout
         KeyBoardControllerConfigurationLoader.createDefaultLayout(this, context, conn);
-        KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context);
+        KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
+    }
+
+    public String getCurrentLayoutId() {
+        return currentLayoutId;
+    }
+
+    public void setCurrentLayoutId(String layoutId) {
+        this.currentLayoutId = layoutId;
     }
 
     public ControllerMode getControllerMode() {
@@ -675,7 +685,7 @@ public class KeyBoardController {
                 // Build feedback message
                 StringBuilder feedback = new StringBuilder();
                 if (elementsAdded > 0) {
-                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context);
+                    KeyBoardControllerConfigurationLoader.saveProfile(KeyBoardController.this, context, currentLayoutId);
                     feedback.append(context.getString(R.string.keyboard_keys_added, elementsAdded));
                 }
                 if (duplicatesFound > 0) {

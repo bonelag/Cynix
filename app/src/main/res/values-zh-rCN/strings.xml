@@ -694,4 +694,19 @@
     <string name="gamepad_layout_renamed">已重命名为：%s</string>
     <string name="gamepad_layout_name_empty">布局名称不能为空</string>
     <string name="gamepad_layout_toggle_gamepad">显示/隐藏手柄</string>
+
+    <!-- Keyboard Layout Manager -->
+    <string name="game_menu_keyboard_layouts">键盘布局</string>
+    <string name="keyboard_layout_create">创建新布局</string>
+    <string name="keyboard_layout_duplicate">复制当前布局</string>
+    <string name="keyboard_layout_rename">重命名当前布局</string>
+    <string name="keyboard_layout_delete">删除当前布局</string>
+    <string name="keyboard_layout_default_name">默认</string>
+    <string name="keyboard_layout_delete_confirm">删除布局 \"%s\"？</string>
+    <string name="keyboard_layout_switched">已切换到布局：%s</string>
+    <string name="keyboard_layout_created">已创建布局：%s</string>
+    <string name="keyboard_layout_deleted">已删除布局：%s</string>
+    <string name="keyboard_layout_renamed">已重命名为：%s</string>
+    <string name="keyboard_layout_name_empty">布局名称不能为空</string>
+    <string name="keyboard_layout_toggle_keyboard">显示/隐藏键盘</string>
 </resources>
