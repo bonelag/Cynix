@@ -638,35 +638,31 @@
     <!-- New Strings -->
     <string name="title_enable_commit_text">Bật nhập commit-text (vuốt/giọng nói)</string>
     <string name="summary_enable_commit_text">Chuyển tiếp văn bản nhiều ký tự từ bàn phím ảo (gõ vuốt, gợi ý, nhập giọng nói). Có thể gây lỗi với trò chơi yêu cầu nhập từng phím.</string>
-    <!-- Gamepad layouts -->
-    <string name="game_menu_gamepad_layouts">Chọn bố cục Gamepad</string>
-    <string name="gamepad_layout_create">Tạo bố cục mới</string>
-    <string name="gamepad_layout_duplicate">Nhân đôi bố cục hiện tại</string>
-    <string name="gamepad_layout_rename">Đổi tên bố cục hiện tại</string>
-    <string name="gamepad_layout_delete">Xóa bố cục hiện tại</string>
-    <string name="gamepad_layout_name_hint">Tên bố cục</string>
-    <string name="gamepad_layout_default_name">Mặc định</string>
-    <string name="gamepad_layout_cannot_delete_default">Không thể xóa bố cục mặc định</string>
-    <string name="gamepad_layout_delete_confirm">Xóa bố cục \"%s\"?</string>
-    <string name="gamepad_layout_switched">Đã chuyển sang bố cục: %s</string>
-    <string name="gamepad_layout_created">Đã tạo bố cục: %s</string>
-    <string name="gamepad_layout_deleted">Đã xóa bố cục: %s</string>
-    <string name="gamepad_layout_renamed">Đã đổi tên thành: %s</string>
-    <string name="gamepad_layout_name_empty">Tên bố cục không được để trống</string>
+    
+    <string name="game_menu_gamepad_layouts">Bố cục Virtual Gamepad</string>
+    <string name="game_menu_keyboard_layouts">Bố cục Virtual Keyboard</string>
     <string name="gamepad_layout_toggle_gamepad">Bật/Tắt Gamepad</string>
+    <string name="gamepad_layout_create">Tạo bố cục</string>
+    <string name="gamepad_layout_duplicate">Nhân bản bố cục</string>
+    <string name="gamepad_layout_rename">Đổi tên bố cục</string>
+    <string name="gamepad_layout_delete">Xóa bố cục</string>
+    <string name="gamepad_layout_delete_confirm">Bạn có chắc chắn muốn xóa `"%s`" không?</string>
+    <string name="gamepad_layout_default_name">Tay cầm mặc định</string>
+    <string name="gamepad_layout_switched">Đã chuyển sang `"%s`"</string>
+    <string name="gamepad_layout_created">Đã tạo `"%s`"</string>
+    <string name="gamepad_layout_renamed">Đã đổi tên thành `"%s`"</string>
+    <string name="gamepad_layout_deleted">Đã xóa `"%s`"</string>
+    <string name="gamepad_layout_name_empty">Tên bố cục không được để trống</string>
 
-    <!-- Keyboard Layout Manager -->
-    <string name="game_menu_keyboard_layouts">Chọn bố cục Virtual Keyboard</string>
-    <string name="keyboard_layout_create">Tạo bố cục mới</string>
-    <string name="keyboard_layout_duplicate">Nhân đôi bố cục hiện tại</string>
-    <string name="keyboard_layout_rename">Đổi tên bố cục hiện tại</string>
-    <string name="keyboard_layout_delete">Xóa bố cục hiện tại</string>
-    <string name="keyboard_layout_default_name">Mặc định</string>
-    <string name="keyboard_layout_delete_confirm">Xóa bố cục \"%s\"?</string>
-    <string name="keyboard_layout_switched">Đã chuyển sang bố cục: %s</string>
-    <string name="keyboard_layout_created">Đã tạo bố cục: %s</string>
-    <string name="keyboard_layout_deleted">Đã xóa bố cục: %s</string>
-    <string name="keyboard_layout_renamed">Đã đổi tên thành: %s</string>
-    <string name="keyboard_layout_name_empty">Tên bố cục không được để trống</string>
-    <string name="keyboard_layout_toggle_keyboard">Bật/Tắt Keyboard</string>
+    <string name="keyboard_layout_toggle_keyboard">Bật/Tắt bàn phím</string>
+    <string name="keyboard_layout_create">Tạo bố cục</string>
+    <string name="keyboard_layout_duplicate">Nhân bản bố cục</string>
+    <string name="keyboard_layout_rename">Đổi tên bố cục</string>
+    <string name="keyboard_layout_delete">Xóa bố cục</string>
+    <string name="keyboard_layout_default_name">Bàn phím mặc định</string>
+    <string name="keyboard_layout_switched">Đã chuyển sang `"%s`"</string>
+    <string name="keyboard_layout_created">Đã tạo `"%s`"</string>
+    <string name="keyboard_layout_renamed">Đã đổi tên thành `"%s`"</string>
+    <string name="keyboard_layout_deleted">Đã xóa `"%s`"</string>
+
 </resources>

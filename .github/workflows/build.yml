@@ -49,16 +49,23 @@ jobs:
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "tag=v$VERSION" >> $GITHUB_OUTPUT
         APK_DIR="app/build/outputs/apk/nonRoot_game/release"
-        cp "$APK_DIR/app-nonRoot_game-release.apk" "$APK_DIR/Cynix_${VERSION}.apk"
-        echo "apk_path=$APK_DIR/Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
-        echo "apk_name=Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
-        echo "Renamed APK to Cynix_${VERSION}.apk"
+        
+        for apk in "$APK_DIR"/app-nonRoot_game-*-release.apk; do
+          if [ -f "$apk" ]; then
+            ABI=$(basename "$apk" | sed 's/app-nonRoot_game-\(.*\)-release.apk/\1/')
+            NEW_NAME="Cynix_${VERSION}_${ABI}.apk"
+            cp "$apk" "$APK_DIR/$NEW_NAME"
+            echo "Renamed $(basename "$apk") to $NEW_NAME"
+          fi
+        done
+        
+        echo "apk_dir=$APK_DIR" >> $GITHUB_OUTPUT
 
     - name: Upload APK (Artifact or GitHub Release)
       if: github.event_name == 'release'
       uses: softprops/action-gh-release@v2
       with:
-        files: ${{ steps.get_version.outputs.apk_path }}
+        files: ${{ steps.get_version.outputs.apk_dir }}/Cynix_*.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -67,7 +74,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: APK-Build
-        path: ${{ steps.get_version.outputs.apk_path }}
+        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_*.apk
 
     - name: Check and update existing release
       if: github.event_name == 'workflow_dispatch'
@@ -75,19 +82,21 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: ${{ steps.get_version.outputs.tag }}
         VERSION: ${{ steps.get_version.outputs.version }}
-        APK_PATH: ${{ steps.get_version.outputs.apk_path }}
-        APK_NAME: ${{ steps.get_version.outputs.apk_name }}
+        APK_DIR: ${{ steps.get_version.outputs.apk_dir }}
       run: |
         # Check if release with this tag exists
         RELEASE_ID=$(gh release view "$TAG" --json id --jq '.id' 2>/dev/null || echo "")
 
         if [ -n "$RELEASE_ID" ]; then
-          echo "Release $TAG already exists. Replacing APK asset..."
-          gh release delete-asset "$TAG" "$APK_NAME" --yes 2>/dev/null || true
-          gh release upload "$TAG" "$APK_PATH" --clobber
-          echo "APK replaced successfully in release $TAG"
+          echo "Release $TAG already exists. Replacing APK assets..."
+          for apk in "$APK_DIR"/Cynix_*.apk; do
+            APK_NAME=$(basename "$apk")
+            gh release delete-asset "$TAG" "$APK_NAME" --yes 2>/dev/null || true
+            gh release upload "$TAG" "$apk" --clobber
+            echo "Uploaded $APK_NAME to release $TAG"
+          done
         else
           echo "Creating new release $TAG..."
-          gh release create "$TAG" "$APK_PATH" --title "Cynix $VERSION" --notes "Build $VERSION" --latest
+          gh release create "$TAG" "$APK_DIR"/Cynix_*.apk --title "Cynix $VERSION" --notes "Build $VERSION" --latest
           echo "Release $TAG created successfully"
         fi
