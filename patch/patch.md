@@ -461,6 +461,13 @@ public static void loadFromPreferences(KeyBoardController controller, Context co
 // Method cũ giữ nguyên, gọi loadFromPreferencesInternal()
 ```
 
+#### c) Method `createDigitalTouchButton` — Ẩn text "TP"
+
+```java
+// Nếu text truyền vào là "TP" (TouchPad) thì thay bằng rỗng để không hiển thị chữ lên button
+button.setText("TP".equals(text) ? "" : text);
+```
+
 > **Lưu ý:** Logic bên trong extract ra `saveProfileInternal()` và `loadFromPreferencesInternal()`, cả method cũ và mới đều gọi chung.
 
 ---

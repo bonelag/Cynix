@@ -315,7 +315,7 @@ public class KeyBoardControllerConfigurationLoader {
             final KeyBoardController controller,
             final Context context) {
         KeyBoardTouchPadButton button = new KeyBoardTouchPadButton(controller, elementId, layer, context);
-        button.setText(text);
+        button.setText("TP".equals(text) ? "" : text);
         button.setIcon(icon);
         button.addDigitalButtonListener(new KeyBoardTouchPadButton.DigitalButtonListener() {
             @Override
