@@ -49,7 +49,7 @@
     <string name="pair_pc_ingame">Máy tính hiện đang trong trò chơi. Bạn phải đóng trò chơi trước khi ghép nối.</string>
     <string name="pair_pairing_title">Đang ghép nối</string>
     <string name="pair_pairing_msg">Vui lòng nhập mã PIN sau trên PC mục tiêu:</string>
-    <string name="pair_pairing_help">Nếu PC chủ của bạn đang chạy Cynix, hãy điều hướng đến giao diện web của Cynix để nhập mã PIN.</string>
+    <string name="pair_pairing_help">Nếu PC chủ của bạn đang chạy Sunshine, hãy điều hướng đến giao diện web của Sunshine để nhập mã PIN.</string>
     <string name="pair_otp_pairing_msg">Đang ghép nối, vui lòng đợi…</string>
     <string name="pair_otp_pairing_help">Ghép nối OTP chỉ khả dụng với Apollo, nhập mã PIN bạn vừa cung cấp trên giao diện web theo cách thủ công nếu bạn đang sử dụng phần mềm máy chủ khác.</string>
     <string name="pair_incorrect_pin">Mã PIN hoặc mật khẩu không chính xác</string>
@@ -111,7 +111,7 @@
     <!-- General strings -->
     <string name="ip_hint">Địa chỉ IP của PC máy chủ</string>
     <string name="searching_pc">Đang tìm kiếm PC máy chủ trên mạng cục bộ của bạn…\n\n
-        Đảm bảo Cynix đang chạy trên PC máy chủ của bạn hoặc GameStream được bật trong cài đặt SHIELD của GeForce Experience.</string>
+        Đảm bảo Sunshine đang chạy trên PC máy chủ của bạn hoặc GameStream được bật trong cài đặt SHIELD của GeForce Experience.</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
     <string name="lost_connection">Mất kết nối với PC</string>
@@ -346,7 +346,7 @@
     <string name="game_menu_enable_zoom_mode">Bật Pan/Zoom</string>
     <string name="game_menu_disable_zoom_mode">Tắt Pan/Zoom</string>
     <string name="game_menu_rotate_screen">Xoay màn hình</string>
-    <string name="game_menu_toggle_keyboard_model">Hiển thị bàn phím đặc biệt</string>s
+    <string name="game_menu_toggle_keyboard_model">Hiển thị phím đặc biệt</string>s
     <string name="game_menu_toggle_virtual_model">Hiển thị gamepad</string>
     <string name="game_menu_toggle_virtual_keyboard_model">Hiển thị bàn phím đầy đủ</string>
     <string name="game_menu_switch_touch_sensitivity_model">Thay đổi độ nhạy cảm ứng</string>
@@ -638,9 +638,8 @@
     <!-- New Strings -->
     <string name="title_enable_commit_text">Bật nhập commit-text (vuốt/giọng nói)</string>
     <string name="summary_enable_commit_text">Chuyển tiếp văn bản nhiều ký tự từ bàn phím ảo (gõ vuốt, gợi ý, nhập giọng nói). Có thể gây lỗi với trò chơi yêu cầu nhập từng phím.</string>
-
-    <!-- Gamepad Layout Manager -->
-    <string name="game_menu_gamepad_layouts">Bố cục Gamepad</string>
+    <!-- Gamepad layouts -->
+    <string name="game_menu_gamepad_layouts">Chọn bố cục Gamepad</string>
     <string name="gamepad_layout_create">Tạo bố cục mới</string>
     <string name="gamepad_layout_duplicate">Nhân đôi bố cục hiện tại</string>
     <string name="gamepad_layout_rename">Đổi tên bố cục hiện tại</string>
@@ -657,7 +656,7 @@
     <string name="gamepad_layout_toggle_gamepad">Bật/Tắt Gamepad</string>
 
     <!-- Keyboard Layout Manager -->
-    <string name="game_menu_keyboard_layouts">Bố cục Keyboard</string>
+    <string name="game_menu_keyboard_layouts">Chọn bố cục Virtual Keyboard</string>
     <string name="keyboard_layout_create">Tạo bố cục mới</string>
     <string name="keyboard_layout_duplicate">Nhân đôi bố cục hiện tại</string>
     <string name="keyboard_layout_rename">Đổi tên bố cục hiện tại</string>

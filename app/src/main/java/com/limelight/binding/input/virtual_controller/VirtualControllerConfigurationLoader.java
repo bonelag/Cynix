@@ -412,8 +412,7 @@ public class VirtualControllerConfigurationLoader {
     }
 
     public static void saveProfile(final VirtualController controller,
-                                   final Context context,
-                                   final String layoutId) {
+                                   final Context context, String layoutId) {
         String prefName = GamepadLayoutManager.getLayoutPreferenceName(layoutId);
         SharedPreferences.Editor prefEditor = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE).edit();
 
@@ -429,7 +428,7 @@ public class VirtualControllerConfigurationLoader {
         prefEditor.apply();
     }
 
-    public static void loadFromPreferences(final VirtualController controller, final Context context, final String layoutId) {
+    public static void loadFromPreferences(final VirtualController controller, final Context context, String layoutId) {
         String prefName = GamepadLayoutManager.getLayoutPreferenceName(layoutId);
         SharedPreferences pref = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE);
 

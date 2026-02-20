@@ -17,7 +17,7 @@ public class ControllerPacket {
     public static final int RS_CLK_FLAG = 0x0080;
     public static final int SPECIAL_BUTTON_FLAG = 0x0400;
 
-    // Extended buttons (Cynix only)
+    // Extended buttons (Sunshine only)
     public static final int PADDLE1_FLAG  = 0x010000;
     public static final int PADDLE2_FLAG  = 0x020000;
     public static final int PADDLE3_FLAG  = 0x040000;

@@ -47,7 +47,7 @@ public class SimpleStartupTest {
     @Test
     public void testApplicationCreation() {
         // Test basic application creation
-        CynixApplication app = new CynixApplication();
+        ArtemisApplication app = new ArtemisApplication();
         assertNotNull("Application should be created", app);
     }
 
@@ -56,7 +56,7 @@ public class SimpleStartupTest {
         // Test application onCreate which initializes ProfilesManager
         // After the fix, this should no longer crash
         try {
-            CynixApplication app = new CynixApplication();
+            ArtemisApplication app = new ArtemisApplication();
             app.onCreate();
 
             // Should now work without crashing
@@ -64,7 +64,7 @@ public class SimpleStartupTest {
             assertNotNull("ProfilesManager should be initialized", manager);
             assertNotNull("Profiles list should be initialized", manager.getProfiles());
 
-            System.out.println("SUCCESS: Application startup no longer crashes!");
+            LimeLog.info("SUCCESS: Application startup no longer crashes!");
         } catch (Exception e) {
             fail("Application onCreate should not crash after fix: " + e.getMessage());
         }

@@ -37,7 +37,7 @@ extern "C" {
 
 // This function returns a string that you SHOULD append to the /launch and /resume
 // query parameter string. This is used to enable certain extended functionality
-// with Cynix hosts. The returned string is owned by moonlight-common-c and
+// with Sunshine hosts. The returned string is owned by moonlight-common-c and
 // should not be freed by the caller.
 const char* LiGetLaunchUrlQueryParameters(void);
 
@@ -69,7 +69,7 @@ typedef struct _STREAM_CONFIGURATION {
     // Specifies the channel configuration of the audio stream.
     // See AUDIO_CONFIGURATION constants and MAKE_AUDIO_CONFIGURATION() below.
     int audioConfiguration;
-    
+
     // Specifies the mask of supported video formats.
     // See VIDEO_FORMAT constants below.
     int supportedVideoFormats;
@@ -218,17 +218,23 @@ typedef struct _DECODE_UNIT {
 
 // Passed in StreamConfiguration.supportedVideoFormats to specify supported codecs
 // and to DecoderRendererSetup() to specify selected codec.
-#define VIDEO_FORMAT_H264        0x0001 // H.264 High Profile
-#define VIDEO_FORMAT_H265        0x0100 // HEVC Main Profile
-#define VIDEO_FORMAT_H265_MAIN10 0x0200 // HEVC Main10 Profile
-#define VIDEO_FORMAT_AV1_MAIN8   0x1000 // AV1 Main 8-bit profile
-#define VIDEO_FORMAT_AV1_MAIN10  0x2000 // AV1 Main 10-bit profile
+#define VIDEO_FORMAT_H264            0x0001 // H.264 High Profile
+#define VIDEO_FORMAT_H264_HIGH8_444  0x0004 // H.264 High 4:4:4 8-bit Profile
+#define VIDEO_FORMAT_H265            0x0100 // HEVC Main Profile
+#define VIDEO_FORMAT_H265_MAIN10     0x0200 // HEVC Main10 Profile
+#define VIDEO_FORMAT_H265_REXT8_444  0x0400 // HEVC RExt 4:4:4 8-bit Profile
+#define VIDEO_FORMAT_H265_REXT10_444 0x0800 // HEVC RExt 4:4:4 10-bit Profile
+#define VIDEO_FORMAT_AV1_MAIN8       0x1000 // AV1 Main 8-bit profile
+#define VIDEO_FORMAT_AV1_MAIN10      0x2000 // AV1 Main 10-bit profile
+#define VIDEO_FORMAT_AV1_HIGH8_444   0x4000 // AV1 High 4:4:4 8-bit profile
+#define VIDEO_FORMAT_AV1_HIGH10_444  0x8000 // AV1 High 4:4:4 10-bit profile
 
 // Masks for clients to use to match video codecs without profile-specific details.
-#define VIDEO_FORMAT_MASK_H264  0x000F
-#define VIDEO_FORMAT_MASK_H265  0x0F00
-#define VIDEO_FORMAT_MASK_AV1   0xF000
-#define VIDEO_FORMAT_MASK_10BIT 0x2200
+#define VIDEO_FORMAT_MASK_H264   0x000F
+#define VIDEO_FORMAT_MASK_H265   0x0F00
+#define VIDEO_FORMAT_MASK_AV1    0xF000
+#define VIDEO_FORMAT_MASK_10BIT  0xAA00
+#define VIDEO_FORMAT_MASK_YUV444 0xCC04
 
 // If set in the renderer capabilities field, this flag will cause audio/video data to
 // be submitted directly from the receive thread. This should only be specified if the
@@ -463,6 +469,13 @@ typedef void(*ConnListenerRumbleTriggers)(uint16_t controllerNumber, uint16_t le
 // If reportRateHz is 0, the host is asking for motion event reporting to stop.
 typedef void(*ConnListenerSetMotionEventState)(uint16_t controllerNumber, uint8_t motionType, uint16_t reportRateHz);
 
+// This callback is invoked to notify the client of a change in the dualsense
+// adaptive trigger configuration.
+#define DS_EFFECT_PAYLOAD_SIZE 10
+#define DS_EFFECT_RIGHT_TRIGGER 0x04
+#define DS_EFFECT_LEFT_TRIGGER 0x08
+typedef void(*ConnListenerSetAdaptiveTriggers)(uint16_t controllerNumber, uint8_t eventFlags, uint8_t typeLeft, uint8_t typeRight, uint8_t *left, uint8_t *right);
+
 // This callback is invoked to set a controller's RGB LED (if present).
 typedef void(*ConnListenerSetControllerLED)(uint16_t controllerNumber, uint8_t r, uint8_t g, uint8_t b);
 
@@ -479,31 +492,38 @@ typedef struct _CONNECTION_LISTENER_CALLBACKS {
     ConnListenerRumbleTriggers rumbleTriggers;
     ConnListenerSetMotionEventState setMotionEventState;
     ConnListenerSetControllerLED setControllerLED;
+    ConnListenerSetAdaptiveTriggers setAdaptiveTriggers;
 } CONNECTION_LISTENER_CALLBACKS, *PCONNECTION_LISTENER_CALLBACKS;
 
 // Use this function to zero the connection callbacks when allocated on the stack or heap
 void LiInitializeConnectionCallbacks(PCONNECTION_LISTENER_CALLBACKS clCallbacks);
 
 // ServerCodecModeSupport values
-#define SCM_H264        0x00001
-#define SCM_HEVC        0x00100
-#define SCM_HEVC_MAIN10 0x00200
-#define SCM_AV1_MAIN8   0x10000 // Cynix extension
-#define SCM_AV1_MAIN10  0x20000 // Cynix extension
+#define SCM_H264            0x00000001
+#define SCM_HEVC            0x00000100
+#define SCM_HEVC_MAIN10     0x00000200
+#define SCM_AV1_MAIN8       0x00010000 // Sunshine extension
+#define SCM_AV1_MAIN10      0x00020000 // Sunshine extension
+#define SCM_H264_HIGH8_444  0x00040000 // Sunshine extension
+#define SCM_HEVC_REXT8_444  0x00080000 // Sunshine extension
+#define SCM_HEVC_REXT10_444 0x00100000 // Sunshine extension
+#define SCM_AV1_HIGH8_444   0x00200000 // Sunshine extension
+#define SCM_AV1_HIGH10_444  0x00400000 // Sunshine extension
 
 // SCM masks to identify various codec capabilities
-#define SCM_MASK_H264   SCM_H264
-#define SCM_MASK_HEVC   (SCM_HEVC | SCM_HEVC_MAIN10)
-#define SCM_MASK_AV1    (SCM_AV1_MAIN8 | SCM_AV1_MAIN10)
-#define SCM_MASK_10BIT  (SCM_HEVC_MAIN10 | SCM_AV1_MAIN10)
+#define SCM_MASK_H264   (SCM_H264 | SCM_H264_HIGH8_444)
+#define SCM_MASK_HEVC   (SCM_HEVC | SCM_HEVC_MAIN10 | SCM_HEVC_REXT8_444 | SCM_HEVC_REXT10_444)
+#define SCM_MASK_AV1    (SCM_AV1_MAIN8 | SCM_AV1_MAIN10 | SCM_AV1_HIGH8_444 | SCM_AV1_HIGH10_444)
+#define SCM_MASK_10BIT  (SCM_HEVC_MAIN10 | SCM_HEVC_REXT10_444 | SCM_AV1_MAIN10 | SCM_AV1_HIGH10_444)
+#define SCM_MASK_YUV444 (SCM_H264_HIGH8_444 | SCM_HEVC_REXT8_444 | SCM_HEVC_REXT10_444 | SCM_AV1_HIGH8_444 | SCM_AV1_HIGH10_444)
 
 typedef struct _SERVER_INFORMATION {
     // Server host name or IP address in text form
     const char* address;
-    
+
     // Text inside 'appversion' tag in /serverinfo
     const char* serverInfoAppVersion;
-    
+
     // Text inside 'GfeVersion' tag in /serverinfo (if present)
     const char* serverInfoGfeVersion;
 
@@ -544,6 +564,13 @@ const char* LiGetStageName(int stage);
 // ENet for the control stream (very old versions), or if the ENet peer is not connected.
 // This function may only be called between LiStartConnection() and LiStopConnection().
 bool LiGetEstimatedRttInfo(uint32_t* estimatedRtt, uint32_t* estimatedRttVariance);
+
+// This function sends a request to the server to execute the requested cmd id.
+int LiSendExecServerCmd(uint8_t cmdId);
+
+// This function sends an empty payload to the server.
+// This method exists here for workaround client side wifi sleeps.
+int LiSendEmptyPayload();
 
 // This function queues a relative mouse move event to be sent to the remote server.
 int LiSendMouseMoveEvent(short deltaX, short deltaY);
@@ -588,7 +615,7 @@ int LiSendMouseMoveAsMousePositionEvent(short deltaX, short deltaY, short refere
 // Error return value to indicate that the requested functionality is not supported by the host
 #define LI_ERR_UNSUPPORTED -5501
 
-// This function allows multi-touch input to be sent directly to Cynix hosts. The x and y values
+// This function allows multi-touch input to be sent directly to Sunshine hosts. The x and y values
 // are normalized device coordinates stretching top-left corner (0.0, 0.0) to bottom-right corner
 // (1.0, 1.0) of the video area.
 //
@@ -680,7 +707,7 @@ int LiSendKeyboardEvent(short keyCode, char keyAction, char modifiers);
 
 // Similar to LiSendKeyboardEvent() but allows the client to inform the host that
 // the keycode was not mapped to a standard US English scancode and should be
-// interpreted as-is. This is a Cynix protocol extension.
+// interpreted as-is. This is a Sunshine protocol extension.
 #define SS_KBE_FLAG_NON_NORMALIZED 0x01
 int LiSendKeyboardEvent2(short keyCode, char keyAction, char modifiers, char flags);
 
@@ -704,7 +731,7 @@ int LiSendUtf8TextEvent(const char *text, unsigned int length);
 #define RS_CLK_FLAG  0x0080
 #define SPECIAL_FLAG 0x0400
 
-// Extended buttons (Cynix only)
+// Extended buttons (Sunshine only)
 #define PADDLE1_FLAG  0x010000
 #define PADDLE2_FLAG  0x020000
 #define PADDLE3_FLAG  0x040000
@@ -719,12 +746,12 @@ int LiSendControllerEvent(int buttonFlags, unsigned char leftTrigger, unsigned c
 
 // This function queues a controller event to be sent to the remote server. The controllerNumber
 // parameter is a zero-based index of which controller this event corresponds to. The largest legal
-// controller number is 3 for GFE hosts and 15 for Cynix hosts. On generation 3 servers (GFE 2.1.x),
+// controller number is 3 for GFE hosts and 15 for Sunshine hosts. On generation 3 servers (GFE 2.1.x),
 // these will be sent as controller 0 regardless of the controllerNumber parameter.
 //
 // The activeGamepadMask parameter is a bitfield with bits set for each controller present.
 // On GFE, activeGamepadMask is limited to a maximum of 4 bits (0xF).
-// On Cynix, it is limited to 16 bits (0xFFFF).
+// On Sunshine, it is limited to 16 bits (0xFFFF).
 //
 // To indicate arrival of a gamepad, you may send an empty event with the controller number
 // set to the new controller and the bit of the new controller set in the active gamepad mask.
@@ -809,7 +836,7 @@ int LiSendHighResScrollEvent(short scrollAmount);
 
 // These functions send horizontal scroll events to the host which are
 // analogous to LiSendScrollEvent() and LiSendHighResScrollEvent().
-// This is a Cynix protocol extension.
+// This is a Sunshine protocol extension.
 int LiSendHScrollEvent(signed char scrollClicks);
 int LiSendHighResHScrollEvent(short scrollAmount);
 
@@ -930,7 +957,7 @@ typedef struct _SS_HDR_METADATA {
 
 // This function populates the provided mastering metadata struct with the HDR metadata
 // from the host PC's monitor and content (if available). It is only valid to call this
-// function when HDR mode is active on the host. This is a Cynix protocol extension.
+// function when HDR mode is active on the host. This is a Sunshine protocol extension.
 bool LiGetHdrMetadata(PSS_HDR_METADATA metadata);
 
 // This function requests an IDR frame from the host. Typically this is done using DR_NEED_IDR, but clients

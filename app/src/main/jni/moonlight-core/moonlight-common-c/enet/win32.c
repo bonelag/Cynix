@@ -531,7 +531,7 @@ enet_socket_send (ENetSocket socket,
 
     // This is a bit of a hack because it's not really per-socket or
     // per-destination, but it is fine for our current usage of ENet
-    // in Moonlight and Cynix where only a single socket is used.
+    // in Moonlight and Sunshine where only a single socket is used.
     if (enableEcn) {
         BOOL isV4MappedV6Addr =
             peerAddress->address.ss_family == AF_INET6 &&

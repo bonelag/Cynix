@@ -49,7 +49,7 @@
     <string name="pair_pc_ingame">L\'ordinateur est actuellement dans un jeu. Vous devez fermer le jeu avant l\'appairage.</string>
     <string name="pair_pairing_title">Appariement</string>
     <string name="pair_pairing_msg">Veuillez entrer le code PIN suivant sur le PC cible :</string>
-    <string name="pair_pairing_help">Si votre PC hôte utilise Cynix, accédez à l\'interface web de Cynix pour saisir le code PIN.</string>
+    <string name="pair_pairing_help">Si votre PC hôte utilise Sunshine, accédez à l\'interface web de Sunshine pour saisir le code PIN.</string>
     <string name="pair_otp_pairing_msg">Appariement, veuillez patienter…</string>
     <string name="pair_otp_pairing_help">L\'appariement OTP n\'est disponible qu\'avec Apollo, entrez manuellement le code PIN que vous venez de fournir sur l\'interface web si vous utilisez un autre logiciel hôte.</string>
     <string name="pair_incorrect_pin">Code PIN ou phrase secrète incorrect</string>
@@ -105,7 +105,7 @@
 
     <!-- General strings -->
     <string name="ip_hint">Adresse IP du PC hôte</string>
-    <string name="searching_pc">Recherche de PC hôtes sur votre réseau local…\n\nAssurez-vous que Cynix est en cours d\'exécution ou que GameStream est activé dans les paramètres GeForce Experience SHIELD.</string>
+    <string name="searching_pc">Recherche de PC hôtes sur votre réseau local…\n\nAssurez-vous que Sunshine est en cours d\'exécution ou que GameStream est activé dans les paramètres GeForce Experience SHIELD.</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="lost_connection">Connexion perdue avec le PC</string>
@@ -590,37 +590,4 @@
     <string name="title_checkbox_remember_zoom_pan">Mémoriser le zoom et le panoramique</string>
     <string name="summary_checkbox_remember_zoom_pan">Enregistre la position de zoom et de panoramique entre les sessions.</string>
     <string name="title_edit_profile">Modifier le profil</string>
-
-    <!-- Gamepad Layout Manager -->
-    <string name="game_menu_gamepad_layouts">Dispositions Gamepad</string>
-    <string name="gamepad_layout_create">Créer une nouvelle disposition</string>
-    <string name="gamepad_layout_duplicate">Dupliquer la disposition actuelle</string>
-    <string name="gamepad_layout_rename">Renommer la disposition actuelle</string>
-    <string name="gamepad_layout_delete">Supprimer la disposition actuelle</string>
-    <string name="gamepad_layout_name_hint">Nom de la disposition</string>
-    <string name="gamepad_layout_default_name">Par défaut</string>
-    <string name="gamepad_layout_cannot_delete_default">Impossible de supprimer la disposition par défaut</string>
-    <string name="gamepad_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
-    <string name="gamepad_layout_switched">Disposition changée : %s</string>
-    <string name="gamepad_layout_created">Disposition créée : %s</string>
-    <string name="gamepad_layout_deleted">Disposition supprimée : %s</string>
-    <string name="gamepad_layout_renamed">Renommé en : %s</string>
-    <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
-    <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
-
-    <!-- Keyboard Layout Manager -->
-    <string name="game_menu_keyboard_layouts">Dispositions Clavier</string>
-    <string name="keyboard_layout_create">Créer une nouvelle disposition</string>
-    <string name="keyboard_layout_duplicate">Dupliquer la disposition actuelle</string>
-    <string name="keyboard_layout_rename">Renommer la disposition actuelle</string>
-    <string name="keyboard_layout_delete">Supprimer la disposition actuelle</string>
-    <string name="keyboard_layout_default_name">Par défaut</string>
-    <string name="keyboard_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
-    <string name="keyboard_layout_switched">Disposition changée : %s</string>
-    <string name="keyboard_layout_created">Disposition créée : %s</string>
-    <string name="keyboard_layout_deleted">Disposition supprimée : %s</string>
-    <string name="keyboard_layout_renamed">Renommé en : %s</string>
-    <string name="keyboard_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
-    <string name="keyboard_layout_toggle_keyboard">Basculer le Clavier</string>
 </resources>
-

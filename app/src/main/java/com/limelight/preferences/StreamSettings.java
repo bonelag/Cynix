@@ -28,10 +28,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
-import com.bytehamster.lib.preferencesearch.SearchConfiguration;
-import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
-import com.bytehamster.lib.preferencesearch.SearchPreference;
-import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -50,7 +46,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.limelight.DebugInfoActivity;
 import com.limelight.BuildConfig;
-import com.limelight.Game;
 import com.limelight.GameMenu;
 import com.limelight.LimeLog;
 import com.limelight.PcView;
@@ -70,7 +65,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
-public class StreamSettings extends AppCompatActivity implements SearchPreferenceResultListener {
+public class StreamSettings extends AppCompatActivity {
     private PreferenceConfiguration previousPrefs;
     private int previousDisplayPixelCount;
 
@@ -94,12 +89,6 @@ public class StreamSettings extends AppCompatActivity implements SearchPreferenc
     }
 
     @Override
-    public void onSearchResultClicked(SearchPreferenceResult result) {
-        result.closeSearchPage(this);
-        result.highlight(prefsFragment);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
@@ -110,7 +99,7 @@ public class StreamSettings extends AppCompatActivity implements SearchPreferenc
 
         setContentView(R.layout.activity_stream_settings);
 
-        UiHelper.notifyNewRootView(this);
+//        UiHelper.notifyNewRootView(this);
     }
 
     @Override
@@ -341,12 +330,6 @@ public class StreamSettings extends AppCompatActivity implements SearchPreferenc
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
             initializePreferences();
-
-            SearchPreference searchPreference = findPreference("searchPreference");
-            assert searchPreference != null;
-            SearchConfiguration config = searchPreference.getSearchConfiguration();
-            config.setActivity((AppCompatActivity) requireActivity());
-            config.index(R.xml.preferences);
         }
 
         public void initializePreferences() {
@@ -807,7 +790,7 @@ public class StreamSettings extends AppCompatActivity implements SearchPreferenc
 
                         try {
                             File cacheDir = context.getCacheDir();
-                            File logFile = new File(cacheDir, "cynixtics_logs.txt");
+                            File logFile = new File(cacheDir, "artemistics_logs.txt");
                             try (FileOutputStream fos = new FileOutputStream(logFile)) {
                                 fos.write(logs.getBytes(StandardCharsets.UTF_8));
                             }

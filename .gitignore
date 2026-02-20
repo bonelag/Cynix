@@ -12,13 +12,14 @@ baselineProfiles/
 
 # Java class files
 *.class
-.vscode
+
 # generated files
 bin/
 gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+key/
 
 # Windows thumbnail db
 Thumbs.db
@@ -43,3 +44,6 @@ app/.externalNativeBuild/
 
 # NDK stuff
 .cxx/
+
+# agent files
+AGENTS.md

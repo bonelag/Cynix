@@ -120,7 +120,7 @@ static PRTPA_FEC_BLOCK allocateFecBlock(PRTP_AUDIO_QUEUE queue, uint16_t blockSi
         }
         else {
             // The block size didn't match. This should never happen with GFE
-            // because it uses constant sized data shards, but Cynix can
+            // because it uses constant sized data shards, but Sunshine can
             // trigger this condition. If it does happen, let's free the cached
             // entry so we can populate the cache with correctly sized blocks.
             queue->freeBlockHead = block->next;
@@ -302,7 +302,7 @@ static PRTPA_FEC_BLOCK getFecBlockForRtpPacket(PRTP_AUDIO_QUEUE queue, PRTP_PACK
 
             // The block size must match in order to safely copy shards into it
             if (existingBlock->blockSize != blockSize) {
-                // This can happen with older versions of GeForce Experience (3.13) and Cynix that don't use a
+                // This can happen with older versions of GeForce Experience (3.13) and Sunshine that don't use a
                 // constant size for audio packets.
                 Limelog("Audio block size mismatch (got %u, expected %u)\n", blockSize, existingBlock->blockSize);
                 Limelog("Audio FEC has been disabled due to an incompatibility with your host's old software!\n");
@@ -553,7 +553,7 @@ int RtpaAddPacket(PRTP_AUDIO_QUEUE queue, PRTP_PACKET packet, uint16_t length) {
     if (queue->incompatibleServer) {
         // Just feed audio data straight through to the decoder. We lose handling of out-of-order
         // and duplicated packets in this mode, but it shouldn't be a problem for the very small
-        // portion of users that are running an ancient GFE or Cynix version.
+        // portion of users that are running an ancient GFE or Sunshine version.
         if (packet->packetType == RTP_PAYLOAD_TYPE_AUDIO) {
             return RTPQ_RET_HANDLE_NOW;
         }

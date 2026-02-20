@@ -110,6 +110,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
     private void showMenuDialog(String title, MenuOption[] options) {
         int themeResId = game.getApplicationInfo().theme;
+
         Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
         AlertDialog.Builder builder = new AlertDialog.Builder(themedContext);
         builder.setTitle(title);
@@ -248,7 +249,8 @@ public class GameMenu implements Game.GameMenuCallbacks {
         List<MenuOption> options = new ArrayList<>();
 
         options.add(new MenuOption(getString(R.string.game_menu_toggle_hud), true, game::toggleHUD));
-
+        options.add(new MenuOption(getString(R.string.game_menu_toggle_floating_button), true, game::toggleFloatingButtonVisibility));
+        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
         options.add(new MenuOption(getString(R.string.game_menu_switch_touch_sensitivity_model), true, game::switchTouchSensitivity));
 
         options.add(new MenuOption(getString(R.string.game_menu_upload_clipboard), true,
@@ -275,13 +277,17 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
         options.add(new MenuOption(getString(R.string.game_menu_task_manager), true, () -> sendKeys(new short[]{KeyboardTranslator.VK_LCONTROL, KeyboardTranslator.VK_LSHIFT, KeyboardTranslator.VK_ESCAPE})));
 
+        // **FIXED:** This is a UI navigation action, so it should not use withGameFocus.
         options.add(new MenuOption(getString(R.string.game_menu_send_keys), () -> {
             hideMenu();
             showSpecialKeysMenu();
         }));
 
+        if (device != null) {
+            options.addAll(device.getGameMenuOptions());
+        }
+        
         options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
-
         showMenuDialog(getString(R.string.game_menu_advanced), options.toArray(new MenuOption[options.size()]));
     }
 
@@ -311,8 +317,6 @@ public class GameMenu implements Game.GameMenuCallbacks {
             }));
         }
 
-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true, game::toggleKeyboard));
-
         options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
 
         options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
@@ -320,17 +324,28 @@ public class GameMenu implements Game.GameMenuCallbacks {
             showKeyboardLayoutMenu();
         }));
 
+        options.add(new MenuOption(getString(R.string.game_menu_send_keys), () -> {
+            hideMenu();
+            showSpecialKeysMenu();
+        }));
+
         if (game.allowChangeMouseMode) {
             options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
         }
-
-        options.add(new MenuOption(getString(game.isZoomModeEnabled() ? R.string.game_menu_disable_zoom_mode : R.string.game_menu_enable_zoom_mode), true, game::toggleZoomMode));
+        
+        options.add(new MenuOption(getString(game.isZoomModeEnabled() ? R.string.game_menu_disable_zoom_mode : R.string.game_menu_enable_zoom_mode), true,
+                game::toggleZoomMode));
+        
+        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true,
+                game::toggleKeyboard));
 
         if (dialogScreenContext == game) {
-            options.add(new MenuOption(getString(R.string.game_menu_rotate_screen), true, game::rotateScreen));
+            options.add(new MenuOption(getString(R.string.game_menu_rotate_screen), true,
+                    game::rotateScreen));
         }
 
-        options.add(new MenuOption(getString(R.string.game_menu_advanced), true, () -> showAdvancedMenu(device)));
+        options.add(new MenuOption(getString(R.string.game_menu_advanced), true,
+                () -> showAdvancedMenu(device)));
 
         options.add(new MenuOption(getString(R.string.game_menu_quit_session), game::quit));
 
@@ -443,7 +458,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
         for (String layoutId : layoutIds) {
             String name = layoutMgr.getLayoutName(layoutId);
-            String label = layoutId.equals(activeId) ? "\u2713 " + name : "   " + name;
+            String label = layoutId.equals(activeId) ? "✓ " + name : "   " + name;
             final String lid = layoutId;
             options.add(new MenuOption(label, true, () -> {
                 game.switchKeyboardLayout(lid);
@@ -452,7 +467,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
         }
 
         // Create new layout
-        options.add(new MenuOption("\u2795 " + getString(R.string.keyboard_layout_create), () -> {
+        options.add(new MenuOption("➕ " + getString(R.string.keyboard_layout_create), () -> {
             hideMenu();
             showLayoutNameInputDialog(getString(R.string.keyboard_layout_create), "", name -> {
                 String newId = layoutMgr.createLayout(name);
@@ -462,7 +477,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
         }));
 
         // Duplicate current layout
-        options.add(new MenuOption("\uD83D\uDD04 " + getString(R.string.keyboard_layout_duplicate), () -> {
+        options.add(new MenuOption("🔄 " + getString(R.string.keyboard_layout_duplicate), () -> {
             hideMenu();
             String currentName = layoutMgr.getLayoutName(activeId);
             showLayoutNameInputDialog(getString(R.string.keyboard_layout_duplicate), currentName + " (2)", name -> {
@@ -473,7 +488,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
         }));
 
         // Rename current layout
-        options.add(new MenuOption("\u270F\uFE0F " + getString(R.string.keyboard_layout_rename), () -> {
+        options.add(new MenuOption("✏️ " + getString(R.string.keyboard_layout_rename), () -> {
             hideMenu();
             String currentName = layoutMgr.getLayoutName(activeId);
             showLayoutNameInputDialog(getString(R.string.keyboard_layout_rename), currentName, name -> {
@@ -484,7 +499,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
 
         // Delete current layout (only if not default)
         if (!KeyboardLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
-            options.add(new MenuOption("\uD83D\uDDD1\uFE0F " + getString(R.string.keyboard_layout_delete), () -> {
+            options.add(new MenuOption("🗑️ " + getString(R.string.keyboard_layout_delete), () -> {
                 hideMenu();
                 String currentName = layoutMgr.getLayoutName(activeId);
                 showDeleteConfirmDialog(currentName, () -> {

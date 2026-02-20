@@ -1,4 +1,4 @@
-- Added support for custom ports when hosting on Cynix
+- Added support for custom ports when hosting on Sunshine
 - Enabled HEVC by default on additional devices
 - Enabled fast HEVC frame loss recovery on additional devices
 - Improved audio quality when streaming remotely

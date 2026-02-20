@@ -26,7 +26,7 @@
     <string name="pairing">Fogar…</string>
     <string name="pair_pairing_title">Fogning</string>
     <string name="pair_pairing_msg">Ange följande PIN-kod på måldatorn:</string>
-    <string name="pair_pairing_help">Om värddatorn kör Cynix går du till Cynix-webbgränssnittet för att ange PIN-koden.</string>
+    <string name="pair_pairing_help">Om värddatorn kör Sunshine går du till Sunshine-webbgränssnittet för att ange PIN-koden.</string>
     <string name="pair_incorrect_pin">Felaktig PIN-kod</string>
     <string name="pair_fail">Fogning misslyckad</string>
     <string name="pair_already_in_progress">Fogning redan i utveckling</string>
@@ -213,7 +213,7 @@
     <string name="ip_hint">IP-adress för värddatorn</string>
     <string name="searching_pc">Söker efter värddatorer i det lokala nätverket...
 \n
-\n Kontrollera att Cynix körs på värddatorn eller att GameStream är aktiverat i inställningarna för GeForce Experience SHIELD.</string>
+\n Kontrollera att Sunshine körs på värddatorn eller att GameStream är aktiverat i inställningarna för GeForce Experience SHIELD.</string>
     <string name="perf_overlay_netlatency">Genomsnittlig nätverksfördröjning: %1$d ms (varians: %2$d ms)</string>
     <string name="applist_quit_fail">Misslyckades att avsluta</string>
     <string name="title_native_res_dialog">Varning för ursprunglig upplösning</string>

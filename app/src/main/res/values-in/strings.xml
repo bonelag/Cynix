@@ -182,7 +182,7 @@
     <string name="title_checkbox_reduce_refresh_rate">Izinkan pengurangan kecepatan penyegaran</string>
     <string name="summary_checkbox_reduce_refresh_rate">Kecepatan refresh tampilan yang lebih rendah dapat menghemat daya dengan mengorbankan beberapa latensi video tambahan</string>
     <string name="applist_refresh_error_title">Kesalahan</string>
-    <string name="pair_pairing_help">Jika PC host Anda menjalankan Cynix, buka UI web Cynix untuk memasukkan PIN.</string>
+    <string name="pair_pairing_help">Jika PC host Anda menjalankan Sunshine, buka UI web Sunshine untuk memasukkan PIN.</string>
     <string name="applist_quit_app">Berhenti</string>
     <string name="perf_overlay_renderingfps">Frekuensi gambar rendering: %1$.2f FPS</string>
     <string name="perf_overlay_netlatency">Rata-rata latensi jaringan: %1$d ms (variasi: %2$d ms)</string>

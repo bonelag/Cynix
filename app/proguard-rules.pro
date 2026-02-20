@@ -12,6 +12,10 @@
 -keep class com.limelight.utils.KeyConfigHelper$ShortcutFile {*;}
 -keep class com.limelight.utils.KeyConfigHelper$Shortcut {*;}
 
+# Keep TensorFlow Lite GPU delegate classes that R8 might incorrectly remove
+-keep class org.tensorflow.lite.gpu.** { *; }
+-keep class org.opencv.** { *; }
+
 # Profiles
 -keep class com.limelight.profiles.ProfilesManager$ProfilesData {*;}
 -keep class com.limelight.profiles.SettingsProfile {*;}
@@ -38,3 +42,7 @@
 # jMDNS
 -dontwarn javax.jmdns.impl.DNSCache
 -dontwarn org.slf4j.**
+
+# MPAndroidChart
+-keep class com.github.mikephil.charting.** { *; }
+-dontwarn com.github.mikephil.charting.**

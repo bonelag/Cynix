@@ -82,7 +82,7 @@
     <string name="ip_hint">IP-Adresse des GeForce Hosts</string>
     <string name="searching_pc">Suche nach Host PCs in deinem lokalen Netzwerk…
 \n
-\nStelle sicher, dass Cynix läuft oder GameStream in den GeForce Experience SHIELD-Einstellungen aktiviert ist.</string>
+\nStelle sicher, dass Sunshine läuft oder GameStream in den GeForce Experience SHIELD-Einstellungen aktiviert ist.</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="lost_connection">Verbindung zum Host verloren</string>
@@ -265,7 +265,7 @@
     <string name="videoformat_h264always">Immer H.264 verwenden</string>
     <string name="fps_suffix_fps">FPS</string>
     <string name="category_gamepad_settings">Gamepad Einstellungen</string>
-    <string name="pair_pairing_help">Wenn dein Host PC Cynix verwendet, navigiere zur Cynix Web UI und gebe dort die PIN ein.</string>
+    <string name="pair_pairing_help">Wenn dein Host PC Sunshine verwendet, navigiere zur Sunshine Web UI und gebe dort die PIN ein.</string>
     <string name="title_checkbox_gamepad_touchpad_as_mouse">Die Maus immer mit dem Touchpad steuern</string>
     <string name="perf_overlay_hostprocessinglatency">Host Verarbeitungslatenz min/max/avg: %1$.1f/%2$.1f/%3$.1f ms</string>
     <string name="title_analog_scrolling">Verwenden Sie zum Scrollen einen Analogstick</string>
@@ -286,13 +286,13 @@
     <string name="summary_checkbox_gamepad_motion_fallback">Verwendet die integrierten Bewegungssensoren Ihres Geräts, wenn Gamepad-Sensoren von Ihrem angeschlossenen Gamepad oder Ihrer Android-Version nicht unterstützt werden.
 \nHinweis: Die Aktivierung dieser Option kann dazu führen, dass Ihr Gamepad auf dem Host als PlayStation-Controller angezeigt wird.</string>
     <string name="pcview_menu_eol">NVIDIA GameStream End-of-Service</string>
-    <string name="summary_share_performance_logs">Teile deine Leistungsdaten mit Freunden oder unserer Community. Wenn du sie an cynixtics.logs@gmail.com sendest, erscheinen sie automatisch auf https://tinyurl.com/cynix-performance.</string>
+    <string name="summary_share_performance_logs">Teile deine Leistungsdaten mit Freunden oder unserer Community. Wenn du sie an Cynixtics.logs@gmail.com sendest, erscheinen sie automatisch auf https://tinyurl.com/Cynix-performance.</string>
     <string name="title_share_performance_logs_button">Leistungsdaten teilen</string>
     <string name="email_prefix_message">
-    Bitte sende diesen Anhang unverändert an cynixtics.logs@gmail.com, wenn du unsere Community unterstützen möchtest.\n
+    Bitte sende diesen Anhang unverändert an Cynixtics.logs@gmail.com, wenn du unsere Community unterstützen möchtest.\n
     Deine geteilten Leistungsdaten helfen, den verfügbaren Datensatz zu verbessern und zu erweitern:\n
-     https://github.com/bonelag/Cynix</string>
-    <string name="email_recipient">cynixtics.logs@gmail.com</string>
+     https://tinyurl.com/Cynix-performance\n\n</string>
+    <string name="email_recipient">Cynixtics.logs@gmail.com</string>
     <string name="email_subject">Cynixtics - Performance Log</string>
     <string name="email_chooser_title">Performance Log senden...</string>
     <string name="toast_no_email_clients">Keine E-Mail-Clients installiert.</string>

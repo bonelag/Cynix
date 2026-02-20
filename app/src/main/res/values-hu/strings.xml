@@ -125,7 +125,7 @@
     <string name="yes">Igen</string>
     <string name="searching_pc">A helyi hálózaton lévő PC-k keresése...
 \n
-\nGyőződj meg róla, hogy a Cynix fut a gazdaszámítógépen, vagy a GameStream engedélyezve van a GeForce Experience SHIELD beállításaiban.</string>
+\nGyőződj meg róla, hogy a Sunshine fut a gazdaszámítógépen, vagy a GameStream engedélyezve van a GeForce Experience SHIELD beállításaiban.</string>
     <string name="ip_hint">A számítógép IP-címe</string>
     <string name="conn_terminated_msg">A kapcsolat megszakadt</string>
     <string name="conn_terminated_title">A kapcsolat megszűnt</string>
@@ -252,7 +252,7 @@
     <string name="summary_checkbox_reduce_refresh_rate">Az alacsonyabb kijelzőfrissítési frekvencia energiát takaríthat meg némi további videokésleltetés árán</string>
     <string name="resolution_prefix_native_portrait">(Portré)</string>
     <string name="summary_checkbox_absolute_mouse_mode">Ezáltal az egérgyorsítás természetesebben viselkedik a távoli asztali használat során, de sok játékkal nem kompatibilis.</string>
-    <string name="pair_pairing_help">Ha a számítógépen Cynix fut, lépj a Cynix webes felhasználói felületére a PIN-kód megadásához.</string>
+    <string name="pair_pairing_help">Ha a számítógépen Sunshine fut, lépj a Sunshine webes felhasználói felületére a PIN-kód megadásához.</string>
     <string name="title_setup_guide">Telepítési útmutató</string>
     <string name="title_checkbox_gamepad_touchpad_as_mouse">Az egeret mindig az érintőpaddal vezérelje</string>
     <string name="resolution_prefix_native_landscape">(Tájkép)</string>

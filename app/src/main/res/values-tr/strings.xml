@@ -153,7 +153,7 @@
     <string name="title_decoding_reset">Video Ayarlarını Sıfırla</string>
     <string name="searching_pc">Yerel ağınızdaki ana bilgisayarlar aranıyor…
 \n
-\n Cynix ana bilgisayarınızda çalıştığından veya GeForce Experience SHIELD ayarlarında GameStream etkinleştirildiğinden emin olun.</string>
+\n Sunshine ana bilgisayarınızda çalıştığından veya GeForce Experience SHIELD ayarlarında GameStream etkinleştirildiğinden emin olun.</string>
     <string name="applist_connect_msg">Bilgisayara bağlanıyor…</string>
     <string name="no">Hayır</string>
     <string name="perf_overlay_netlatency">Ortalama ağ gecikmesi: %1$d ms (varyans: %2$d ms)</string>
@@ -175,7 +175,7 @@
     <string name="dialog_title_reset_osc">Düzeni Sıfırla</string>
     <string name="title_language_list">Dil</string>
     <string name="category_host_settings">Ana Bilgisayar Ayarları</string>
-    <string name="pair_pairing_help">Ana bilgisayarınız Cynix çalıştırıyorsa PIN girmek için Cynix web kullanıcı arayüzüne gidin.</string>
+    <string name="pair_pairing_help">Ana bilgisayarınız Sunshine çalıştırıyorsa PIN girmek için Sunshine web kullanıcı arayüzüne gidin.</string>
     <string name="frame_conversion_error">Ana bilgisayar önemli bir video kodlama hatası bildirdi.
 \n
 \nHDR kipi devre dışı bırakmayı, akış çözünürlüğünü değiştirmeyi veya ana bilgisayarın ekran çözünürlüğünü değiştirmeyi deneyin.</string>

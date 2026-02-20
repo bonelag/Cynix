@@ -109,8 +109,8 @@ int initializeInputStream(void) {
     // GFE 3.13.1.30 is not using NVVHCI for mouse/keyboard (and is confirmed unaffected)
     // GFE 3.15.0.164 seems to be the first release using NVVHCI for mouse/keyboard
     //
-    // Cynix also uses SendInput() so it's not affected either.
-    needsBatchedScroll = APP_VERSION_AT_LEAST(7, 1, 409) && !IS_CYNIX();
+    // Sunshine also uses SendInput() so it's not affected either.
+    needsBatchedScroll = APP_VERSION_AT_LEAST(7, 1, 409) && !IS_SUNSHINE();
     batchedScrollDelta = 0;
 
     currentPenButtonState = 0;
@@ -942,7 +942,7 @@ int LiSendKeyboardEvent2(short keyCode, char keyAction, char modifiers, char fla
     // GFE will synthesize an errant key down event for the non-extended key, causing that key to be
     // stuck down after the extended modifier key is raised. For non-extended keys, we must set the
     // MODIFIER flag for correct behavior.
-    if (!IS_CYNIX()) {
+    if (!IS_SUNSHINE()) {
         switch (keyCode & 0xFF) {
             case 0x5B: // VK_LWIN
             case 0x5C: // VK_RWIN
@@ -983,7 +983,7 @@ int LiSendKeyboardEvent2(short keyCode, char keyAction, char modifiers, char fla
 
     holder->packet.keyboard.header.size = BE32(sizeof(NV_KEYBOARD_PACKET) - sizeof(uint32_t));
     holder->packet.keyboard.header.magic = LE32((uint32_t)keyAction);
-    holder->packet.keyboard.flags = IS_CYNIX() ? flags : 0;
+    holder->packet.keyboard.flags = IS_SUNSHINE() ? flags : 0;
     holder->packet.keyboard.keyCode = LE16(keyCode);
     holder->packet.keyboard.modifiers = modifiers;
     holder->packet.keyboard.zero2 = 0;
@@ -1045,7 +1045,7 @@ static int sendControllerEventInternal(short controllerNumber, short activeGamep
     }
 
     // HACK: We previously used a short for the buttonFlags argument, but we switched to an
-    // int to support additional buttons with Cynix. Unfortunately, some clients still pass
+    // int to support additional buttons with Sunshine. Unfortunately, some clients still pass
     // a short, which gets sign extended to an int. This causes all the new button flags to be
     // set any time the user presses the Y button on their gamepad (since Y is 0x8000). To deal
     // with these clients, we will detect this condition by checking if the sign bit is set.
@@ -1055,7 +1055,7 @@ static int sendControllerEventInternal(short controllerNumber, short activeGamep
         buttonFlags &= 0xFFFF;
     }
 
-    if (!IS_CYNIX()) {
+    if (!IS_SUNSHINE()) {
         // GFE only supports a maximum of 4 controllers
         controllerNumber %= 4;
         activeGamepadMask &= 0xF;
@@ -1070,7 +1070,7 @@ static int sendControllerEventInternal(short controllerNumber, short activeGamep
         }
     }
     else {
-        // Cynix supports up to 16 (max number of bits in activeGamepadMask)
+        // Sunshine supports up to 16 (max number of bits in activeGamepadMask)
         controllerNumber %= MAX_GAMEPADS;
     }
 
@@ -1125,7 +1125,7 @@ static int sendControllerEventInternal(short controllerNumber, short activeGamep
         holder->packet.multiController.rightStickX = LE16(rightStickX);
         holder->packet.multiController.rightStickY = LE16(rightStickY);
         holder->packet.multiController.tailA = LE16(MC_TAIL_A);
-        holder->packet.multiController.buttonFlags2 = IS_CYNIX() ? LE16((short)(buttonFlags >> 16)) : 0;
+        holder->packet.multiController.buttonFlags2 = IS_SUNSHINE() ? LE16((short)(buttonFlags >> 16)) : 0;
         holder->packet.multiController.tailB = LE16(MC_TAIL_B);
     }
 
@@ -1266,8 +1266,8 @@ int LiSendHighResHScrollEvent(short scrollAmount) {
         return -2;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!IS_CYNIX()) {
+    // This is a protocol extension only supported with Sunshine
+    if (!IS_SUNSHINE()) {
         return LI_ERR_UNSUPPORTED;
     }
 
@@ -1310,8 +1310,8 @@ int LiSendTouchEvent(uint8_t eventType, uint32_t pointerId, float x, float y, fl
         return -2;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!(CynixFeatureFlags & LI_FF_PEN_TOUCH_EVENTS)) {
+    // This is a protocol extension only supported with Sunshine
+    if (!(SunshineFeatureFlags & LI_FF_PEN_TOUCH_EVENTS)) {
         return LI_ERR_UNSUPPORTED;
     }
 
@@ -1359,8 +1359,8 @@ int LiSendPenEvent(uint8_t eventType, uint8_t toolType, uint8_t penButtons,
         return -2;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!(CynixFeatureFlags & LI_FF_PEN_TOUCH_EVENTS)) {
+    // This is a protocol extension only supported with Sunshine
+    if (!(SunshineFeatureFlags & LI_FF_PEN_TOUCH_EVENTS)) {
         return LI_ERR_UNSUPPORTED;
     }
 
@@ -1410,11 +1410,11 @@ int LiSendControllerArrivalEvent(uint8_t controllerNumber, uint16_t activeGamepa
         return -2;
     }
 
-    // Cynix supports up to 16 controllers
+    // Sunshine supports up to 16 controllers
     controllerNumber %= MAX_GAMEPADS;
 
-    // The arrival event is only supported by Cynix
-    if (IS_CYNIX()) {
+    // The arrival event is only supported by Sunshine
+    if (IS_SUNSHINE()) {
         holder = allocatePacketHolder(0);
         if (holder == NULL) {
             return -1;
@@ -1452,12 +1452,12 @@ int LiSendControllerTouchEvent(uint8_t controllerNumber, uint8_t eventType, uint
         return -2;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!(CynixFeatureFlags & LI_FF_CONTROLLER_TOUCH_EVENTS)) {
+    // This is a protocol extension only supported with Sunshine
+    if (!(SunshineFeatureFlags & LI_FF_CONTROLLER_TOUCH_EVENTS)) {
         return LI_ERR_UNSUPPORTED;
     }
 
-    // Cynix supports up to 16 controllers
+    // Sunshine supports up to 16 controllers
     controllerNumber %= MAX_GAMEPADS;
 
     holder = allocatePacketHolder(0);
@@ -1506,12 +1506,12 @@ int LiSendControllerMotionEvent(uint8_t controllerNumber, uint8_t motionType, fl
         return -3;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!(CynixFeatureFlags & LI_FF_CONTROLLER_TOUCH_EVENTS)) {
+    // This is a protocol extension only supported with Sunshine
+    if (!(SunshineFeatureFlags & LI_FF_CONTROLLER_TOUCH_EVENTS)) {
         return LI_ERR_UNSUPPORTED;
     }
 
-    // Cynix supports up to 16 controllers
+    // Sunshine supports up to 16 controllers
     controllerNumber %= MAX_GAMEPADS;
 
     PltLockMutex(&batchedInputMutex);
@@ -1567,12 +1567,12 @@ int LiSendControllerBatteryEvent(uint8_t controllerNumber, uint8_t batteryState,
         return -2;
     }
 
-    // This is a protocol extension only supported with Cynix
-    if (!IS_CYNIX()) {
+    // This is a protocol extension only supported with Sunshine
+    if (!IS_SUNSHINE()) {
         return LI_ERR_UNSUPPORTED;
     }
 
-    // Cynix supports up to 16 controllers
+    // Sunshine supports up to 16 controllers
     controllerNumber %= MAX_GAMEPADS;
 
     holder = allocatePacketHolder(0);

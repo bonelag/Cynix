@@ -544,7 +544,7 @@ public class ComputerManagerService extends Service {
     private ComputerDetails tryPollIp(ComputerDetails details, ComputerDetails.AddressTuple address) {
         try {
             // If the current address's port number matches the active address's port number, we can also assume
-            // the HTTPS port will also match. This assumption is currently safe because Cynix sets all ports
+            // the HTTPS port will also match. This assumption is currently safe because Sunshine sets all ports
             // as offsets from the base HTTP port and doesn't allow custom HttpsPort responses for WAN vs LAN.
             boolean portMatchesActiveAddress = details.state == ComputerDetails.State.ONLINE &&
                     details.activeAddress != null && address.port == details.activeAddress.port;

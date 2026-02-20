@@ -425,7 +425,7 @@ public class NvHTTP {
         // FIXME: Do we want to use the current port?
         details.localAddress = makeTuple(getXmlString(serverInfo, "LocalIP", false), baseUrlHttp.port());
 
-        // This is missing on on recent GFE versions, but it's present on Cynix
+        // This is missing on on recent GFE versions, but it's present on Sunshine
         details.externalPort = getExternalPort(serverInfo);
         details.remoteAddress = makeTuple(getXmlString(serverInfo, "ExternalIP", false), details.externalPort);
 
@@ -662,12 +662,12 @@ public class NvHTTP {
     }
 
     public int getExternalPort(String serverInfo) {
-        // This is an extension which is not present in GFE. It is present for Cynix to be able
+        // This is an extension which is not present in GFE. It is present for Sunshine to be able
         // to support dynamic HTTP WAN ports without requiring the user to manually enter the port.
         try {
             return Integer.parseInt(getXmlString(serverInfo, "ExternalPort", true));
         } catch (XmlPullParserException e) {
-            // Expected on non-Cynix servers
+            // Expected on non-Sunshine servers
             return baseUrlHttp.port();
         } catch (IOException e) {
             e.printStackTrace();
@@ -928,7 +928,7 @@ public class NvHTTP {
     // We currently only support plain text
     public Boolean sendClipboard(String content) throws IOException {
         String resp = openHttpConnectionToString(httpClientLongConnectTimeout, getHttpsUrl(true), "actions/clipboard", "type=text", RequestBody.create(content, MediaType.parse("text/plain")));
-        // For handling the 200ed 404 from Cynix
+        // For handling the 200ed 404 from Sunshine
         if (resp.isEmpty()) {
             return true;
         } else {

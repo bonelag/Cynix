@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import com.limelight.profiles.ProfilesManager;
 
-public class CynixApplication extends Application {
+public class ArtemisApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

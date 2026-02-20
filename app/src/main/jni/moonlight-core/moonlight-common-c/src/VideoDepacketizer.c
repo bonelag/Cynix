@@ -495,10 +495,14 @@ static void reassembleFrame(int frameNumber) {
             qdu->decodeUnit.colorspace = (uint8_t)(qdu->decodeUnit.hdrActive ? COLORSPACE_REC_2020 : StreamConfig.colorSpace);
 
             // Invoke the key frame callback if needed
-            if (qdu->decodeUnit.frameType == FRAME_TYPE_IDR) {
+            if (nalChainHead->bufferType != BUFFER_TYPE_PICDATA || qdu->decodeUnit.frameType == FRAME_TYPE_IDR) {
+                qdu->decodeUnit.frameType = FRAME_TYPE_IDR;
                 notifyKeyFrameReceived();
             }
-
+            else {
+                qdu->decodeUnit.frameType = FRAME_TYPE_PFRAME;
+            }
+            
             nalChainHead = nalChainTail = NULL;
             nalChainDataLength = 0;
 
@@ -821,7 +825,7 @@ static void processRtpPayload(PNV_VIDEO_PACKET videoPacket, int length,
         frameType = FRAME_TYPE_PFRAME;
         firstPacketReceiveTime = receiveTimeMs;
         
-        // Some versions of Cynix don't send a valid PTS, so we will
+        // Some versions of Sunshine don't send a valid PTS, so we will
         // synthesize one using the receive time as the time base.
         if (!syntheticPtsBase) {
             syntheticPtsBase = receiveTimeMs;
@@ -866,7 +870,7 @@ static void processRtpPayload(PNV_VIDEO_PACKET videoPacket, int length,
                     waitingForNextSuccessfulFrame = false;
                 }
                 break;
-            case 104: // Cynix hardcoded header
+            case 104: // Sunshine hardcoded header
                 break;
             default:
                 Limelog("Unrecognized frame type: %d", currentPos.data[currentPos.offset + 3]);
@@ -883,9 +887,9 @@ static void processRtpPayload(PNV_VIDEO_PACKET videoPacket, int length,
             }
         }
 
-        // Cynix can provide host processing latency of the frame
+        // Sunshine can provide host processing latency of the frame
         LC_ASSERT_VT(currentPos.length >= 3);
-        if (IS_CYNIX() && currentPos.length >= 3) {
+        if (IS_SUNSHINE() && currentPos.length >= 3) {
             BYTE_BUFFER bb;
             BbInitializeWrappedBuffer(&bb, currentPos.data, currentPos.offset + 1, 2, BYTE_ORDER_LITTLE);
             BbGet16(&bb, &frameHostProcessingLatency);

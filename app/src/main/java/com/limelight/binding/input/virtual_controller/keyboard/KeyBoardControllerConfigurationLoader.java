@@ -550,20 +550,9 @@ public class KeyBoardControllerConfigurationLoader {
     }
 
     public static void saveProfile(final KeyBoardController controller,
-                                   final Context context) {
-        String name = PreferenceManager.getDefaultSharedPreferences(context).getString(OSC_PREFERENCE, OSC_PREFERENCE_VALUE);
-        saveProfileInternal(controller, context, name);
-    }
-
-    public static void saveProfile(final KeyBoardController controller,
-                                   final Context context, final String layoutId) {
-        String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
-        saveProfileInternal(controller, context, name);
-    }
-
-    private static void saveProfileInternal(final KeyBoardController controller,
-                                            final Context context, final String preferenceName) {
-        SharedPreferences.Editor prefEditor = context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE).edit();
+                                   final Context context, String layoutId) {
+        String prefName = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
+        SharedPreferences.Editor prefEditor = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE).edit();
 
         for (keyBoardVirtualControllerElement element : controller.getElements()) {
             String prefKey = "" + element.elementId;
@@ -576,18 +565,9 @@ public class KeyBoardControllerConfigurationLoader {
         prefEditor.apply();
     }
 
-    public static void loadFromPreferences(final KeyBoardController controller, final Context context) {
-        String name = PreferenceManager.getDefaultSharedPreferences(context).getString(OSC_PREFERENCE, OSC_PREFERENCE_VALUE);
-        loadFromPreferencesInternal(controller, context, name);
-    }
-
-    public static void loadFromPreferences(final KeyBoardController controller, final Context context, final String layoutId) {
-        String name = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
-        loadFromPreferencesInternal(controller, context, name);
-    }
-
-    private static void loadFromPreferencesInternal(final KeyBoardController controller, final Context context, final String preferenceName) {
-        SharedPreferences pref = context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
+    public static void loadFromPreferences(final KeyBoardController controller, final Context context, String layoutId) {
+        String prefName = KeyboardLayoutManager.getLayoutPreferenceName(layoutId);
+        SharedPreferences pref = context.getSharedPreferences(prefName, Activity.MODE_PRIVATE);
 
         for (keyBoardVirtualControllerElement element : controller.getElements()) {
             String prefKey = "" + element.elementId;

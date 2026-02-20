@@ -315,6 +315,14 @@ public class KeyBoardController {
         }
     }
 
+    public String getCurrentLayoutId() {
+        return currentLayoutId;
+    }
+
+    public void setCurrentLayoutId(String layoutId) {
+        this.currentLayoutId = layoutId;
+    }
+
     public void refreshLayout() {
         removeElements();
 
@@ -359,14 +367,6 @@ public class KeyBoardController {
         // Apply default layout
         KeyBoardControllerConfigurationLoader.createDefaultLayout(this, context, conn);
         KeyBoardControllerConfigurationLoader.loadFromPreferences(this, context, currentLayoutId);
-    }
-
-    public String getCurrentLayoutId() {
-        return currentLayoutId;
-    }
-
-    public void setCurrentLayoutId(String layoutId) {
-        this.currentLayoutId = layoutId;
     }
 
     public ControllerMode getControllerMode() {

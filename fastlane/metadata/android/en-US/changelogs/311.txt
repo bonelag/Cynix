@@ -12,5 +12,5 @@
 - Fixed CVE-2023-42799, CVE-2023-42800, and CVE-2023-42801
 - Android 14 and ChromeOS support improvements
 
-Items marked with * require Cynix nightly builds (or v0.21, when released)
+Items marked with * require Sunshine nightly builds (or v0.21, when released)
 Items marked with ** also require Android 12 or later and a recent Linux kernel for support.

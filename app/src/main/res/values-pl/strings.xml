@@ -10,7 +10,7 @@
     <string name="title_details">Szczegóły</string>
     <string name="searching_pc">Wyszukiwanie komputerów-hostów w sieci lokalnej...
 \n
-\nUpewnij się, że aplikacja Cynix jest uruchomiona na komputerze-hoście lub funkcja GameStream jest włączona w ustawieniach aplikacji GeForce Experience SHIELD.</string>
+\nUpewnij się, że aplikacja Sunshine jest uruchomiona na komputerze-hoście lub funkcja GameStream jest włączona w ustawieniach aplikacji GeForce Experience SHIELD.</string>
     <string name="yes">Tak</string>
     <string name="title_audio_config_list">Konfiguracja dźwięku przestrzennego</string>
     <string name="summary_audio_config_list">Włączenie dźwięku przestrzennego 5.1 lub 7.1 dla systemów kina domowego</string>
@@ -186,7 +186,7 @@
     <string name="category_help">Pomoc</string>
     <string name="resolution_480p">480p</string>
     <string name="pair_pairing_msg">Wprowadź następujący kod PIN na komputerze docelowym:</string>
-    <string name="pair_pairing_help">Jeśli na komputerze hosta działa Cynix, przejdź do interfejsu użytkownika Cynix aby wprowadzić kod PIN.</string>
+    <string name="pair_pairing_help">Jeśli na komputerze hosta działa Sunshine, przejdź do interfejsu użytkownika Sunshine aby wprowadzić kod PIN.</string>
     <string name="unpairing">Rozparowywanie…</string>
     <string name="unpair_success">Rozparowano z powodzeniem</string>
     <string name="unable_to_pin_shortcut">Obecny program uruchamiający nie pozwala na tworzenie przypiętych skrótów.</string>

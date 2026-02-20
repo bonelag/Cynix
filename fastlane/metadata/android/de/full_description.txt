@@ -1,4 +1,4 @@
-Diese App streamt Spiele, Programme oder den kompletten Desktop von NVIDIA GameStream-kompatiebelen PCs oder <a href="https://github.com/CynixStream/Cynix">Cynix Stream</a> über das Lokale Netzwerk oder Internet. Gleichzeitig werden Maus-, Tastatur- und Gamepad-Eingaben von deinem Android Gerät zum PC übertragen.
+Diese App streamt Spiele, Programme oder den kompletten Desktop von NVIDIA GameStream-kompatiebelen PCs oder <a href="https://github.com/SunshineStream/Sunshine">Sunshine Stream</a> über das Lokale Netzwerk oder Internet. Gleichzeitig werden Maus-, Tastatur- und Gamepad-Eingaben von deinem Android Gerät zum PC übertragen.
 
 Die Streamingqualität kann aufgrund des verwendeten Android Geräts und der Netzwerkgegebenheiten variieren. HDR Unterstützung setzt ein HRD10-fähiges Gerät, eine GTX-1000-series GPU und HDR10-kompatibles Spiele voraus.
 
@@ -18,7 +18,7 @@ Die Streamingqualität kann aufgrund des verwendeten Android Geräts und der Net
 * Windows 7 oder neuer
 * NVIDIA GeForce Experience (GFE) 2.2.2 oder neuer
 
-'''PC Anforderungen mit CynixStream'''
+'''PC Anforderungen mit SunshineStream'''
 * Linux, MacOS, Windows
 * AMD, Nvidia GPUs oder Software-Kodierung
 

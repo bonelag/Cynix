@@ -42,9 +42,9 @@ extern SS_PING AudioPingPayload;
 extern SS_PING VideoPingPayload;
 extern uint32_t ControlConnectData;
 
-extern uint32_t CynixFeatureFlags;
+extern uint32_t SunshineFeatureFlags;
 
-// Encryption flags shared by Cynix and Moonlight in RTSP
+// Encryption flags shared by Sunshine and Moonlight in RTSP
 #define SS_ENC_CONTROL_V2 0x01
 #define SS_ENC_VIDEO 0x02
 #define SS_ENC_AUDIO 0x04
@@ -61,6 +61,7 @@ extern uint32_t EncryptionFeaturesEnabled;
 #define CTRL_CHANNEL_PEN          0x04
 #define CTRL_CHANNEL_TOUCH        0x05
 #define CTRL_CHANNEL_UTF8         0x06
+#define CTRL_CHANNEL_SERVERCTL    0x08
 #define CTRL_CHANNEL_GAMEPAD_BASE 0x10 // 0x10 to 0x1F by controller index
 #define CTRL_CHANNEL_SENSOR_BASE  0x20 // 0x20 to 0x2F by controller index
 #define CTRL_CHANNEL_COUNT        0x30
@@ -82,7 +83,7 @@ extern uint32_t EncryptionFeaturesEnabled;
      (AppVersionQuad[0] == (a) && AppVersionQuad[1] > (b)) ||                               \
      (AppVersionQuad[0] == (a) && AppVersionQuad[1] == (b) && AppVersionQuad[2] >= (c)))
 
-#define IS_CYNIX() (AppVersionQuad[3] < 0)
+#define IS_SUNSHINE() (AppVersionQuad[3] < 0)
 
 // Client feature flags for x-ml-general.featureFlags SDP attribute
 #define ML_FF_FEC_STATUS 0x01 // Client sends SS_FRAME_FEC_STATUS for frame losses
