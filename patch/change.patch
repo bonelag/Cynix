@@ -1,8 +1,104 @@
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index 0ae397e..bdf19d5 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -6,6 +6,7 @@ on:
+       - main
+   release:
+     types: [created]
++  workflow_dispatch:
+ 
+ jobs:
+   build:
+@@ -41,11 +42,23 @@ jobs:
+     - name: Build APK
+       run: ./gradlew assembleNonRoot_gameRelease
+ 
++    - name: Get versionName and rename APK
++      id: get_version
++      run: |
++        VERSION=$(grep 'versionName' app/build.gradle | head -1 | sed 's/.*versionName "\(.*\)"/\1/')
++        echo "version=$VERSION" >> $GITHUB_OUTPUT
++        echo "tag=v$VERSION" >> $GITHUB_OUTPUT
++        APK_DIR="app/build/outputs/apk/nonRoot_game/release"
++        cp "$APK_DIR/app-nonRoot_game-release.apk" "$APK_DIR/Cynix_${VERSION}.apk"
++        echo "apk_path=$APK_DIR/Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
++        echo "apk_name=Cynix_${VERSION}.apk" >> $GITHUB_OUTPUT
++        echo "Renamed APK to Cynix_${VERSION}.apk"
++
+     - name: Upload APK (Artifact or GitHub Release)
+       if: github.event_name == 'release'
+       uses: softprops/action-gh-release@v2
+       with:
+-        files: app/build/outputs/apk/nonRoot_game/release/app-nonRoot_game-release.apk
++        files: ${{ steps.get_version.outputs.apk_path }}
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
+@@ -54,4 +67,27 @@ jobs:
+       uses: actions/upload-artifact@v4
+       with:
+         name: APK-Build
+-        path: app/build/outputs/apk/nonRoot_game/release/app-nonRoot_game-release.apk
+\ No newline at end of file
++        path: ${{ steps.get_version.outputs.apk_path }}
++
++    - name: Check and update existing release
++      if: github.event_name == 'workflow_dispatch'
++      env:
++        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
++        TAG: ${{ steps.get_version.outputs.tag }}
++        VERSION: ${{ steps.get_version.outputs.version }}
++        APK_PATH: ${{ steps.get_version.outputs.apk_path }}
++        APK_NAME: ${{ steps.get_version.outputs.apk_name }}
++      run: |
++        # Check if release with this tag exists
++        RELEASE_ID=$(gh release view "$TAG" --json id --jq '.id' 2>/dev/null || echo "")
++
++        if [ -n "$RELEASE_ID" ]; then
++          echo "Release $TAG already exists. Replacing APK asset..."
++          gh release delete-asset "$TAG" "$APK_NAME" --yes 2>/dev/null || true
++          gh release upload "$TAG" "$APK_PATH" --clobber
++          echo "APK replaced successfully in release $TAG"
++        else
++          echo "Creating new release $TAG..."
++          gh release create "$TAG" "$APK_PATH" --title "Cynix $VERSION" --notes "Build $VERSION" --latest
++          echo "Release $TAG created successfully"
++        fi
+\ No newline at end of file
+diff --git a/app/build.gradle b/app/build.gradle
+index 9456050..600e925 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -11,8 +11,8 @@ android {
+         minSdk 21
+         targetSdk 34
+ 
+-        versionName "2.1.7"
+-        versionCode = 46
++        versionName "20.2.6"
++        versionCode = 48
+ 
+         // Generate native debug symbols to allow Google Play to symbolicate our native crashes
+         ndk.debugSymbolLevel = 'FULL'
+@@ -97,9 +97,9 @@ android {
+     buildTypes {
+         debug {
+             applicationIdSuffix ".debug"
+-            resValue "string", "app_label", "FireDeb"
+-            resValue "string", "app_label_root", "FireDeb (Root)"
+-            resValue "string", "app_label_game", "FireDeb (Game)"
++            resValue "string", "app_label", "Cynix Debug"
++            resValue "string", "app_label_root", "Cynix Debug (Root)"
++            resValue "string", "app_label_game", "Cynix Debug (Game)"
+ 
+             minifyEnabled true
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
-index a52c855..3c6df56 100644
+index a52c855..cd90c58 100644
 --- a/app/src/main/java/com/limelight/Game.java
 +++ b/app/src/main/java/com/limelight/Game.java
-@@ -21,6 +21,7 @@ import com.limelight.binding.input.driver.UsbDriverService;
+@@ -21,9 +21,11 @@ import com.limelight.binding.input.driver.UsbDriverService;
  import com.limelight.binding.input.evdev.EvdevListener;
  import com.limelight.binding.input.touch.TouchContext;
  import com.limelight.binding.input.touch.TrackpadContext;
@@ -10,15 +106,35 @@ index a52c855..3c6df56 100644
  import com.limelight.binding.input.virtual_controller.VirtualController;
  import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
  import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
-@@ -167,6 +168,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
++import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
+ import com.limelight.binding.video.CrashListener;
+ import com.limelight.binding.video.MediaCodecDecoderRenderer;
+ import com.limelight.binding.video.MediaCodecHelper;
+@@ -167,8 +169,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      private ControllerHandler controllerHandler;
      private KeyboardTranslator keyboardTranslator;
      private VirtualController virtualController;
 +    private GamepadLayoutManager layoutManager;
  
      private KeyBoardController keyBoardController;
++    private KeyboardLayoutManager keyboardLayoutManager;
  
-@@ -979,7 +981,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     private KeyBoardLayoutController keyBoardLayoutController;
+ 
+@@ -969,7 +973,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+     }
+ 
+     private void initKeyboardController(){
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
+         keyBoardController = new KeyBoardController(conn,(FrameLayout)rootView, this);
++        keyBoardController.setCurrentLayoutId(keyboardLayoutManager.getActiveLayoutId());
+         keyBoardController.refreshLayout();
+         keyBoardController.show();
+     }
+@@ -979,7 +988,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      }
  
      private void initVirtualController(){
@@ -31,7 +147,37 @@ index a52c855..3c6df56 100644
          virtualController.refreshLayout();
          virtualController.show();
      }
-@@ -1021,6 +1028,30 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+@@ -999,6 +1013,29 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+         keyBoardController.toggleVisibility();
+     }
+ 
++    public void switchKeyboardLayout(String layoutId) {
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
++        keyboardLayoutManager.setActiveLayoutId(layoutId);
++        if (keyBoardController != null) {
++            keyBoardController.setCurrentLayoutId(layoutId);
++            keyBoardController.refreshLayout();
++            keyBoardController.show();
++        } else {
++            initKeyboardController();
++        }
++    }
++
++    public KeyboardLayoutManager getKeyboardLayoutManager() {
++        if (keyboardLayoutManager == null) {
++            keyboardLayoutManager = new KeyboardLayoutManager(this);
++            keyboardLayoutManager.migrateFromLegacy(this);
++        }
++        return keyboardLayoutManager;
++    }
++
+     public void toggleFullKeyboard() {
+         if (isOnExternalDisplay()) {
+             ExternalDisplayControlActivity.toggleFullKeyboard();
+@@ -1021,6 +1058,30 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
          prefConfig.onscreenController= virtualController.switchShowHide() != 0;
      }
  
@@ -63,10 +209,10 @@ index a52c855..3c6df56 100644
          Display display = getActiveDisplay(Game.this, prefConfig);
  
 diff --git a/app/src/main/java/com/limelight/GameMenu.java b/app/src/main/java/com/limelight/GameMenu.java
-index b818c84..9cc207f 100644
+index b818c84..8dbd6f4 100644
 --- a/app/src/main/java/com/limelight/GameMenu.java
 +++ b/app/src/main/java/com/limelight/GameMenu.java
-@@ -12,10 +12,12 @@ import android.view.View;
+@@ -12,10 +12,13 @@ import android.view.View;
  import android.view.ViewTreeObserver;
  import android.view.Window;
  import android.widget.ArrayAdapter;
@@ -76,10 +222,11 @@ index b818c84..9cc207f 100644
  import com.limelight.binding.input.GameInputDevice;
  import com.limelight.binding.input.KeyboardTranslator;
 +import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
++import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
  import com.limelight.preferences.PreferenceConfiguration;
  import com.limelight.utils.KeyConfigHelper;
  import com.limelight.utils.KeyMapper;
-@@ -302,7 +304,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
+@@ -302,14 +305,20 @@ public class GameMenu implements Game.GameMenuCallbacks {
          options.add(new MenuOption(getString(R.string.game_menu_disconnect), game::disconnect));
  
          if (!game.isOnExternalDisplay()) {
@@ -91,7 +238,18 @@ index b818c84..9cc207f 100644
          }
  
          options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard), true, game::toggleKeyboard));
-@@ -342,4 +347,117 @@ public class GameMenu implements Game.GameMenuCallbacks {
+ 
+         options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
+ 
+-        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
++        options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
++            hideMenu();
++            showKeyboardLayoutMenu();
++        }));
+ 
+         if (game.allowChangeMouseMode) {
+             options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
+@@ -342,4 +351,191 @@ public class GameMenu implements Game.GameMenuCallbacks {
      public boolean isMenuOpen() {
          return currentDialog != null && currentDialog.isShowing();
      }
@@ -113,7 +271,7 @@ index b818c84..9cc207f 100644
 +
 +        for (String layoutId : layoutIds) {
 +            String name = layoutManager.getLayoutName(layoutId);
-+            String label = layoutId.equals(activeId) ? "âœ“ " + name : "   " + name;
++            String label = layoutId.equals(activeId) ? "✓ " + name : "   " + name;
 +            final String lid = layoutId;
 +            options.add(new MenuOption(label, true, () -> {
 +                game.switchGamepadLayout(lid);
@@ -122,7 +280,7 @@ index b818c84..9cc207f 100644
 +        }
 +
 +        // Create new layout
-+        options.add(new MenuOption("â• " + getString(R.string.gamepad_layout_create), () -> {
++        options.add(new MenuOption("➕ " + getString(R.string.gamepad_layout_create), () -> {
 +            hideMenu();
 +            showLayoutNameInputDialog(getString(R.string.gamepad_layout_create), "", name -> {
 +                String newId = layoutManager.createLayout(name);
@@ -132,7 +290,7 @@ index b818c84..9cc207f 100644
 +        }));
 +
 +        // Duplicate current layout
-+        options.add(new MenuOption("đŸ”„ " + getString(R.string.gamepad_layout_duplicate), () -> {
++        options.add(new MenuOption("🔄 " + getString(R.string.gamepad_layout_duplicate), () -> {
 +            hideMenu();
 +            String currentName = layoutManager.getLayoutName(activeId);
 +            showLayoutNameInputDialog(getString(R.string.gamepad_layout_duplicate), currentName + " (2)", name -> {
@@ -143,7 +301,7 @@ index b818c84..9cc207f 100644
 +        }));
 +
 +        // Rename current layout
-+        options.add(new MenuOption("âœï¸ " + getString(R.string.gamepad_layout_rename), () -> {
++        options.add(new MenuOption("✏️ " + getString(R.string.gamepad_layout_rename), () -> {
 +            hideMenu();
 +            String currentName = layoutManager.getLayoutName(activeId);
 +            showLayoutNameInputDialog(getString(R.string.gamepad_layout_rename), currentName, name -> {
@@ -154,7 +312,7 @@ index b818c84..9cc207f 100644
 +
 +        // Delete current layout
 +        if (!GamepadLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
-+            options.add(new MenuOption("đŸ—‘ï¸ " + getString(R.string.gamepad_layout_delete), () -> {
++            options.add(new MenuOption("🗑️ " + getString(R.string.gamepad_layout_delete), () -> {
 +                hideMenu();
 +                String currentName = layoutManager.getLayoutName(activeId);
 +                showDeleteConfirmDialog(currentName, () -> {
@@ -168,6 +326,80 @@ index b818c84..9cc207f 100644
 +        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
 +
 +        showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
++    }
++
++    private void showKeyboardLayoutMenu() {
++        KeyboardLayoutManager layoutMgr = game.getKeyboardLayoutManager();
++        if (layoutMgr == null) {
++            return;
++        }
++
++        List<MenuOption> options = new ArrayList<>();
++
++        // Toggle keyboard visibility
++        options.add(new MenuOption(getString(R.string.keyboard_layout_toggle_keyboard), true, game::toggleKeyboardController));
++
++        // List existing layouts
++        List<String> layoutIds = layoutMgr.getLayoutIds();
++        String activeId = layoutMgr.getActiveLayoutId();
++
++        for (String layoutId : layoutIds) {
++            String name = layoutMgr.getLayoutName(layoutId);
++            String label = layoutId.equals(activeId) ? "\u2713 " + name : "   " + name;
++            final String lid = layoutId;
++            options.add(new MenuOption(label, true, () -> {
++                game.switchKeyboardLayout(lid);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_switched), layoutMgr.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
++            }));
++        }
++
++        // Create new layout
++        options.add(new MenuOption("\u2795 " + getString(R.string.keyboard_layout_create), () -> {
++            hideMenu();
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_create), "", name -> {
++                String newId = layoutMgr.createLayout(name);
++                game.switchKeyboardLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Duplicate current layout
++        options.add(new MenuOption("\uD83D\uDD04 " + getString(R.string.keyboard_layout_duplicate), () -> {
++            hideMenu();
++            String currentName = layoutMgr.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_duplicate), currentName + " (2)", name -> {
++                String newId = layoutMgr.duplicateLayout(activeId, name);
++                game.switchKeyboardLayout(newId);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Rename current layout
++        options.add(new MenuOption("\u270F\uFE0F " + getString(R.string.keyboard_layout_rename), () -> {
++            hideMenu();
++            String currentName = layoutMgr.getLayoutName(activeId);
++            showLayoutNameInputDialog(getString(R.string.keyboard_layout_rename), currentName, name -> {
++                layoutMgr.renameLayout(activeId, name);
++                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_renamed), name), Toast.LENGTH_SHORT).show();
++            });
++        }));
++
++        // Delete current layout (only if not default)
++        if (!KeyboardLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
++            options.add(new MenuOption("\uD83D\uDDD1\uFE0F " + getString(R.string.keyboard_layout_delete), () -> {
++                hideMenu();
++                String currentName = layoutMgr.getLayoutName(activeId);
++                showDeleteConfirmDialog(currentName, () -> {
++                    layoutMgr.deleteLayout(activeId);
++                    game.switchKeyboardLayout(layoutMgr.getActiveLayoutId());
++                    Toast.makeText(game, String.format(getString(R.string.keyboard_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
++                });
++            }));
++        }
++
++        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
++
++        showMenuDialog(getString(R.string.game_menu_keyboard_layouts), options.toArray(new MenuOption[0]));
 +    }
 +
 +    private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {
@@ -209,6 +441,250 @@ index b818c84..9cc207f 100644
 +        void onNameEntered(String name);
 +    }
  }
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/GamepadLayoutManager.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/GamepadLayoutManager.java
+new file mode 100644
+index 0000000..5459e09
+--- /dev/null
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/GamepadLayoutManager.java
+@@ -0,0 +1,238 @@
++package com.limelight.binding.input.virtual_controller;
++
++import android.app.Activity;
++import android.content.Context;
++import android.content.SharedPreferences;
++
++import org.json.JSONArray;
++import org.json.JSONException;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++import java.util.UUID;
++
++/**
++ * Manages multiple gamepad layouts (CRUD operations).
++ * Each layout is stored in its own SharedPreferences file.
++ * Metadata (layout IDs, names, active layout) is stored in a separate SharedPreferences.
++ */
++public class GamepadLayoutManager {
++
++    private static final String META_PREFERENCE = "gamepad_layouts_meta";
++    private static final String LAYOUT_PREFERENCE_PREFIX = "gamepad_layout_";
++    private static final String KEY_LAYOUT_IDS = "layout_ids";
++    private static final String KEY_ACTIVE_LAYOUT_ID = "active_layout_id";
++    private static final String KEY_LAYOUT_NAME_PREFIX = "layout_name_";
++    private static final String KEY_MIGRATED = "migrated_from_legacy";
++
++    public static final String DEFAULT_LAYOUT_ID = "default";
++
++    private final Context context;
++
++    public GamepadLayoutManager(Context context) {
++        this.context = context;
++        ensureDefaultLayoutExists();
++    }
++
++    /**
++     * Ensures that the default layout exists in metadata.
++     */
++    private void ensureDefaultLayoutExists() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, null);
++
++        if (idsJson == null) {
++            // First run: create default layout entry
++            JSONArray ids = new JSONArray();
++            ids.put(DEFAULT_LAYOUT_ID);
++
++            meta.edit()
++                    .putString(KEY_LAYOUT_IDS, ids.toString())
++                    .putString(KEY_LAYOUT_NAME_PREFIX + DEFAULT_LAYOUT_ID, getDefaultLayoutName())
++                    .putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID)
++                    .apply();
++        }
++    }
++
++    private String getDefaultLayoutName() {
++        try {
++            return context.getString(
++                    context.getResources().getIdentifier(
++                            "gamepad_layout_default_name", "string", context.getPackageName()));
++        } catch (Exception e) {
++            return "Default";
++        }
++    }
++
++    private SharedPreferences getMetaPreferences() {
++        return context.getSharedPreferences(META_PREFERENCE, Activity.MODE_PRIVATE);
++    }
++
++    /**
++     * Returns the SharedPreferences name for the given layout ID.
++     */
++    public static String getLayoutPreferenceName(String layoutId) {
++        return LAYOUT_PREFERENCE_PREFIX + layoutId;
++    }
++
++    /**
++     * Returns all layout IDs in order.
++     */
++    public List<String> getLayoutIds() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, "[]");
++
++        List<String> ids = new ArrayList<>();
++        try {
++            JSONArray arr = new JSONArray(idsJson);
++            for (int i = 0; i < arr.length(); i++) {
++                ids.add(arr.getString(i));
++            }
++        } catch (JSONException e) {
++            e.printStackTrace();
++            ids.add(DEFAULT_LAYOUT_ID);
++        }
++        return ids;
++    }
++
++    /**
++     * Returns the display name for the given layout.
++     */
++    public String getLayoutName(String layoutId) {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_LAYOUT_NAME_PREFIX + layoutId, layoutId);
++    }
++
++    /**
++     * Returns the currently active layout ID.
++     */
++    public String getActiveLayoutId() {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++    }
++
++    /**
++     * Sets the active layout ID.
++     */
++    public void setActiveLayoutId(String layoutId) {
++        getMetaPreferences().edit()
++                .putString(KEY_ACTIVE_LAYOUT_ID, layoutId)
++                .apply();
++    }
++
++    /**
++     * Creates a new layout with the given name.
++     * The new layout starts with default element positions (no custom config = default layout).
++     * Returns the new layout ID.
++     */
++    public String createLayout(String name) {
++        String newId = UUID.randomUUID().toString().substring(0, 8);
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.add(newId);
++
++        JSONArray arr = new JSONArray(ids);
++        meta.edit()
++                .putString(KEY_LAYOUT_IDS, arr.toString())
++                .putString(KEY_LAYOUT_NAME_PREFIX + newId, name)
++                .apply();
++
++        return newId;
++    }
++
++    /**
++     * Duplicates an existing layout with a new name.
++     * Returns the new layout ID.
++     */
++    public String duplicateLayout(String sourceId, String newName) {
++        String newId = createLayout(newName);
++
++        // Copy all element configs from source to new layout
++        SharedPreferences sourcePref = context.getSharedPreferences(
++                getLayoutPreferenceName(sourceId), Activity.MODE_PRIVATE);
++        SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                getLayoutPreferenceName(newId), Activity.MODE_PRIVATE).edit();
++
++        Map<String, ?> allEntries = sourcePref.getAll();
++        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
++            if (entry.getValue() instanceof String) {
++                destEditor.putString(entry.getKey(), (String) entry.getValue());
++            }
++        }
++        destEditor.apply();
++
++        return newId;
++    }
++
++    /**
++     * Renames an existing layout.
++     */
++    public void renameLayout(String layoutId, String newName) {
++        getMetaPreferences().edit()
++                .putString(KEY_LAYOUT_NAME_PREFIX + layoutId, newName)
++                .apply();
++    }
++
++    /**
++     * Deletes a layout. Cannot delete the default layout.
++     * Returns true if the layout was deleted.
++     */
++    public boolean deleteLayout(String layoutId) {
++        if (DEFAULT_LAYOUT_ID.equals(layoutId)) {
++            return false;
++        }
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.remove(layoutId);
++
++        JSONArray arr = new JSONArray(ids);
++        SharedPreferences.Editor editor = meta.edit();
++        editor.putString(KEY_LAYOUT_IDS, arr.toString());
++        editor.remove(KEY_LAYOUT_NAME_PREFIX + layoutId);
++
++        // If the deleted layout was active, switch to default
++        if (layoutId.equals(getActiveLayoutId())) {
++            editor.putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++        }
++
++        editor.apply();
++
++        // Clear the layout's data
++        context.getSharedPreferences(getLayoutPreferenceName(layoutId), Activity.MODE_PRIVATE)
++                .edit().clear().apply();
++
++        return true;
++    }
++
++    /**
++     * Migrates legacy layout data from SharedPreferences("OSC") to the default layout.
++     * This is a one-time operation.
++     */
++    public void migrateFromLegacy(Context context) {
++        SharedPreferences meta = getMetaPreferences();
++        if (meta.getBoolean(KEY_MIGRATED, false)) {
++            return; // Already migrated
++        }
++
++        SharedPreferences legacyPref = context.getSharedPreferences(
++                VirtualControllerConfigurationLoader.OSC_PREFERENCE, Activity.MODE_PRIVATE);
++        Map<String, ?> legacyEntries = legacyPref.getAll();
++
++        if (!legacyEntries.isEmpty()) {
++            SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                    getLayoutPreferenceName(DEFAULT_LAYOUT_ID), Activity.MODE_PRIVATE).edit();
++
++            for (Map.Entry<String, ?> entry : legacyEntries.entrySet()) {
++                if (entry.getValue() instanceof String) {
++                    destEditor.putString(entry.getKey(), (String) entry.getValue());
++                }
++            }
++            destEditor.apply();
++        }
++
++        meta.edit().putBoolean(KEY_MIGRATED, true).apply();
++    }
++}
 diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
 index c0f7f09..e69396b 100644
 --- a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
@@ -284,286 +760,6 @@ index e543ed1..f01ca5e 100644
  
          for (VirtualControllerElement element : controller.getElements()) {
              String prefKey = ""+element.elementId;
-diff --git a/app/src/main/res/values-fr/strings.xml b/app/src/main/res/values-fr/strings.xml
-index 70947c2..9aaa0a0 100644
---- a/app/src/main/res/values-fr/strings.xml
-+++ b/app/src/main/res/values-fr/strings.xml
-@@ -590,4 +590,21 @@
-     <string name="title_checkbox_remember_zoom_pan">MĂ©moriser le zoom et le panoramique</string>
-     <string name="summary_checkbox_remember_zoom_pan">Enregistre la position de zoom et de panoramique entre les sessions.</string>
-     <string name="title_edit_profile">Modifier le profil</string>
-+
-+    <!-- Gamepad Layout Manager -->
-+    <string name="game_menu_gamepad_layouts">Dispositions Gamepad</string>
-+    <string name="gamepad_layout_create">CrĂ©er une nouvelle disposition</string>
-+    <string name="gamepad_layout_duplicate">Dupliquer la disposition actuelle</string>
-+    <string name="gamepad_layout_rename">Renommer la disposition actuelle</string>
-+    <string name="gamepad_layout_delete">Supprimer la disposition actuelle</string>
-+    <string name="gamepad_layout_name_hint">Nom de la disposition</string>
-+    <string name="gamepad_layout_default_name">Par dĂ©faut</string>
-+    <string name="gamepad_layout_cannot_delete_default">Impossible de supprimer la disposition par dĂ©faut</string>
-+    <string name="gamepad_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
-+    <string name="gamepad_layout_switched">Disposition changĂ©e : %s</string>
-+    <string name="gamepad_layout_created">Disposition crĂ©Ă©e : %s</string>
-+    <string name="gamepad_layout_deleted">Disposition supprimĂ©e : %s</string>
-+    <string name="gamepad_layout_renamed">RenommĂ© en : %s</string>
-+    <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
-+    <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
- </resources>
-diff --git a/app/src/main/res/values-vi/strings.xml b/app/src/main/res/values-vi/strings.xml
-index 0a7a002..cf85663 100644
---- a/app/src/main/res/values-vi/strings.xml
-+++ b/app/src/main/res/values-vi/strings.xml
-@@ -638,4 +638,21 @@
-     <!-- New Strings -->
-     <string name="title_enable_commit_text">Báº­t nháº­p commit-text (vuá»‘t/giá»ng nĂ³i)</string>
-     <string name="summary_enable_commit_text">Chuyá»ƒn tiáº¿p vÄƒn báº£n nhiá»u kĂ½ tá»± tá»« bĂ n phĂ­m áº£o (gĂµ vuá»‘t, gá»£i Ă½, nháº­p giá»ng nĂ³i). CĂ³ thá»ƒ gĂ¢y lá»—i vá»›i trĂ² chÆ¡i yĂªu cáº§u nháº­p tá»«ng phĂ­m.</string>
-+
-+    <!-- Gamepad Layout Manager -->
-+    <string name="game_menu_gamepad_layouts">Bá»‘ cá»¥c Gamepad</string>
-+    <string name="gamepad_layout_create">Táº¡o bá»‘ cá»¥c má»›i</string>
-+    <string name="gamepad_layout_duplicate">NhĂ¢n Ä‘Ă´i bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="gamepad_layout_rename">Äá»•i tĂªn bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="gamepad_layout_delete">XĂ³a bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="gamepad_layout_name_hint">TĂªn bá»‘ cá»¥c</string>
-+    <string name="gamepad_layout_default_name">Máº·c Ä‘á»‹nh</string>
-+    <string name="gamepad_layout_cannot_delete_default">KhĂ´ng thá»ƒ xĂ³a bá»‘ cá»¥c máº·c Ä‘á»‹nh</string>
-+    <string name="gamepad_layout_delete_confirm">XĂ³a bá»‘ cá»¥c \"%s\"?</string>
-+    <string name="gamepad_layout_switched">ÄĂ£ chuyá»ƒn sang bá»‘ cá»¥c: %s</string>
-+    <string name="gamepad_layout_created">ÄĂ£ táº¡o bá»‘ cá»¥c: %s</string>
-+    <string name="gamepad_layout_deleted">ÄĂ£ xĂ³a bá»‘ cá»¥c: %s</string>
-+    <string name="gamepad_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
-+    <string name="gamepad_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
-+    <string name="gamepad_layout_toggle_gamepad">Báº­t/Táº¯t Gamepad</string>
- </resources>
-\ No newline at end of file
-diff --git a/app/src/main/res/values-zh-rCN/strings.xml b/app/src/main/res/values-zh-rCN/strings.xml
-index 48fda73..f6ad92a 100644
---- a/app/src/main/res/values-zh-rCN/strings.xml
-+++ b/app/src/main/res/values-zh-rCN/strings.xml
-@@ -677,4 +677,21 @@
-     <string name="profile_manager_active_profile">å½“å‰é…ç½®ï¼%s</string>
-     <string name="rename">é‡å‘½å</string>
-     <string name="save">ä¿å­˜</string>
-+
-+    <!-- Gamepad Layout Manager -->
-+    <string name="game_menu_gamepad_layouts">æ‰‹æŸ„å¸ƒå±€</string>
-+    <string name="gamepad_layout_create">åˆ›å»ºæ–°å¸ƒå±€</string>
-+    <string name="gamepad_layout_duplicate">å¤åˆ¶å½“å‰å¸ƒå±€</string>
-+    <string name="gamepad_layout_rename">é‡å‘½åå½“å‰å¸ƒå±€</string>
-+    <string name="gamepad_layout_delete">åˆ é™¤å½“å‰å¸ƒå±€</string>
-+    <string name="gamepad_layout_name_hint">å¸ƒå±€åç§°</string>
-+    <string name="gamepad_layout_default_name">é»˜è®¤</string>
-+    <string name="gamepad_layout_cannot_delete_default">æ— æ³•åˆ é™¤é»˜è®¤å¸ƒå±€</string>
-+    <string name="gamepad_layout_delete_confirm">åˆ é™¤å¸ƒå±€ \"%s\"ï¼Ÿ</string>
-+    <string name="gamepad_layout_switched">å·²åˆ‡æ¢åˆ°å¸ƒå±€ï¼%s</string>
-+    <string name="gamepad_layout_created">å·²åˆ›å»ºå¸ƒå±€ï¼%s</string>
-+    <string name="gamepad_layout_deleted">å·²åˆ é™¤å¸ƒå±€ï¼%s</string>
-+    <string name="gamepad_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
-+    <string name="gamepad_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
-+    <string name="gamepad_layout_toggle_gamepad">æ˜¾ç¤º/éè—æ‰‹æŸ„</string>
- </resources>
-\ No newline at end of file
-diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 13b0a64..6119f93 100644
---- a/app/src/main/res/values/strings.xml
-+++ b/app/src/main/res/values/strings.xml
-@@ -701,4 +701,21 @@
-     <string name="profile_manager_active_profile">Active profile: %s</string>
-     <string name="rename">Rename</string>
-     <string name="save">Save</string>
-+
-+    <!-- Gamepad Layout Manager -->
-+    <string name="game_menu_gamepad_layouts">Gamepad Layouts</string>
-+    <string name="gamepad_layout_create">Create New Layout</string>
-+    <string name="gamepad_layout_duplicate">Duplicate Current Layout</string>
-+    <string name="gamepad_layout_rename">Rename Current Layout</string>
-+    <string name="gamepad_layout_delete">Delete Current Layout</string>
-+    <string name="gamepad_layout_name_hint">Layout name</string>
-+    <string name="gamepad_layout_default_name">Default</string>
-+    <string name="gamepad_layout_cannot_delete_default">Cannot delete the default layout</string>
-+    <string name="gamepad_layout_delete_confirm">Delete layout \"%s\"?</string>
-+    <string name="gamepad_layout_switched">Switched to layout: %s</string>
-+    <string name="gamepad_layout_created">Created layout: %s</string>
-+    <string name="gamepad_layout_deleted">Deleted layout: %s</string>
-+    <string name="gamepad_layout_renamed">Renamed to: %s</string>
-+    <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
-+    <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
- </resources>
-
-
-# ========================================
-# KEYBOARD MULTI LAYOUTS PATCH (2026-02-19)
-# ========================================
-
-diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
-index 3c6df56..cd90c58 100644
---- a/app/src/main/java/com/limelight/Game.java
-+++ b/app/src/main/java/com/limelight/Game.java
-@@ -25,6 +25,7 @@ import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
- import com.limelight.binding.input.virtual_controller.VirtualController;
- import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardController;
- import com.limelight.binding.input.virtual_controller.keyboard.KeyBoardLayoutController;
-+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
- import com.limelight.binding.video.CrashListener;
- import com.limelight.binding.video.MediaCodecDecoderRenderer;
- import com.limelight.binding.video.MediaCodecHelper;
-@@ -171,6 +172,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
-     private GamepadLayoutManager layoutManager;
- 
-     private KeyBoardController keyBoardController;
-+    private KeyboardLayoutManager keyboardLayoutManager;
- 
-     private KeyBoardLayoutController keyBoardLayoutController;
- 
-@@ -971,7 +973,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
-     }
- 
-     private void initKeyboardController(){
-+        if (keyboardLayoutManager == null) {
-+            keyboardLayoutManager = new KeyboardLayoutManager(this);
-+            keyboardLayoutManager.migrateFromLegacy(this);
-+        }
-         keyBoardController = new KeyBoardController(conn,(FrameLayout)rootView, this);
-+        keyBoardController.setCurrentLayoutId(keyboardLayoutManager.getActiveLayoutId());
-         keyBoardController.refreshLayout();
-         keyBoardController.show();
-     }
-@@ -1006,6 +1013,29 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
-         keyBoardController.toggleVisibility();
-     }
- 
-+    public void switchKeyboardLayout(String layoutId) {
-+        if (keyboardLayoutManager == null) {
-+            keyboardLayoutManager = new KeyboardLayoutManager(this);
-+            keyboardLayoutManager.migrateFromLegacy(this);
-+        }
-+        keyboardLayoutManager.setActiveLayoutId(layoutId);
-+        if (keyBoardController != null) {
-+            keyBoardController.setCurrentLayoutId(layoutId);
-+            keyBoardController.refreshLayout();
-+            keyBoardController.show();
-+        } else {
-+            initKeyboardController();
-+        }
-+    }
-+
-+    public KeyboardLayoutManager getKeyboardLayoutManager() {
-+        if (keyboardLayoutManager == null) {
-+            keyboardLayoutManager = new KeyboardLayoutManager(this);
-+            keyboardLayoutManager.migrateFromLegacy(this);
-+        }
-+        return keyboardLayoutManager;
-+    }
-+
-     public void toggleFullKeyboard() {
-         if (isOnExternalDisplay()) {
-             ExternalDisplayControlActivity.toggleFullKeyboard();
-diff --git a/app/src/main/java/com/limelight/GameMenu.java b/app/src/main/java/com/limelight/GameMenu.java
-index 9cc207f..8dbd6f4 100644
---- a/app/src/main/java/com/limelight/GameMenu.java
-+++ b/app/src/main/java/com/limelight/GameMenu.java
-@@ -18,6 +18,7 @@ import android.widget.Toast;
- import com.limelight.binding.input.GameInputDevice;
- import com.limelight.binding.input.KeyboardTranslator;
- import com.limelight.binding.input.virtual_controller.GamepadLayoutManager;
-+import com.limelight.binding.input.virtual_controller.keyboard.KeyboardLayoutManager;
- import com.limelight.preferences.PreferenceConfiguration;
- import com.limelight.utils.KeyConfigHelper;
- import com.limelight.utils.KeyMapper;
-@@ -314,7 +315,10 @@ public class GameMenu implements Game.GameMenuCallbacks {
- 
-         options.add(new MenuOption(getString(R.string.game_menu_toggle_virtual_keyboard_model), true, game::toggleFullKeyboard));
- 
--        options.add(new MenuOption(getString(R.string.game_menu_toggle_keyboard_model), true, game::toggleKeyboardController));
-+        options.add(new MenuOption(getString(R.string.game_menu_keyboard_layouts), true, () -> {
-+            hideMenu();
-+            showKeyboardLayoutMenu();
-+        }));
- 
-         if (game.allowChangeMouseMode) {
-             options.add(new MenuOption(getString(R.string.game_menu_select_mouse_mode), true, () -> game.selectMouseMode(dialogScreenContext)));
-@@ -422,6 +426,80 @@ public class GameMenu implements Game.GameMenuCallbacks {
-         showMenuDialog(getString(R.string.game_menu_gamepad_layouts), options.toArray(new MenuOption[0]));
-     }
- 
-+    private void showKeyboardLayoutMenu() {
-+        KeyboardLayoutManager layoutMgr = game.getKeyboardLayoutManager();
-+        if (layoutMgr == null) {
-+            return;
-+        }
-+
-+        List<MenuOption> options = new ArrayList<>();
-+
-+        // Toggle keyboard visibility
-+        options.add(new MenuOption(getString(R.string.keyboard_layout_toggle_keyboard), true, game::toggleKeyboardController));
-+
-+        // List existing layouts
-+        List<String> layoutIds = layoutMgr.getLayoutIds();
-+        String activeId = layoutMgr.getActiveLayoutId();
-+
-+        for (String layoutId : layoutIds) {
-+            String name = layoutMgr.getLayoutName(layoutId);
-+            String label = layoutId.equals(activeId) ? "\u2713 " + name : "   " + name;
-+            final String lid = layoutId;
-+            options.add(new MenuOption(label, true, () -> {
-+                game.switchKeyboardLayout(lid);
-+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_switched), layoutMgr.getLayoutName(lid)), Toast.LENGTH_SHORT).show();
-+            }));
-+        }
-+
-+        // Create new layout
-+        options.add(new MenuOption("\u2795 " + getString(R.string.keyboard_layout_create), () -> {
-+            hideMenu();
-+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_create), "", name -> {
-+                String newId = layoutMgr.createLayout(name);
-+                game.switchKeyboardLayout(newId);
-+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
-+            });
-+        }));
-+
-+        // Duplicate current layout
-+        options.add(new MenuOption("\uD83D\uDD04 " + getString(R.string.keyboard_layout_duplicate), () -> {
-+            hideMenu();
-+            String currentName = layoutMgr.getLayoutName(activeId);
-+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_duplicate), currentName + " (2)", name -> {
-+                String newId = layoutMgr.duplicateLayout(activeId, name);
-+                game.switchKeyboardLayout(newId);
-+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_created), name), Toast.LENGTH_SHORT).show();
-+            });
-+        }));
-+
-+        // Rename current layout
-+        options.add(new MenuOption("\u270F\uFE0F " + getString(R.string.keyboard_layout_rename), () -> {
-+            hideMenu();
-+            String currentName = layoutMgr.getLayoutName(activeId);
-+            showLayoutNameInputDialog(getString(R.string.keyboard_layout_rename), currentName, name -> {
-+                layoutMgr.renameLayout(activeId, name);
-+                Toast.makeText(game, String.format(getString(R.string.keyboard_layout_renamed), name), Toast.LENGTH_SHORT).show();
-+            });
-+        }));
-+
-+        // Delete current layout (only if not default)
-+        if (!KeyboardLayoutManager.DEFAULT_LAYOUT_ID.equals(activeId)) {
-+            options.add(new MenuOption("\uD83D\uDDD1\uFE0F " + getString(R.string.keyboard_layout_delete), () -> {
-+                hideMenu();
-+                String currentName = layoutMgr.getLayoutName(activeId);
-+                showDeleteConfirmDialog(currentName, () -> {
-+                    layoutMgr.deleteLayout(activeId);
-+                    game.switchKeyboardLayout(layoutMgr.getActiveLayoutId());
-+                    Toast.makeText(game, String.format(getString(R.string.keyboard_layout_deleted), currentName), Toast.LENGTH_SHORT).show();
-+                });
-+            }));
-+        }
-+
-+        options.add(new MenuOption(getString(R.string.game_menu_cancel), null));
-+
-+        showMenuDialog(getString(R.string.game_menu_keyboard_layouts), options.toArray(new MenuOption[0]));
-+    }
-+
-     private void showLayoutNameInputDialog(String title, String defaultValue, LayoutNameCallback callback) {
-         int themeResId = game.getApplicationInfo().theme;
-         Context themedContext = new ContextThemeWrapper(dialogScreenContext, themeResId);
 diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
 index 37726a2..c4088c5 100644
 --- a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
@@ -663,89 +859,403 @@ index 760352d..d3bf92c 100644
  
          for (keyBoardVirtualControllerElement element : controller.getElements()) {
              String prefKey = "" + element.elementId;
+diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyboardLayoutManager.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyboardLayoutManager.java
+new file mode 100644
+index 0000000..a9938e6
+--- /dev/null
++++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyboardLayoutManager.java
+@@ -0,0 +1,240 @@
++package com.limelight.binding.input.virtual_controller.keyboard;
++
++import android.app.Activity;
++import android.content.Context;
++import android.content.SharedPreferences;
++
++import org.json.JSONArray;
++import org.json.JSONException;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++import java.util.UUID;
++
++/**
++ * Manages multiple keyboard layouts for special keys (CRUD operations).
++ * Each layout is stored in its own SharedPreferences file.
++ * Metadata (layout IDs, names, active layout) is stored in a separate SharedPreferences.
++ */
++public class KeyboardLayoutManager {
++
++    private static final String META_PREFERENCE = "keyboard_layouts_meta";
++    private static final String LAYOUT_PREFERENCE_PREFIX = "keyboard_layout_";
++    private static final String KEY_LAYOUT_IDS = "layout_ids";
++    private static final String KEY_ACTIVE_LAYOUT_ID = "active_layout_id";
++    private static final String KEY_LAYOUT_NAME_PREFIX = "layout_name_";
++    private static final String KEY_MIGRATED = "migrated_from_legacy";
++
++    public static final String DEFAULT_LAYOUT_ID = "default";
++
++    private final Context context;
++
++    public KeyboardLayoutManager(Context context) {
++        this.context = context;
++        ensureDefaultLayoutExists();
++    }
++
++    /**
++     * Ensures that the default layout exists in metadata.
++     */
++    private void ensureDefaultLayoutExists() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, null);
++
++        if (idsJson == null) {
++            JSONArray ids = new JSONArray();
++            ids.put(DEFAULT_LAYOUT_ID);
++
++            meta.edit()
++                    .putString(KEY_LAYOUT_IDS, ids.toString())
++                    .putString(KEY_LAYOUT_NAME_PREFIX + DEFAULT_LAYOUT_ID, getDefaultLayoutName())
++                    .putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID)
++                    .apply();
++        }
++    }
++
++    private String getDefaultLayoutName() {
++        try {
++            return context.getString(
++                    context.getResources().getIdentifier(
++                            "keyboard_layout_default_name", "string", context.getPackageName()));
++        } catch (Exception e) {
++            return "Default";
++        }
++    }
++
++    private SharedPreferences getMetaPreferences() {
++        return context.getSharedPreferences(META_PREFERENCE, Activity.MODE_PRIVATE);
++    }
++
++    /**
++     * Returns the SharedPreferences name for the given layout ID.
++     */
++    public static String getLayoutPreferenceName(String layoutId) {
++        return LAYOUT_PREFERENCE_PREFIX + layoutId;
++    }
++
++    /**
++     * Returns all layout IDs in order.
++     */
++    public List<String> getLayoutIds() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, "[]");
++
++        List<String> ids = new ArrayList<>();
++        try {
++            JSONArray arr = new JSONArray(idsJson);
++            for (int i = 0; i < arr.length(); i++) {
++                ids.add(arr.getString(i));
++            }
++        } catch (JSONException e) {
++            e.printStackTrace();
++            ids.add(DEFAULT_LAYOUT_ID);
++        }
++        return ids;
++    }
++
++    /**
++     * Returns the display name for the given layout.
++     */
++    public String getLayoutName(String layoutId) {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_LAYOUT_NAME_PREFIX + layoutId, layoutId);
++    }
++
++    /**
++     * Returns the currently active layout ID.
++     */
++    public String getActiveLayoutId() {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++    }
++
++    /**
++     * Sets the active layout ID.
++     */
++    public void setActiveLayoutId(String layoutId) {
++        getMetaPreferences().edit()
++                .putString(KEY_ACTIVE_LAYOUT_ID, layoutId)
++                .apply();
++    }
++
++    /**
++     * Creates a new layout with the given name.
++     * Returns the new layout ID.
++     */
++    public String createLayout(String name) {
++        String newId = UUID.randomUUID().toString().substring(0, 8);
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.add(newId);
++
++        JSONArray arr = new JSONArray(ids);
++        meta.edit()
++                .putString(KEY_LAYOUT_IDS, arr.toString())
++                .putString(KEY_LAYOUT_NAME_PREFIX + newId, name)
++                .apply();
++
++        return newId;
++    }
++
++    /**
++     * Duplicates an existing layout with a new name.
++     * Returns the new layout ID.
++     */
++    public String duplicateLayout(String sourceId, String newName) {
++        String newId = createLayout(newName);
++
++        SharedPreferences sourcePref = context.getSharedPreferences(
++                getLayoutPreferenceName(sourceId), Activity.MODE_PRIVATE);
++        SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                getLayoutPreferenceName(newId), Activity.MODE_PRIVATE).edit();
++
++        Map<String, ?> allEntries = sourcePref.getAll();
++        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
++            if (entry.getValue() instanceof String) {
++                destEditor.putString(entry.getKey(), (String) entry.getValue());
++            }
++        }
++        destEditor.apply();
++
++        return newId;
++    }
++
++    /**
++     * Renames an existing layout.
++     */
++    public void renameLayout(String layoutId, String newName) {
++        getMetaPreferences().edit()
++                .putString(KEY_LAYOUT_NAME_PREFIX + layoutId, newName)
++                .apply();
++    }
++
++    /**
++     * Deletes a layout. Cannot delete the default layout.
++     * Returns true if the layout was deleted.
++     */
++    public boolean deleteLayout(String layoutId) {
++        if (DEFAULT_LAYOUT_ID.equals(layoutId)) {
++            return false;
++        }
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.remove(layoutId);
++
++        JSONArray arr = new JSONArray(ids);
++        SharedPreferences.Editor editor = meta.edit();
++        editor.putString(KEY_LAYOUT_IDS, arr.toString());
++        editor.remove(KEY_LAYOUT_NAME_PREFIX + layoutId);
++
++        // If the deleted layout was active, switch to default
++        if (layoutId.equals(getActiveLayoutId())) {
++            editor.putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++        }
++
++        editor.apply();
++
++        // Clear the layout's data
++        context.getSharedPreferences(getLayoutPreferenceName(layoutId), Activity.MODE_PRIVATE)
++                .edit().clear().apply();
++
++        return true;
++    }
++
++    /**
++     * Migrates legacy layout data from SharedPreferences("OSC_Keyboard") to the default layout.
++     * This is a one-time operation.
++     */
++    public void migrateFromLegacy(Context context) {
++        SharedPreferences meta = getMetaPreferences();
++        if (meta.getBoolean(KEY_MIGRATED, false)) {
++            return;
++        }
++
++        // Read legacy preference name
++        String legacyName = androidx.preference.PreferenceManager
++                .getDefaultSharedPreferences(context)
++                .getString(KeyBoardControllerConfigurationLoader.OSC_PREFERENCE,
++                        KeyBoardControllerConfigurationLoader.OSC_PREFERENCE_VALUE);
++
++        SharedPreferences legacyPref = context.getSharedPreferences(legacyName, Activity.MODE_PRIVATE);
++        Map<String, ?> legacyEntries = legacyPref.getAll();
++
++        if (!legacyEntries.isEmpty()) {
++            SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                    getLayoutPreferenceName(DEFAULT_LAYOUT_ID), Activity.MODE_PRIVATE).edit();
++
++            for (Map.Entry<String, ?> entry : legacyEntries.entrySet()) {
++                if (entry.getValue() instanceof String) {
++                    destEditor.putString(entry.getKey(), (String) entry.getValue());
++                }
++            }
++            destEditor.apply();
++        }
++
++        meta.edit().putBoolean(KEY_MIGRATED, true).apply();
++    }
++}
 diff --git a/app/src/main/res/values-fr/strings.xml b/app/src/main/res/values-fr/strings.xml
-index 9aaa0a0..1067aa6 100644
+index 70947c2..1067aa6 100644
 --- a/app/src/main/res/values-fr/strings.xml
 +++ b/app/src/main/res/values-fr/strings.xml
-@@ -607,4 +607,20 @@
-     <string name="gamepad_layout_renamed">RenommĂ© en : %s</string>
-     <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
-     <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
+@@ -590,4 +590,37 @@
+     <string name="title_checkbox_remember_zoom_pan">Mémoriser le zoom et le panoramique</string>
+     <string name="summary_checkbox_remember_zoom_pan">Enregistre la position de zoom et de panoramique entre les sessions.</string>
+     <string name="title_edit_profile">Modifier le profil</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Dispositions Gamepad</string>
++    <string name="gamepad_layout_create">Créer une nouvelle disposition</string>
++    <string name="gamepad_layout_duplicate">Dupliquer la disposition actuelle</string>
++    <string name="gamepad_layout_rename">Renommer la disposition actuelle</string>
++    <string name="gamepad_layout_delete">Supprimer la disposition actuelle</string>
++    <string name="gamepad_layout_name_hint">Nom de la disposition</string>
++    <string name="gamepad_layout_default_name">Par défaut</string>
++    <string name="gamepad_layout_cannot_delete_default">Impossible de supprimer la disposition par défaut</string>
++    <string name="gamepad_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
++    <string name="gamepad_layout_switched">Disposition changée : %s</string>
++    <string name="gamepad_layout_created">Disposition créée : %s</string>
++    <string name="gamepad_layout_deleted">Disposition supprimée : %s</string>
++    <string name="gamepad_layout_renamed">Renommé en : %s</string>
++    <string name="gamepad_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
++    <string name="gamepad_layout_toggle_gamepad">Basculer le Gamepad</string>
 +
 +    <!-- Keyboard Layout Manager -->
 +    <string name="game_menu_keyboard_layouts">Dispositions Clavier</string>
-+    <string name="keyboard_layout_create">CrĂ©er une nouvelle disposition</string>
++    <string name="keyboard_layout_create">Créer une nouvelle disposition</string>
 +    <string name="keyboard_layout_duplicate">Dupliquer la disposition actuelle</string>
 +    <string name="keyboard_layout_rename">Renommer la disposition actuelle</string>
 +    <string name="keyboard_layout_delete">Supprimer la disposition actuelle</string>
-+    <string name="keyboard_layout_default_name">Par dĂ©faut</string>
++    <string name="keyboard_layout_default_name">Par défaut</string>
 +    <string name="keyboard_layout_delete_confirm">Supprimer la disposition \"%s\" ?</string>
-+    <string name="keyboard_layout_switched">Disposition changĂ©e : %s</string>
-+    <string name="keyboard_layout_created">Disposition crĂ©Ă©e : %s</string>
-+    <string name="keyboard_layout_deleted">Disposition supprimĂ©e : %s</string>
-+    <string name="keyboard_layout_renamed">RenommĂ© en : %s</string>
-+    <string name="keyboard_layout_name_empty">Le nom de la disposition ne peut pas Ăªtre vide</string>
++    <string name="keyboard_layout_switched">Disposition changée : %s</string>
++    <string name="keyboard_layout_created">Disposition créée : %s</string>
++    <string name="keyboard_layout_deleted">Disposition supprimée : %s</string>
++    <string name="keyboard_layout_renamed">Renommé en : %s</string>
++    <string name="keyboard_layout_name_empty">Le nom de la disposition ne peut pas être vide</string>
 +    <string name="keyboard_layout_toggle_keyboard">Basculer le Clavier</string>
  </resources>
 +
 diff --git a/app/src/main/res/values-vi/strings.xml b/app/src/main/res/values-vi/strings.xml
-index cf85663..591515c 100644
+index 0a7a002..591515c 100644
 --- a/app/src/main/res/values-vi/strings.xml
 +++ b/app/src/main/res/values-vi/strings.xml
-@@ -655,4 +655,19 @@
-     <string name="gamepad_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
-     <string name="gamepad_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
-     <string name="gamepad_layout_toggle_gamepad">Báº­t/Táº¯t Gamepad</string>
+@@ -638,4 +638,36 @@
+     <!-- New Strings -->
+     <string name="title_enable_commit_text">Bật nhập commit-text (vuốt/giọng nói)</string>
+     <string name="summary_enable_commit_text">Chuyển tiếp văn bản nhiều ký tự từ bàn phím ảo (gõ vuốt, gợi ý, nhập giọng nói). Có thể gây lỗi với trò chơi yêu cầu nhập từng phím.</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Bố cục Gamepad</string>
++    <string name="gamepad_layout_create">Tạo bố cục mới</string>
++    <string name="gamepad_layout_duplicate">Nhân đôi bố cục hiện tại</string>
++    <string name="gamepad_layout_rename">Đổi tên bố cục hiện tại</string>
++    <string name="gamepad_layout_delete">Xóa bố cục hiện tại</string>
++    <string name="gamepad_layout_name_hint">Tên bố cục</string>
++    <string name="gamepad_layout_default_name">Mặc định</string>
++    <string name="gamepad_layout_cannot_delete_default">Không thể xóa bố cục mặc định</string>
++    <string name="gamepad_layout_delete_confirm">Xóa bố cục \"%s\"?</string>
++    <string name="gamepad_layout_switched">Đã chuyển sang bố cục: %s</string>
++    <string name="gamepad_layout_created">Đã tạo bố cục: %s</string>
++    <string name="gamepad_layout_deleted">Đã xóa bố cục: %s</string>
++    <string name="gamepad_layout_renamed">Đã đổi tên thành: %s</string>
++    <string name="gamepad_layout_name_empty">Tên bố cục không được để trống</string>
++    <string name="gamepad_layout_toggle_gamepad">Bật/Tắt Gamepad</string>
 +
 +    <!-- Keyboard Layout Manager -->
-+    <string name="game_menu_keyboard_layouts">Bá»‘ cá»¥c Keyboard</string>
-+    <string name="keyboard_layout_create">Táº¡o bá»‘ cá»¥c má»›i</string>
-+    <string name="keyboard_layout_duplicate">NhĂ¢n Ä‘Ă´i bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="keyboard_layout_rename">Äá»•i tĂªn bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="keyboard_layout_delete">XĂ³a bá»‘ cá»¥c hiá»‡n táº¡i</string>
-+    <string name="keyboard_layout_default_name">Máº·c Ä‘á»‹nh</string>
-+    <string name="keyboard_layout_delete_confirm">XĂ³a bá»‘ cá»¥c \"%s\"?</string>
-+    <string name="keyboard_layout_switched">ÄĂ£ chuyá»ƒn sang bá»‘ cá»¥c: %s</string>
-+    <string name="keyboard_layout_created">ÄĂ£ táº¡o bá»‘ cá»¥c: %s</string>
-+    <string name="keyboard_layout_deleted">ÄĂ£ xĂ³a bá»‘ cá»¥c: %s</string>
-+    <string name="keyboard_layout_renamed">ÄĂ£ Ä‘á»•i tĂªn thĂ nh: %s</string>
-+    <string name="keyboard_layout_name_empty">TĂªn bá»‘ cá»¥c khĂ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng</string>
-+    <string name="keyboard_layout_toggle_keyboard">Báº­t/Táº¯t Keyboard</string>
++    <string name="game_menu_keyboard_layouts">Bố cục Keyboard</string>
++    <string name="keyboard_layout_create">Tạo bố cục mới</string>
++    <string name="keyboard_layout_duplicate">Nhân đôi bố cục hiện tại</string>
++    <string name="keyboard_layout_rename">Đổi tên bố cục hiện tại</string>
++    <string name="keyboard_layout_delete">Xóa bố cục hiện tại</string>
++    <string name="keyboard_layout_default_name">Mặc định</string>
++    <string name="keyboard_layout_delete_confirm">Xóa bố cục \"%s\"?</string>
++    <string name="keyboard_layout_switched">Đã chuyển sang bố cục: %s</string>
++    <string name="keyboard_layout_created">Đã tạo bố cục: %s</string>
++    <string name="keyboard_layout_deleted">Đã xóa bố cục: %s</string>
++    <string name="keyboard_layout_renamed">Đã đổi tên thành: %s</string>
++    <string name="keyboard_layout_name_empty">Tên bố cục không được để trống</string>
++    <string name="keyboard_layout_toggle_keyboard">Bật/Tắt Keyboard</string>
  </resources>
 \ No newline at end of file
 diff --git a/app/src/main/res/values-zh-rCN/strings.xml b/app/src/main/res/values-zh-rCN/strings.xml
-index f6ad92a..ed585eb 100644
+index 48fda73..ed585eb 100644
 --- a/app/src/main/res/values-zh-rCN/strings.xml
 +++ b/app/src/main/res/values-zh-rCN/strings.xml
-@@ -694,4 +694,19 @@
-     <string name="gamepad_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
-     <string name="gamepad_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
-     <string name="gamepad_layout_toggle_gamepad">æ˜¾ç¤º/éè—æ‰‹æŸ„</string>
+@@ -677,4 +677,36 @@
+     <string name="profile_manager_active_profile">当前配置：%s</string>
+     <string name="rename">重命名</string>
+     <string name="save">保存</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">手柄布局</string>
++    <string name="gamepad_layout_create">创建新布局</string>
++    <string name="gamepad_layout_duplicate">复制当前布局</string>
++    <string name="gamepad_layout_rename">重命名当前布局</string>
++    <string name="gamepad_layout_delete">删除当前布局</string>
++    <string name="gamepad_layout_name_hint">布局名称</string>
++    <string name="gamepad_layout_default_name">默认</string>
++    <string name="gamepad_layout_cannot_delete_default">无法删除默认布局</string>
++    <string name="gamepad_layout_delete_confirm">删除布局 \"%s\"？</string>
++    <string name="gamepad_layout_switched">已切换到布局：%s</string>
++    <string name="gamepad_layout_created">已创建布局：%s</string>
++    <string name="gamepad_layout_deleted">已删除布局：%s</string>
++    <string name="gamepad_layout_renamed">已重命名为：%s</string>
++    <string name="gamepad_layout_name_empty">布局名称不能为空</string>
++    <string name="gamepad_layout_toggle_gamepad">显示/隐藏手柄</string>
 +
 +    <!-- Keyboard Layout Manager -->
-+    <string name="game_menu_keyboard_layouts">é”®ç›˜å¸ƒå±€</string>
-+    <string name="keyboard_layout_create">åˆ›å»ºæ–°å¸ƒå±€</string>
-+    <string name="keyboard_layout_duplicate">å¤åˆ¶å½“å‰å¸ƒå±€</string>
-+    <string name="keyboard_layout_rename">é‡å‘½åå½“å‰å¸ƒå±€</string>
-+    <string name="keyboard_layout_delete">åˆ é™¤å½“å‰å¸ƒå±€</string>
-+    <string name="keyboard_layout_default_name">é»˜è®¤</string>
-+    <string name="keyboard_layout_delete_confirm">åˆ é™¤å¸ƒå±€ \"%s\"ï¼Ÿ</string>
-+    <string name="keyboard_layout_switched">å·²åˆ‡æ¢åˆ°å¸ƒå±€ï¼%s</string>
-+    <string name="keyboard_layout_created">å·²åˆ›å»ºå¸ƒå±€ï¼%s</string>
-+    <string name="keyboard_layout_deleted">å·²åˆ é™¤å¸ƒå±€ï¼%s</string>
-+    <string name="keyboard_layout_renamed">å·²é‡å‘½åä¸ºï¼%s</string>
-+    <string name="keyboard_layout_name_empty">å¸ƒå±€åç§°ä¸èƒ½ä¸ºç©º</string>
-+    <string name="keyboard_layout_toggle_keyboard">æ˜¾ç¤º/éè—é”®ç›˜</string>
++    <string name="game_menu_keyboard_layouts">键盘布局</string>
++    <string name="keyboard_layout_create">创建新布局</string>
++    <string name="keyboard_layout_duplicate">复制当前布局</string>
++    <string name="keyboard_layout_rename">重命名当前布局</string>
++    <string name="keyboard_layout_delete">删除当前布局</string>
++    <string name="keyboard_layout_default_name">默认</string>
++    <string name="keyboard_layout_delete_confirm">删除布局 \"%s\"？</string>
++    <string name="keyboard_layout_switched">已切换到布局：%s</string>
++    <string name="keyboard_layout_created">已创建布局：%s</string>
++    <string name="keyboard_layout_deleted">已删除布局：%s</string>
++    <string name="keyboard_layout_renamed">已重命名为：%s</string>
++    <string name="keyboard_layout_name_empty">布局名称不能为空</string>
++    <string name="keyboard_layout_toggle_keyboard">显示/隐藏键盘</string>
  </resources>
 \ No newline at end of file
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 6119f93..1a1ba74 100644
+index 13b0a64..1a1ba74 100644
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
-@@ -718,4 +718,19 @@
-     <string name="gamepad_layout_renamed">Renamed to: %s</string>
-     <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
-     <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
+@@ -701,4 +701,36 @@
+     <string name="profile_manager_active_profile">Active profile: %s</string>
+     <string name="rename">Rename</string>
+     <string name="save">Save</string>
++
++    <!-- Gamepad Layout Manager -->
++    <string name="game_menu_gamepad_layouts">Gamepad Layouts</string>
++    <string name="gamepad_layout_create">Create New Layout</string>
++    <string name="gamepad_layout_duplicate">Duplicate Current Layout</string>
++    <string name="gamepad_layout_rename">Rename Current Layout</string>
++    <string name="gamepad_layout_delete">Delete Current Layout</string>
++    <string name="gamepad_layout_name_hint">Layout name</string>
++    <string name="gamepad_layout_default_name">Default</string>
++    <string name="gamepad_layout_cannot_delete_default">Cannot delete the default layout</string>
++    <string name="gamepad_layout_delete_confirm">Delete layout \"%s\"?</string>
++    <string name="gamepad_layout_switched">Switched to layout: %s</string>
++    <string name="gamepad_layout_created">Created layout: %s</string>
++    <string name="gamepad_layout_deleted">Deleted layout: %s</string>
++    <string name="gamepad_layout_renamed">Renamed to: %s</string>
++    <string name="gamepad_layout_name_empty">Layout name cannot be empty</string>
++    <string name="gamepad_layout_toggle_gamepad">Toggle Gamepad</string>
 +
 +    <!-- Keyboard Layout Manager -->
 +    <string name="game_menu_keyboard_layouts">Keyboard Layouts</string>
@@ -762,3 +1272,493 @@ index 6119f93..1a1ba74 100644
 +    <string name="keyboard_layout_name_empty">Layout name cannot be empty</string>
 +    <string name="keyboard_layout_toggle_keyboard">Toggle Keyboard</string>
  </resources>
+diff --git a/patch/file/GamepadLayoutManager.java b/patch/file/GamepadLayoutManager.java
+new file mode 100644
+index 0000000..5459e09
+--- /dev/null
++++ b/patch/file/GamepadLayoutManager.java
+@@ -0,0 +1,238 @@
++package com.limelight.binding.input.virtual_controller;
++
++import android.app.Activity;
++import android.content.Context;
++import android.content.SharedPreferences;
++
++import org.json.JSONArray;
++import org.json.JSONException;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++import java.util.UUID;
++
++/**
++ * Manages multiple gamepad layouts (CRUD operations).
++ * Each layout is stored in its own SharedPreferences file.
++ * Metadata (layout IDs, names, active layout) is stored in a separate SharedPreferences.
++ */
++public class GamepadLayoutManager {
++
++    private static final String META_PREFERENCE = "gamepad_layouts_meta";
++    private static final String LAYOUT_PREFERENCE_PREFIX = "gamepad_layout_";
++    private static final String KEY_LAYOUT_IDS = "layout_ids";
++    private static final String KEY_ACTIVE_LAYOUT_ID = "active_layout_id";
++    private static final String KEY_LAYOUT_NAME_PREFIX = "layout_name_";
++    private static final String KEY_MIGRATED = "migrated_from_legacy";
++
++    public static final String DEFAULT_LAYOUT_ID = "default";
++
++    private final Context context;
++
++    public GamepadLayoutManager(Context context) {
++        this.context = context;
++        ensureDefaultLayoutExists();
++    }
++
++    /**
++     * Ensures that the default layout exists in metadata.
++     */
++    private void ensureDefaultLayoutExists() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, null);
++
++        if (idsJson == null) {
++            // First run: create default layout entry
++            JSONArray ids = new JSONArray();
++            ids.put(DEFAULT_LAYOUT_ID);
++
++            meta.edit()
++                    .putString(KEY_LAYOUT_IDS, ids.toString())
++                    .putString(KEY_LAYOUT_NAME_PREFIX + DEFAULT_LAYOUT_ID, getDefaultLayoutName())
++                    .putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID)
++                    .apply();
++        }
++    }
++
++    private String getDefaultLayoutName() {
++        try {
++            return context.getString(
++                    context.getResources().getIdentifier(
++                            "gamepad_layout_default_name", "string", context.getPackageName()));
++        } catch (Exception e) {
++            return "Default";
++        }
++    }
++
++    private SharedPreferences getMetaPreferences() {
++        return context.getSharedPreferences(META_PREFERENCE, Activity.MODE_PRIVATE);
++    }
++
++    /**
++     * Returns the SharedPreferences name for the given layout ID.
++     */
++    public static String getLayoutPreferenceName(String layoutId) {
++        return LAYOUT_PREFERENCE_PREFIX + layoutId;
++    }
++
++    /**
++     * Returns all layout IDs in order.
++     */
++    public List<String> getLayoutIds() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, "[]");
++
++        List<String> ids = new ArrayList<>();
++        try {
++            JSONArray arr = new JSONArray(idsJson);
++            for (int i = 0; i < arr.length(); i++) {
++                ids.add(arr.getString(i));
++            }
++        } catch (JSONException e) {
++            e.printStackTrace();
++            ids.add(DEFAULT_LAYOUT_ID);
++        }
++        return ids;
++    }
++
++    /**
++     * Returns the display name for the given layout.
++     */
++    public String getLayoutName(String layoutId) {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_LAYOUT_NAME_PREFIX + layoutId, layoutId);
++    }
++
++    /**
++     * Returns the currently active layout ID.
++     */
++    public String getActiveLayoutId() {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++    }
++
++    /**
++     * Sets the active layout ID.
++     */
++    public void setActiveLayoutId(String layoutId) {
++        getMetaPreferences().edit()
++                .putString(KEY_ACTIVE_LAYOUT_ID, layoutId)
++                .apply();
++    }
++
++    /**
++     * Creates a new layout with the given name.
++     * The new layout starts with default element positions (no custom config = default layout).
++     * Returns the new layout ID.
++     */
++    public String createLayout(String name) {
++        String newId = UUID.randomUUID().toString().substring(0, 8);
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.add(newId);
++
++        JSONArray arr = new JSONArray(ids);
++        meta.edit()
++                .putString(KEY_LAYOUT_IDS, arr.toString())
++                .putString(KEY_LAYOUT_NAME_PREFIX + newId, name)
++                .apply();
++
++        return newId;
++    }
++
++    /**
++     * Duplicates an existing layout with a new name.
++     * Returns the new layout ID.
++     */
++    public String duplicateLayout(String sourceId, String newName) {
++        String newId = createLayout(newName);
++
++        // Copy all element configs from source to new layout
++        SharedPreferences sourcePref = context.getSharedPreferences(
++                getLayoutPreferenceName(sourceId), Activity.MODE_PRIVATE);
++        SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                getLayoutPreferenceName(newId), Activity.MODE_PRIVATE).edit();
++
++        Map<String, ?> allEntries = sourcePref.getAll();
++        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
++            if (entry.getValue() instanceof String) {
++                destEditor.putString(entry.getKey(), (String) entry.getValue());
++            }
++        }
++        destEditor.apply();
++
++        return newId;
++    }
++
++    /**
++     * Renames an existing layout.
++     */
++    public void renameLayout(String layoutId, String newName) {
++        getMetaPreferences().edit()
++                .putString(KEY_LAYOUT_NAME_PREFIX + layoutId, newName)
++                .apply();
++    }
++
++    /**
++     * Deletes a layout. Cannot delete the default layout.
++     * Returns true if the layout was deleted.
++     */
++    public boolean deleteLayout(String layoutId) {
++        if (DEFAULT_LAYOUT_ID.equals(layoutId)) {
++            return false;
++        }
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.remove(layoutId);
++
++        JSONArray arr = new JSONArray(ids);
++        SharedPreferences.Editor editor = meta.edit();
++        editor.putString(KEY_LAYOUT_IDS, arr.toString());
++        editor.remove(KEY_LAYOUT_NAME_PREFIX + layoutId);
++
++        // If the deleted layout was active, switch to default
++        if (layoutId.equals(getActiveLayoutId())) {
++            editor.putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++        }
++
++        editor.apply();
++
++        // Clear the layout's data
++        context.getSharedPreferences(getLayoutPreferenceName(layoutId), Activity.MODE_PRIVATE)
++                .edit().clear().apply();
++
++        return true;
++    }
++
++    /**
++     * Migrates legacy layout data from SharedPreferences("OSC") to the default layout.
++     * This is a one-time operation.
++     */
++    public void migrateFromLegacy(Context context) {
++        SharedPreferences meta = getMetaPreferences();
++        if (meta.getBoolean(KEY_MIGRATED, false)) {
++            return; // Already migrated
++        }
++
++        SharedPreferences legacyPref = context.getSharedPreferences(
++                VirtualControllerConfigurationLoader.OSC_PREFERENCE, Activity.MODE_PRIVATE);
++        Map<String, ?> legacyEntries = legacyPref.getAll();
++
++        if (!legacyEntries.isEmpty()) {
++            SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                    getLayoutPreferenceName(DEFAULT_LAYOUT_ID), Activity.MODE_PRIVATE).edit();
++
++            for (Map.Entry<String, ?> entry : legacyEntries.entrySet()) {
++                if (entry.getValue() instanceof String) {
++                    destEditor.putString(entry.getKey(), (String) entry.getValue());
++                }
++            }
++            destEditor.apply();
++        }
++
++        meta.edit().putBoolean(KEY_MIGRATED, true).apply();
++    }
++}
+diff --git a/patch/file/KeyboardLayoutManager.java b/patch/file/KeyboardLayoutManager.java
+new file mode 100644
+index 0000000..a9938e6
+--- /dev/null
++++ b/patch/file/KeyboardLayoutManager.java
+@@ -0,0 +1,240 @@
++package com.limelight.binding.input.virtual_controller.keyboard;
++
++import android.app.Activity;
++import android.content.Context;
++import android.content.SharedPreferences;
++
++import org.json.JSONArray;
++import org.json.JSONException;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++import java.util.UUID;
++
++/**
++ * Manages multiple keyboard layouts for special keys (CRUD operations).
++ * Each layout is stored in its own SharedPreferences file.
++ * Metadata (layout IDs, names, active layout) is stored in a separate SharedPreferences.
++ */
++public class KeyboardLayoutManager {
++
++    private static final String META_PREFERENCE = "keyboard_layouts_meta";
++    private static final String LAYOUT_PREFERENCE_PREFIX = "keyboard_layout_";
++    private static final String KEY_LAYOUT_IDS = "layout_ids";
++    private static final String KEY_ACTIVE_LAYOUT_ID = "active_layout_id";
++    private static final String KEY_LAYOUT_NAME_PREFIX = "layout_name_";
++    private static final String KEY_MIGRATED = "migrated_from_legacy";
++
++    public static final String DEFAULT_LAYOUT_ID = "default";
++
++    private final Context context;
++
++    public KeyboardLayoutManager(Context context) {
++        this.context = context;
++        ensureDefaultLayoutExists();
++    }
++
++    /**
++     * Ensures that the default layout exists in metadata.
++     */
++    private void ensureDefaultLayoutExists() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, null);
++
++        if (idsJson == null) {
++            JSONArray ids = new JSONArray();
++            ids.put(DEFAULT_LAYOUT_ID);
++
++            meta.edit()
++                    .putString(KEY_LAYOUT_IDS, ids.toString())
++                    .putString(KEY_LAYOUT_NAME_PREFIX + DEFAULT_LAYOUT_ID, getDefaultLayoutName())
++                    .putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID)
++                    .apply();
++        }
++    }
++
++    private String getDefaultLayoutName() {
++        try {
++            return context.getString(
++                    context.getResources().getIdentifier(
++                            "keyboard_layout_default_name", "string", context.getPackageName()));
++        } catch (Exception e) {
++            return "Default";
++        }
++    }
++
++    private SharedPreferences getMetaPreferences() {
++        return context.getSharedPreferences(META_PREFERENCE, Activity.MODE_PRIVATE);
++    }
++
++    /**
++     * Returns the SharedPreferences name for the given layout ID.
++     */
++    public static String getLayoutPreferenceName(String layoutId) {
++        return LAYOUT_PREFERENCE_PREFIX + layoutId;
++    }
++
++    /**
++     * Returns all layout IDs in order.
++     */
++    public List<String> getLayoutIds() {
++        SharedPreferences meta = getMetaPreferences();
++        String idsJson = meta.getString(KEY_LAYOUT_IDS, "[]");
++
++        List<String> ids = new ArrayList<>();
++        try {
++            JSONArray arr = new JSONArray(idsJson);
++            for (int i = 0; i < arr.length(); i++) {
++                ids.add(arr.getString(i));
++            }
++        } catch (JSONException e) {
++            e.printStackTrace();
++            ids.add(DEFAULT_LAYOUT_ID);
++        }
++        return ids;
++    }
++
++    /**
++     * Returns the display name for the given layout.
++     */
++    public String getLayoutName(String layoutId) {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_LAYOUT_NAME_PREFIX + layoutId, layoutId);
++    }
++
++    /**
++     * Returns the currently active layout ID.
++     */
++    public String getActiveLayoutId() {
++        SharedPreferences meta = getMetaPreferences();
++        return meta.getString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++    }
++
++    /**
++     * Sets the active layout ID.
++     */
++    public void setActiveLayoutId(String layoutId) {
++        getMetaPreferences().edit()
++                .putString(KEY_ACTIVE_LAYOUT_ID, layoutId)
++                .apply();
++    }
++
++    /**
++     * Creates a new layout with the given name.
++     * Returns the new layout ID.
++     */
++    public String createLayout(String name) {
++        String newId = UUID.randomUUID().toString().substring(0, 8);
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.add(newId);
++
++        JSONArray arr = new JSONArray(ids);
++        meta.edit()
++                .putString(KEY_LAYOUT_IDS, arr.toString())
++                .putString(KEY_LAYOUT_NAME_PREFIX + newId, name)
++                .apply();
++
++        return newId;
++    }
++
++    /**
++     * Duplicates an existing layout with a new name.
++     * Returns the new layout ID.
++     */
++    public String duplicateLayout(String sourceId, String newName) {
++        String newId = createLayout(newName);
++
++        SharedPreferences sourcePref = context.getSharedPreferences(
++                getLayoutPreferenceName(sourceId), Activity.MODE_PRIVATE);
++        SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                getLayoutPreferenceName(newId), Activity.MODE_PRIVATE).edit();
++
++        Map<String, ?> allEntries = sourcePref.getAll();
++        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
++            if (entry.getValue() instanceof String) {
++                destEditor.putString(entry.getKey(), (String) entry.getValue());
++            }
++        }
++        destEditor.apply();
++
++        return newId;
++    }
++
++    /**
++     * Renames an existing layout.
++     */
++    public void renameLayout(String layoutId, String newName) {
++        getMetaPreferences().edit()
++                .putString(KEY_LAYOUT_NAME_PREFIX + layoutId, newName)
++                .apply();
++    }
++
++    /**
++     * Deletes a layout. Cannot delete the default layout.
++     * Returns true if the layout was deleted.
++     */
++    public boolean deleteLayout(String layoutId) {
++        if (DEFAULT_LAYOUT_ID.equals(layoutId)) {
++            return false;
++        }
++
++        SharedPreferences meta = getMetaPreferences();
++        List<String> ids = getLayoutIds();
++        ids.remove(layoutId);
++
++        JSONArray arr = new JSONArray(ids);
++        SharedPreferences.Editor editor = meta.edit();
++        editor.putString(KEY_LAYOUT_IDS, arr.toString());
++        editor.remove(KEY_LAYOUT_NAME_PREFIX + layoutId);
++
++        // If the deleted layout was active, switch to default
++        if (layoutId.equals(getActiveLayoutId())) {
++            editor.putString(KEY_ACTIVE_LAYOUT_ID, DEFAULT_LAYOUT_ID);
++        }
++
++        editor.apply();
++
++        // Clear the layout's data
++        context.getSharedPreferences(getLayoutPreferenceName(layoutId), Activity.MODE_PRIVATE)
++                .edit().clear().apply();
++
++        return true;
++    }
++
++    /**
++     * Migrates legacy layout data from SharedPreferences("OSC_Keyboard") to the default layout.
++     * This is a one-time operation.
++     */
++    public void migrateFromLegacy(Context context) {
++        SharedPreferences meta = getMetaPreferences();
++        if (meta.getBoolean(KEY_MIGRATED, false)) {
++            return;
++        }
++
++        // Read legacy preference name
++        String legacyName = androidx.preference.PreferenceManager
++                .getDefaultSharedPreferences(context)
++                .getString(KeyBoardControllerConfigurationLoader.OSC_PREFERENCE,
++                        KeyBoardControllerConfigurationLoader.OSC_PREFERENCE_VALUE);
++
++        SharedPreferences legacyPref = context.getSharedPreferences(legacyName, Activity.MODE_PRIVATE);
++        Map<String, ?> legacyEntries = legacyPref.getAll();
++
++        if (!legacyEntries.isEmpty()) {
++            SharedPreferences.Editor destEditor = context.getSharedPreferences(
++                    getLayoutPreferenceName(DEFAULT_LAYOUT_ID), Activity.MODE_PRIVATE).edit();
++
++            for (Map.Entry<String, ?> entry : legacyEntries.entrySet()) {
++                if (entry.getValue() instanceof String) {
++                    destEditor.putString(entry.getKey(), (String) entry.getValue());
++                }
++            }
++            destEditor.apply();
++        }
++
++        meta.edit().putBoolean(KEY_MIGRATED, true).apply();
++    }
++}

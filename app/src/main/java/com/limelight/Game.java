@@ -100,6 +100,7 @@ import android.view.View;
 import android.view.View.OnGenericMotionListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.Window;
@@ -420,6 +421,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         if (
                 prefConfig.videoScaleMode == PreferenceConfiguration.ScaleMode.STRETCH ||
+                        prefConfig.videoScaleMode == PreferenceConfiguration.ScaleMode.FILL ||
                         shouldIgnoreInsetsForResolution(displayWidth, displayHeight)
         ) {
             // Allow the activity to layout under notches if the fill-screen option
@@ -446,8 +448,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         rootView = streamView.getParent();
 
+        // Disable clipping on parent so Fill mode can render beyond parent bounds
+        if (rootView instanceof ViewGroup) {
+            ((ViewGroup) rootView).setClipChildren(false);
+            ((ViewGroup) rootView).setClipToPadding(false);
+        }
+
         //串流画面 顶部居中显示
-        if(prefConfig.alignDisplayTopCenter){
+        if(prefConfig.alignDisplayTopCenter && prefConfig.videoScaleMode != PreferenceConfiguration.ScaleMode.FILL){
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) streamView.getLayoutParams();
             params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.TOP;
         }
@@ -1561,6 +1569,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             // Set the surface to scale based on the aspect ratio of the stream
             streamView.setDesiredAspectRatio((double)displayWidth / (double)displayHeight);
             streamView.setFillDisplay(prefConfig.videoScaleMode == PreferenceConfiguration.ScaleMode.FILL);
+            streamView.requestLayout();
             LimeLog.info("surfaceChanged-->"+(double)displayWidth / (double)displayHeight);
             LimeLog.info("scaleMode-->"+prefConfig.videoScaleMode);
         }

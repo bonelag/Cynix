@@ -12,7 +12,7 @@ baselineProfiles/
 
 # Java class files
 *.class
-
+.vscode
 # generated files
 bin/
 gen/
