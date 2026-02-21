@@ -17,12 +17,14 @@ public class AndroidAudioRenderer implements AudioRenderer {
 
     private final Context context;
     private final boolean enableAudioFx;
+    private final int pendingAudioDuration;
 
     private AudioTrack track;
 
-    public AndroidAudioRenderer(Context context, boolean enableAudioFx) {
+    public AndroidAudioRenderer(Context context, boolean enableAudioFx, int pendingAudioDuration) {
         this.context = context;
         this.enableAudioFx = enableAudioFx;
+        this.pendingAudioDuration = pendingAudioDuration;
     }
 
     private AudioTrack createAudioTrack(int channelConfig, int sampleRate, int bufferSize, boolean lowLatency) {
@@ -185,13 +187,13 @@ public class AndroidAudioRenderer implements AudioRenderer {
 
     @Override
     public void playDecodedAudio(short[] audioData) {
-        // Queue up to 65 ms of pending audio data in addition to what AudioTrack is buffering for us.
+        // Queue up to user configured ms of pending audio data in addition to what AudioTrack is buffering for us.
         // 40ms is too aggressive and causes audio dropouts (crackling) with variable network pacing.
-        // 65ms provides a good balance between low latency and preventing buffer underruns.
-        if (MoonBridge.getPendingAudioDuration() < 65) {
+        // The default 65ms provides a good balance between low latency and preventing buffer underruns.
+        if (MoonBridge.getPendingAudioDuration() < pendingAudioDuration) {
             // This will block until the write is completed. That can cause a backlog
             // of pending audio data, so we do the above check to be able to bound
-            // latency at 65 ms in that situation.
+            // latency in that situation.
             track.write(audioData, 0, audioData.length);
         }
         else {

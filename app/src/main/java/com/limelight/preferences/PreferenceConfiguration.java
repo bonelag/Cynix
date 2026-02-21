@@ -60,6 +60,7 @@ public class PreferenceConfiguration {
     private static final String SMALL_ICONS_PREF_STRING = "checkbox_small_icon_mode";
     private static final String MULTI_CONTROLLER_PREF_STRING = "checkbox_multi_controller";
     static final String AUDIO_CONFIG_PREF_STRING = "list_audio_config";
+    static final String PENDING_AUDIO_DURATION_PREF_STRING = "seekbar_pending_audio_duration";
     private static final String USB_DRIVER_PREF_SRING = "checkbox_usb_driver";
     private static final String VIDEO_FORMAT_PREF_STRING = "video_format";
     private static final String ONSCREEN_CONTROLLER_PREF_STRING = "checkbox_show_onscreen_controls";
@@ -178,6 +179,7 @@ public class PreferenceConfiguration {
     private static final boolean DEFAULT_FLIP_FACE_BUTTONS = false;
     private static final boolean DEFAULT_TOUCHSCREEN_TRACKPAD = true;
     private static final String DEFAULT_AUDIO_CONFIG = "2"; // Stereo
+    private static final int DEFAULT_PENDING_AUDIO_DURATION = 65; // ms
     private static final boolean DEFAULT_LATENCY_TOAST = false;
     private static final String DEFAULT_FRAME_PACING = "latency";
     private static final boolean DEFAULT_ABSOLUTE_MOUSE_MODE = false;
@@ -365,6 +367,7 @@ public class PreferenceConfiguration {
     public int vibrateFallbackToDeviceStrength;
     public boolean touchscreenTrackpad;
     public MoonBridge.AudioConfiguration audioConfiguration;
+    public int pendingAudioDuration;
     public int framePacing;
     public boolean absoluteMouseMode;
     public boolean enableAudioFx;
@@ -852,6 +855,8 @@ private static int getFramePacingValue(Context context) {
         else /* if (audioConfig.equals("2")) */ {
             config.audioConfiguration = MoonBridge.AUDIO_CONFIGURATION_STEREO;
         }
+
+        config.pendingAudioDuration = prefs.getInt(PENDING_AUDIO_DURATION_PREF_STRING, DEFAULT_PENDING_AUDIO_DURATION);
 
         config.videoScaleMode = getVideoScaleMode(context);
 

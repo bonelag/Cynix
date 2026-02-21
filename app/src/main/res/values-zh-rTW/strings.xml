@@ -1,334 +1,334 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Shortcut strings -->
-	<string name="scut_deleted_pc">å·²åˆªé™¤é›»è…¦</string>
-	<string name="scut_not_paired">æœªé…å°é›»è…¦</string>
-	<string name="scut_pc_not_found">æ‰¾ä¸åˆ°é›»è…¦</string>
-	<string name="scut_invalid_uuid">æä¾›ç„é›»è…¦ç„¡æ•ˆ</string>
-	<string name="scut_invalid_app_id">æä¾›ç„æ‡‰ç”¨ç¨‹å¼ç„¡æ•ˆ</string>
+	<string name="scut_deleted_pc">已刪除電腦</string>
+	<string name="scut_not_paired">未配對電腦</string>
+	<string name="scut_pc_not_found">找不到電腦</string>
+	<string name="scut_invalid_uuid">提供的電腦無效</string>
+	<string name="scut_invalid_app_id">提供的應用程式無效</string>
 
-	<string name="menu_button">é¸å–®</string>
-	<string name="quick_menu_title">å¿«é€Ÿé¸å–®</string>
-	<string name="configuration_mode_move_buttons">ç§»å‹•æŒ‰éˆ•æ¨¡å¼</string>
-	<string name="configuration_mode_resize_buttons">èª¿æ•´æŒ‰éˆ•å¤§å°æ¨¡å¼</string>
-	<string name="configuration_mode_disable_enable_buttons">å•Ÿç”¨/åœç”¨æŒ‰éˆ•æ¨¡å¼</string>
-	<string name="configuration_mode_exiting">æ­£åœ¨é€€å‡ºé…ç½®æ¨¡å¼</string>
-	<string name="help_loading_title">èªªæ˜æª¢è¦–å™¨</string>
-	<string name="help_loading_msg">æ­£åœ¨è¼‰å…¥èªªæ˜é é¢â€¦</string>
+	<string name="menu_button">選單</string>
+	<string name="quick_menu_title">快速選單</string>
+	<string name="configuration_mode_move_buttons">移動按鈕模式</string>
+	<string name="configuration_mode_resize_buttons">調整按鈕大小模式</string>
+	<string name="configuration_mode_disable_enable_buttons">啟用/停用按鈕模式</string>
+	<string name="configuration_mode_exiting">正在退出配置模式</string>
+	<string name="help_loading_title">說明檢視器</string>
+	<string name="help_loading_msg">正在載入說明頁面…</string>
 
 	<!-- Alignments -->
-	<string name="align_left">é å·¦å°é½</string>
-	<string name="align_center">ç½®ä¸­å°é½</string>
-	<string name="align_right">é å³å°é½</string>
+	<string name="align_left">靠左對齊</string>
+	<string name="align_center">置中對齊</string>
+	<string name="align_right">靠右對齊</string>
 
 	<!-- PC view menu entries -->
-	<string name="pcview_menu_header_online">ç·ä¸</string>
-	<string name="pcview_menu_header_offline">é›¢ç·</string>
-	<string name="pcview_menu_header_unknown">æ­£åœ¨é‡æ–°æ•´ç†</string>
-	<string name="pcview_menu_app_list">æª¢è¦–æ‰€æœ‰æ‡‰ç”¨ç¨‹å¼</string>
-	<string name="pcview_menu_pair_pc">å‚³çµ±é…å°</string>
-	<string name="pcview_menu_pair_pc_otp">OTP é…å°</string>
-	<string name="pcview_menu_unpair_pc">å–æ¶ˆé…å°</string>
-	<string name="pcview_menu_send_wol">ç™¼é€ Wake-On-LAN è«‹æ±‚</string>
-	<string name="pcview_menu_delete_pc">åˆªé™¤é›»è…¦</string>
-	<string name="pcview_menu_test_network">æ¸¬è©¦ç¶²è·¯é€£ç·</string>
-	<string name="pcview_menu_details">æª¢è¦–è©³ç´°è³‡è¨</string>
-	<string name="pcview_menu_eol">NVIDIA GameStream åœæ­¢æœå‹™</string>
-	<string name="pcview_menu_open_management_page">å‰å¾€ä¼ºæœå™¨è¨­å®</string>
-	<string name="pcview_error_no_management_url">ç„¡æ³•é–‹å•Ÿä¼ºæœå™¨è¨­å®é é¢ï¼Œæ‰¾ä¸åˆ°ä¼ºæœå™¨ä½å€ă€‚</string>
+	<string name="pcview_menu_header_online">線上</string>
+	<string name="pcview_menu_header_offline">離線</string>
+	<string name="pcview_menu_header_unknown">正在重新整理</string>
+	<string name="pcview_menu_app_list">檢視所有應用程式</string>
+	<string name="pcview_menu_pair_pc">傳統配對</string>
+	<string name="pcview_menu_pair_pc_otp">OTP 配對</string>
+	<string name="pcview_menu_unpair_pc">取消配對</string>
+	<string name="pcview_menu_send_wol">發送 Wake-On-LAN 請求</string>
+	<string name="pcview_menu_delete_pc">刪除電腦</string>
+	<string name="pcview_menu_test_network">測試網路連線</string>
+	<string name="pcview_menu_details">檢視詳細資訊</string>
+	<string name="pcview_menu_eol">NVIDIA GameStream 停止服務</string>
+	<string name="pcview_menu_open_management_page">前往伺服器設定</string>
+	<string name="pcview_error_no_management_url">無法開啟伺服器設定頁面，找不到伺服器位址。</string>
 
 	<!-- Network test strings -->
-	<string name="nettest_title_waiting">æ­£åœ¨æ¸¬è©¦ç¶²è·¯é€£ç·</string>
-	<string name="nettest_text_waiting">Cynix æ­£åœ¨æ¸¬è©¦æ‚¨ç„ç¶²è·¯é€£ç·ï¼Œä»¥åˆ¤æ–·æ˜¯å¦æœ‰å¿…è¦ç„é€£æ¥åŸ è¢«é˜»æ“‹ă€‚\n\né€™å¯èƒ½éœ€è¦å¹¾ç§’é˜â€¦</string>
-	<string name="nettest_title_done">ç¶²è·¯æ¸¬è©¦å®Œæˆ</string>
-	<string name="nettest_text_success">æ‚¨ç„ç¶²è·¯ä¼¼ä¹æ²’æœ‰é˜»æ“‹ Cynixă€‚å¦‚æœæ‚¨ä»ç„¶ç„¡æ³•é€£ç·ï¼Œè«‹æª¢æŸ¥æ‚¨é›»è…¦ç„é˜²ç«ç‰†è¨­å®ă€‚\n\nå¦‚æœæ‚¨å˜—è©¦é€éç¶²é›ç¶²è·¯é€²è¡Œä¸²æµï¼Œè«‹åœ¨é›»è…¦ä¸å®‰è£ Cynix Internet Hosting Toolï¼Œä¸¦åŸ·è¡Œå…§å»ºç„ Internet Streaming Tester ä»¥æª¢æŸ¥ç¶²é›ç¶²è·¯é€£ç·ă€‚</string>
-	<string name="nettest_text_inconclusive">ç„¡æ³•åŸ·è¡Œç¶²è·¯æ¸¬è©¦ï¼Œå› ç‚ºç„¡æ³•é€£ç·è‡³ Cynix ç„æ¸¬è©¦ä¼ºæœå™¨ă€‚è«‹æª¢æŸ¥æ‚¨ç„ç¶²é›ç¶²è·¯é€£ç·ï¼Œæˆ–ç¨å¾Œå†è©¦ă€‚</string>
-	<string name="nettest_text_failure">æ‚¨ç›®å‰ç„ç¶²è·¯é€£ç·ä¼¼ä¹æ­£åœ¨é˜»æ“‹ Cynixă€‚åœ¨æ­¤ç¶²è·¯ä¸‹ï¼Œé€éç¶²é›ç¶²è·¯ä¸²æµå¯èƒ½ç„¡æ³•æ­£å¸¸é‹ä½œă€‚\n\nä»¥ä¸‹é€£æ¥åŸ è¢«é˜»æ“‹ï¼\n</string>
-	<string name="nettest_text_blocked">æ‚¨ç›®å‰ç„ç¶²è·¯é€£ç·æ­£åœ¨é˜»æ“‹ Cynixă€‚åœ¨æ­¤ç¶²è·¯ä¸‹ï¼Œé€éç¶²é›ç¶²è·¯ä¸²æµå¯èƒ½ç„¡æ³•æ­£å¸¸é‹ä½œă€‚</string>
+	<string name="nettest_title_waiting">正在測試網路連線</string>
+	<string name="nettest_text_waiting">Artemis 正在測試您的網路連線，以判斷是否有必要的連接埠被阻擋。\n\n這可能需要幾秒鐘…</string>
+	<string name="nettest_title_done">網路測試完成</string>
+	<string name="nettest_text_success">您的網路似乎沒有阻擋 Artemis。如果您仍然無法連線，請檢查您電腦的防火牆設定。\n\n如果您嘗試透過網際網路進行串流，請在電腦上安裝 Artemis Internet Hosting Tool，並執行內建的 Internet Streaming Tester 以檢查網際網路連線。</string>
+	<string name="nettest_text_inconclusive">無法執行網路測試，因為無法連線至 Artemis 的測試伺服器。請檢查您的網際網路連線，或稍後再試。</string>
+	<string name="nettest_text_failure">您目前的網路連線似乎正在阻擋 Artemis。在此網路下，透過網際網路串流可能無法正常運作。\n\n以下連接埠被阻擋：\n</string>
+	<string name="nettest_text_blocked">您目前的網路連線正在阻擋 Artemis。在此網路下，透過網際網路串流可能無法正常運作。</string>
 
 	<!-- Pair messages -->
-	<string name="pairing">æ­£åœ¨é…å°â€¦</string>
-	<string name="pair_pc_confirm_title">é…å°é›»è…¦</string>
-	<string name="pair_pc_confirm_message">æ‚¨ç¢ºå®è¦èˆ‡ %s é…å°å—ï¼Ÿè«‹ä¸è¦èˆ‡ä¸ç†Ÿæ‚‰ç„é›»è…¦é…å°ă€‚</string>
-	<string name="pair_pc_offline">é›»è…¦å·²é›¢ç·</string>
-	<string name="pair_pc_ingame">é›»è…¦ç›®å‰æ­£åœ¨åŸ·è¡Œéæˆ²ï¼Œå¿…é ˆå…ˆé—œé–‰éæˆ²æ‰èƒ½é…å°ă€‚</string>
-	<string name="pair_pairing_title">æ­£åœ¨é…å°</string>
-	<string name="pair_pairing_msg">è«‹åœ¨ç›®æ¨™é›»è…¦ä¸è¼¸å…¥ä»¥ä¸‹ PINï¼</string>
-	<string name="pair_pairing_help">å¦‚æœæ‚¨ç„ä¸»æ©Ÿé›»è…¦æ­£åœ¨åŸ·è¡Œ Sunshineï¼Œè«‹é€²å…¥ Sunshine ç„ç¶²é ä»‹é¢è¼¸å…¥ PINă€‚</string>
-	<string name="pair_otp_pairing_msg">æ­£åœ¨é€²è¡Œé…å°ï¼Œè«‹ç¨å€™â€¦</string>
-	<string name="pair_otp_pairing_help">OTP é…å°åƒ…é©ç”¨æ–¼ Apolloï¼Œå¦‚æœæ‚¨ä½¿ç”¨å…¶ä»–ä¸»æ©Ÿè»Ÿé«”ï¼Œè«‹åœ¨ç¶²é ä»‹é¢æ‰‹å‹•è¼¸å…¥å‰›å‰›æä¾›ç„ PINă€‚</string>
-	<string name="pair_incorrect_pin">PIN æˆ–å¯†ç¢¼çŸ­èªéŒ¯èª¤</string>
-	<string name="pair_fail">é…å°å¤±æ•—</string>
-	<string name="pair_already_in_progress">é…å°å·²åœ¨é€²è¡Œä¸­</string>
-	<string name="pair_passphrase_hint">å¯†ç¢¼çŸ­èª</string>
-	<string name="pair_pin_length_msg">PIN å¿…é ˆæ˜¯ 4 ä½æ•¸å­—</string>
-	<string name="pair_passphrase_length_msg">å¯†ç¢¼çŸ­èªè‡³å°‘éœ€ 4 å€‹å­—å…ƒ</string>
+	<string name="pairing">正在配對…</string>
+	<string name="pair_pc_confirm_title">配對電腦</string>
+	<string name="pair_pc_confirm_message">您確定要與 %s 配對嗎？請不要與不熟悉的電腦配對。</string>
+	<string name="pair_pc_offline">電腦已離線</string>
+	<string name="pair_pc_ingame">電腦目前正在執行遊戲，必須先關閉遊戲才能配對。</string>
+	<string name="pair_pairing_title">正在配對</string>
+	<string name="pair_pairing_msg">請在目標電腦上輸入以下 PIN：</string>
+	<string name="pair_pairing_help">如果您的主機電腦正在執行 Sunshine，請進入 Sunshine 的網頁介面輸入 PIN。</string>
+	<string name="pair_otp_pairing_msg">正在進行配對，請稍候…</string>
+	<string name="pair_otp_pairing_help">OTP 配對僅適用於 Apollo，如果您使用其他主機軟體，請在網頁介面手動輸入剛剛提供的 PIN。</string>
+	<string name="pair_incorrect_pin">PIN 或密碼短語錯誤</string>
+	<string name="pair_fail">配對失敗</string>
+	<string name="pair_already_in_progress">配對已在進行中</string>
+	<string name="pair_passphrase_hint">密碼短語</string>
+	<string name="pair_pin_length_msg">PIN 必須是 4 位數字</string>
+	<string name="pair_passphrase_length_msg">密碼短語至少需 4 個字元</string>
 
 	<!-- WOL messages -->
-	<string name="wol_pc_online">é›»è…¦å·²ä¸ç·</string>
-	<string name="wol_no_mac">ç„¡æ³•å–é†’é›»è…¦ï¼Œå› ç‚ºæœªå„²å­˜ MAC ä½å€</string>
-	<string name="wol_waking_pc">æ­£åœ¨å–é†’é›»è…¦â€¦</string>
-	<string name="wol_waking_msg">æ‚¨ç„é›»è…¦å¯èƒ½éœ€è¦å¹¾ç§’é˜æ‰èƒ½å–é†’ă€‚
-		å¦‚æœæ²’æœ‰åæ‡‰ï¼Œè«‹ç¢ºèªæ˜¯å¦å·²æ­£ç¢ºè¨­å® Wake-On-LANă€‚
+	<string name="wol_pc_online">電腦已上線</string>
+	<string name="wol_no_mac">無法喚醒電腦，因為未儲存 MAC 位址</string>
+	<string name="wol_waking_pc">正在喚醒電腦…</string>
+	<string name="wol_waking_msg">您的電腦可能需要幾秒鐘才能喚醒。
+		如果沒有反應，請確認是否已正確設定 Wake-On-LAN。
 	</string>
-	<string name="wol_fail">ç„¡æ³•å‚³é€ Wake-On-LAN å°åŒ…</string>
+	<string name="wol_fail">無法傳送 Wake-On-LAN 封包</string>
 
 	<!-- Unpair messages -->
-	<string name="unpairing">æ­£åœ¨å–æ¶ˆé…å°â€¦</string>
-	<string name="unpair_success">å–æ¶ˆé…å°æˆåŸ</string>
-	<string name="unpair_fail">å–æ¶ˆé…å°å¤±æ•—</string>
-	<string name="unpair_error">è£ç½®æœªé…å°</string>
+	<string name="unpairing">正在取消配對…</string>
+	<string name="unpair_success">取消配對成功</string>
+	<string name="unpair_fail">取消配對失敗</string>
+	<string name="unpair_error">裝置未配對</string>
 
 	<!-- Errors -->
-	<string name="error_pc_offline">é›»è…¦å·²é›¢ç·</string>
-	<string name="error_manager_not_running">ComputerManager æœå‹™æœªåŸ·è¡Œă€‚è«‹ç¨ç­‰å¹¾ç§’é˜æˆ–é‡æ–°å•Ÿå‹•æ‡‰ç”¨ç¨‹å¼ă€‚</string>
-	<string name="error_unknown_host">ç„¡æ³•è§£æä¸»æ©Ÿ</string>
-	<string name="error_404">GFE å›å‚³ HTTP 404 éŒ¯èª¤ă€‚è«‹ç¢ºèªæ‚¨ç„é›»è…¦æ­£åœ¨åŸ·è¡Œæ”¯æ´ç„ GPUă€‚
-		ä½¿ç”¨é ç«¯æ¡Œé¢è»Ÿé«”ä¹Ÿå¯èƒ½å°è‡´æ­¤éŒ¯èª¤ă€‚è«‹å˜—è©¦é‡æ–°å•Ÿå‹•é›»è…¦æˆ–é‡æ–°å®‰è£ GFEă€‚
+	<string name="error_pc_offline">電腦已離線</string>
+	<string name="error_manager_not_running">ComputerManager 服務未執行。請稍等幾秒鐘或重新啟動應用程式。</string>
+	<string name="error_unknown_host">無法解析主機</string>
+	<string name="error_404">GFE 回傳 HTTP 404 錯誤。請確認您的電腦正在執行支援的 GPU。
+		使用遠端桌面軟體也可能導致此錯誤。請嘗試重新啟動電腦或重新安裝 GFE。
 	</string>
-	<string name="title_decoding_error">å½±ç‰‡è§£ç¢¼å™¨ç•¶æ©Ÿ</string>
-	<string name="message_decoding_error">Cynix å› èˆ‡æ­¤è£ç½®ç„å½±ç‰‡è§£ç¢¼å™¨ä¸ç›¸å®¹è€Œç•¶æ©Ÿă€‚å¦‚æœç•¶æ©ŸæŒçºŒç™¼ç”Ÿï¼Œè«‹å˜—è©¦èª¿æ•´ä¸²æµè¨­å®ă€‚</string>
-	<string name="title_decoding_reset">å½±ç‰‡è¨­å®å·²é‡è¨­</string>
-	<string name="message_decoding_reset">æ‚¨ç„è£ç½®å½±ç‰‡è§£ç¢¼å™¨åœ¨ç›®å‰ç„ä¸²æµè¨­å®ä¸‹æŒçºŒç•¶æ©Ÿï¼Œä¸²æµè¨­å®å·²é‡è¨­ç‚ºé è¨­å€¼ă€‚</string>
-	<string name="error_usb_prohibited">æ‚¨ç„è£ç½®ç®¡ç†å“¡ç¦æ­¢å­˜å– USBă€‚è«‹æª¢æŸ¥ Knox æˆ– MDM è¨­å®ă€‚</string>
-	<string name="unable_to_pin_shortcut">æ‚¨ç›®å‰ç„å•Ÿå‹•å™¨ä¸å…è¨±å»ºç«‹é‡˜é¸æ·å¾‘ă€‚</string>
-	<string name="video_decoder_init_failed">å½±ç‰‡è§£ç¢¼å™¨åˆå§‹åŒ–å¤±æ•—ă€‚æ‚¨ç„è£ç½®å¯èƒ½ä¸æ”¯æ´æ‰€é¸ç„è§£æåº¦æˆ–å¹€ç‡ă€‚</string>
-	<string name="no_video_received_error">æœªæ¥æ”¶åˆ°ä¸»æ©Ÿç«¯ç„å½±åƒă€‚</string>
-	<string name="no_frame_received_error">æ‚¨ç„ç¶²è·¯æ•ˆèƒ½ä¸ä½³ă€‚è«‹é™ä½å½±ç‰‡ä½å…ƒç‡è¨­å®ï¼Œæˆ–ä½¿ç”¨æ›´å¿«ç„é€£ç·ă€‚</string>
-	<string name="early_termination_error">åœ¨å•Ÿå‹•ä¸²æµæ™‚ï¼Œæ‚¨ç„ä¸»æ©Ÿé›»è…¦ç™¼ç”ŸéŒ¯èª¤ă€‚\n\nè«‹ç¢ºèªä¸»æ©Ÿç«¯æœªé–‹å•Ÿä»»ä½•å— DRM ä¿è­·ç„å…§å®¹ă€‚æ‚¨ä¹Ÿå¯ä»¥å˜—è©¦é‡æ–°å•Ÿå‹•ä¸»æ©Ÿé›»è…¦ă€‚</string>
-	<string name="frame_conversion_error">ä¸»æ©Ÿé›»è…¦å›å ±å´é‡ç„å½±ç‰‡ç·¨ç¢¼éŒ¯èª¤ă€‚\n\nè«‹å˜—è©¦åœç”¨ HDR æ¨¡å¼ă€èª¿æ•´ä¸²æµè§£æåº¦ï¼Œæˆ–æ›´æ”¹ä¸»æ©Ÿé›»è…¦ç„é¡¯ç¤ºè§£æåº¦ă€‚</string>
-	<string name="check_ports_msg">è«‹æª¢æŸ¥é˜²ç«ç‰†åé€£æ¥åŸ è½‰ç™¼è¦å‰‡ï¼Œä»¥ä¸‹é€£æ¥åŸ ï¼ </string>
+	<string name="title_decoding_error">影片解碼器當機</string>
+	<string name="message_decoding_error">Artemis 因與此裝置的影片解碼器不相容而當機。如果當機持續發生，請嘗試調整串流設定。</string>
+	<string name="title_decoding_reset">影片設定已重設</string>
+	<string name="message_decoding_reset">您的裝置影片解碼器在目前的串流設定下持續當機，串流設定已重設為預設值。</string>
+	<string name="error_usb_prohibited">您的裝置管理員禁止存取 USB。請檢查 Knox 或 MDM 設定。</string>
+	<string name="unable_to_pin_shortcut">您目前的啟動器不允許建立釘選捷徑。</string>
+	<string name="video_decoder_init_failed">影片解碼器初始化失敗。您的裝置可能不支援所選的解析度或幀率。</string>
+	<string name="no_video_received_error">未接收到主機端的影像。</string>
+	<string name="no_frame_received_error">您的網路效能不佳。請降低影片位元率設定，或使用更快的連線。</string>
+	<string name="early_termination_error">在啟動串流時，您的主機電腦發生錯誤。\n\n請確認主機端未開啟任何受 DRM 保護的內容。您也可以嘗試重新啟動主機電腦。</string>
+	<string name="frame_conversion_error">主機電腦回報嚴重的影片編碼錯誤。\n\n請嘗試停用 HDR 模式、調整串流解析度，或更改主機電腦的顯示解析度。</string>
+	<string name="check_ports_msg">請檢查防火牆及連接埠轉發規則，以下連接埠： </string>
 	
 	<!-- Start application messages -->
-	<string name="conn_establishing_title">æ­£åœ¨å»ºç«‹é€£ç·</string>
-	<string name="conn_establishing_msg">æ­£åœ¨å•Ÿå‹•é€£ç·</string>
-	<string name="conn_metered">è­¦å‘ï¼æ‚¨ç›®å‰ç„ç¶²è·¯é€£ç·ç‚ºè¨ˆé‡ç¶²è·¯ï¼</string>
-	<string name="conn_client_latency">å¹³å‡å½±æ ¼è§£ç¢¼å»¶é²ï¼</string>
-	<string name="conn_client_latency_hw">ç¡¬é«”è§£ç¢¼å™¨å»¶é²ï¼</string>
-	<string name="conn_hardware_latency">å¹³å‡ç¡¬é«”è§£ç¢¼å»¶é²ï¼</string>
-	<string name="conn_starting">æ­£åœ¨å•Ÿå‹•</string>
-	<string name="conn_error_title">é€£ç·éŒ¯èª¤</string>
-	<string name="conn_error_msg">å•Ÿå‹•å¤±æ•—</string>
-	<string name="conn_terminated_title">é€£ç·å·²ä¸­æ–·</string>
-	<string name="conn_terminated_msg">é€£ç·å·²è¢«ä¸­æ–·ă€‚</string>
-	<string name="error_code_prefix">éŒ¯èª¤ä»£ç¢¼ï¼</string>
+	<string name="conn_establishing_title">正在建立連線</string>
+	<string name="conn_establishing_msg">正在啟動連線</string>
+	<string name="conn_metered">警告：您目前的網路連線為計量網路！</string>
+	<string name="conn_client_latency">平均影格解碼延遲：</string>
+	<string name="conn_client_latency_hw">硬體解碼器延遲：</string>
+	<string name="conn_hardware_latency">平均硬體解碼延遲：</string>
+	<string name="conn_starting">正在啟動</string>
+	<string name="conn_error_title">連線錯誤</string>
+	<string name="conn_error_msg">啟動失敗</string>
+	<string name="conn_terminated_title">連線已中斷</string>
+	<string name="conn_terminated_msg">連線已被中斷。</string>
+	<string name="error_code_prefix">錯誤代碼：</string>
 
 	<!-- General strings -->
-	<string name="ip_hint">ä¸»æ©Ÿé›»è…¦ç„ IP ä½å€</string>
-	<string name="searching_pc">æ­£åœ¨æœå°‹æ‚¨å€åŸŸç¶²è·¯ä¸­ç„ä¸»æ©Ÿé›»è…¦â€¦\n\n
-		è«‹ç¢ºèª Apollo å·²åœ¨ä¸»æ©Ÿé›»è…¦ä¸åŸ·è¡Œă€‚</string>
-	<string name="yes">æ˜¯</string>
-	<string name="no">å¦</string>
-	<string name="lost_connection">èˆ‡é›»è…¦ç„é€£ç·ä¸­æ–·</string>
-	<string name="title_details">è©³ç´°è³‡è¨</string>
-	<string name="help">èªªæ˜</string>
-	<string name="delete_pc_msg">æ‚¨ç¢ºå®è¦åˆªé™¤æ­¤é›»è…¦å—ï¼Ÿ</string>
-	<string name="slow_connection_msg">èˆ‡é›»è…¦é€£ç·é€Ÿåº¦ç·©æ…¢\nè«‹é™ä½ä½å…ƒç‡</string>
-	<string name="poor_connection_msg">èˆ‡é›»è…¦ç„é€£ç·å“è³ªä¸ä½³</string>
-	<string name="perf_overlay_streamdetails">å½±ç‰‡ä¸²æµï¼%1$s %2$.2f FPS</string>
-	<string name="perf_overlay_decoder">è§£ç¢¼å™¨ï¼%1$s</string>
-	<string name="perf_overlay_incomingfps">å¾ç¶²è·¯æ¥æ”¶ç„å½±æ ¼ç‡ï¼%1$.2f FPS</string>
-	<string name="perf_overlay_renderingfps">æ¸²æŸ“å½±æ ¼ç‡ï¼%1$.2f FPS</string>
-	<string name="perf_overlay_hostprocessinglatency">ä¸»æ©Ÿè™•ç†å»¶é² æœ€å°/æœ€å¤§/å¹³å‡ï¼%1$.1f/%2$.1f/%3$.1f ms</string>
-	<string name="perf_overlay_netdrops">å› ç¶²è·¯é€£ç·ä¸Ÿå¤±ç„å½±æ ¼ï¼%1$.2f%%</string>
-	<string name="perf_overlay_netlatency">å¹³å‡ç¶²è·¯å»¶é²ï¼%1$d msï¼ˆè®ç•°ï¼%2$d msï¼‰</string>
-	<string name="perf_overlay_dectime">å¹³å‡è§£ç¢¼æ™‚é–“ï¼%1$.2f ms</string>
-	<string name="perf_overlay_drawdelay">å»¶é²ï¼%1$.2f ms</string>
+	<string name="ip_hint">主機電腦的 IP 位址</string>
+	<string name="searching_pc">正在搜尋您區域網路中的主機電腦…\n\n
+		請確認 Apollo 已在主機電腦上執行。</string>
+	<string name="yes">是</string>
+	<string name="no">否</string>
+	<string name="lost_connection">與電腦的連線中斷</string>
+	<string name="title_details">詳細資訊</string>
+	<string name="help">說明</string>
+	<string name="delete_pc_msg">您確定要刪除此電腦嗎？</string>
+	<string name="slow_connection_msg">與電腦連線速度緩慢\n請降低位元率</string>
+	<string name="poor_connection_msg">與電腦的連線品質不佳</string>
+	<string name="perf_overlay_streamdetails">影片串流：%1$s %2$.2f FPS</string>
+	<string name="perf_overlay_decoder">解碼器：%1$s</string>
+	<string name="perf_overlay_incomingfps">從網路接收的影格率：%1$.2f FPS</string>
+	<string name="perf_overlay_renderingfps">渲染影格率：%1$.2f FPS</string>
+	<string name="perf_overlay_hostprocessinglatency">主機處理延遲 最小/最大/平均：%1$.1f/%2$.1f/%3$.1f ms</string>
+	<string name="perf_overlay_netdrops">因網路連線丟失的影格：%1$.2f%%</string>
+	<string name="perf_overlay_netlatency">平均網路延遲：%1$d ms（變異：%2$d ms）</string>
+	<string name="perf_overlay_dectime">平均解碼時間：%1$.2f ms</string>
+	<string name="perf_overlay_drawdelay">延遲：%1$.2f ms</string>
 
 	<!-- Performance Report Sharing -->
 	<string name="email_prefix_message">
-		è«‹å°‡æ­¤é›»å­éƒµä»¶åŸæ¨£ç™¼é€è‡³ Cynixtics.logs@gmail.com ä»¥æ”¯æŒç¤¾ç¾¤ă€‚\n
-		æ‚¨åˆ†äº«ç„æ•ˆèƒ½æ•¸æ“å°‡æœ‰å©æ–¼æ”¹å–„ä¸¦æ“´å……è³‡æ–™é›†ï¼Œè©²è³‡æ–™é›†å¯åœ¨ä»¥ä¸‹ä½ç½®å–å¾—ï¼\n
-		https://tinyurl.com/Cynix-performance\n\n
+		請將此電子郵件原樣發送至 artemistics.logs@gmail.com 以支持社群。\n
+		您分享的效能數據將有助於改善並擴充資料集，該資料集可在以下位置取得：\n
+		https://tinyurl.com/artemis-performance\n\n
 	</string>
 
-	<string name="email_recipient">Cynixtics.logs@gmail.com</string>
-	<string name="email_subject">Cynixtics - æ•ˆèƒ½æ—¥èªŒ</string>
-	<string name="email_chooser_title">å‚³é€æ•ˆèƒ½æ—¥èªŒ...</string>
-	<string name="toast_no_email_clients">æœªå®‰è£é›»å­éƒµä»¶ç”¨æˆ¶ç«¯ă€‚</string>
-	<string name="toast_no_logs">å°æœªå„²å­˜ä»»ä½•æ•ˆèƒ½æ•¸æ“ă€‚</string>
+	<string name="email_recipient">artemistics.logs@gmail.com</string>
+	<string name="email_subject">Artemistics - 效能日誌</string>
+	<string name="email_chooser_title">傳送效能日誌...</string>
+	<string name="toast_no_email_clients">未安裝電子郵件用戶端。</string>
+	<string name="toast_no_logs">尚未儲存任何效能數據。</string>
 
 	<!-- AppList activity -->
-	<string name="applist_connect_msg">æ­£åœ¨é€£ç·è‡³é›»è…¦â€¦</string>
-	<string name="applist_menu_resume">ç¹¼çºŒå·¥ä½œéæ®µ</string>
-	<string name="applist_menu_start_vdisplay">åœ¨è™›æ“¬é¡¯ç¤ºå™¨ä¸­å•Ÿå‹•</string>
-	<string name="applist_menu_start_primarydisplay">åœ¨ä¸»è¦é¡¯ç¤ºå™¨ä¸­å•Ÿå‹•</string>
-	<string name="applist_menu_quit">çµæŸå·¥ä½œéæ®µ</string>
-	<string name="applist_menu_quit_and_start">çµæŸç›®å‰éæˆ²ä¸¦å•Ÿå‹•</string>
-	<string name="applist_menu_quit_and_start_vdisplay">çµæŸç›®å‰éæˆ²ä¸¦åœ¨è™›æ“¬é¡¯ç¤ºå™¨ä¸­å•Ÿå‹•</string>
-	<string name="applist_menu_quit_and_start_primarydisplay">çµæŸç›®å‰éæˆ²ä¸¦åœ¨ä¸»è¦é¡¯ç¤ºå™¨ä¸­å•Ÿå‹•</string>
-	<string name="applist_menu_cancel">å–æ¶ˆ</string>
-	<string name="applist_menu_details">æª¢è¦–è©³ç´°è³‡è¨</string>
-	<string name="applist_menu_scut">å»ºç«‹æ·å¾‘</string>
-	<string name="applist_menu_export_launcher">åŒ¯å‡ºå•Ÿå‹•æª”</string>
-	<string name="applist_menu_tv_channel">æ–°å¢è‡³é »é“</string>
-	<string name="applist_menu_hide_app">é±è—æ‡‰ç”¨ç¨‹å¼</string>
-	<string name="applist_refresh_title">æ‡‰ç”¨ç¨‹å¼æ¸…å–®</string>
-	<string name="applist_refresh_msg">æ­£åœ¨é‡æ–°æ•´ç†æ‡‰ç”¨ç¨‹å¼â€¦</string>
-	<string name="applist_refresh_error_title">éŒ¯èª¤</string>
-	<string name="applist_refresh_error_msg">ç„¡æ³•å–å¾—æ‡‰ç”¨ç¨‹å¼æ¸…å–®</string>
-	<string name="applist_quit_app">æ­£åœ¨çµæŸ</string>
-	<string name="applist_quit_success">å·²æˆåŸçµæŸ</string>
-	<string name="applist_quit_fail">çµæŸå¤±æ•—</string>
-	<string name="applist_quit_confirmation">æ‚¨ç¢ºå®è¦çµæŸæ­£åœ¨åŸ·è¡Œç„æ‡‰ç”¨ç¨‹å¼å—ï¼Ÿæ‰€æœ‰æœªå„²å­˜ç„è³‡æ–™å°‡æœƒéºå¤±ă€‚</string>
-	<string name="applist_details_id">æ‡‰ç”¨ç¨‹å¼ IDï¼</string>
+	<string name="applist_connect_msg">正在連線至電腦…</string>
+	<string name="applist_menu_resume">繼續工作階段</string>
+	<string name="applist_menu_start_vdisplay">在虛擬顯示器中啟動</string>
+	<string name="applist_menu_start_primarydisplay">在主要顯示器中啟動</string>
+	<string name="applist_menu_quit">結束工作階段</string>
+	<string name="applist_menu_quit_and_start">結束目前遊戲並啟動</string>
+	<string name="applist_menu_quit_and_start_vdisplay">結束目前遊戲並在虛擬顯示器中啟動</string>
+	<string name="applist_menu_quit_and_start_primarydisplay">結束目前遊戲並在主要顯示器中啟動</string>
+	<string name="applist_menu_cancel">取消</string>
+	<string name="applist_menu_details">檢視詳細資訊</string>
+	<string name="applist_menu_scut">建立捷徑</string>
+	<string name="applist_menu_export_launcher">匯出啟動檔</string>
+	<string name="applist_menu_tv_channel">新增至頻道</string>
+	<string name="applist_menu_hide_app">隱藏應用程式</string>
+	<string name="applist_refresh_title">應用程式清單</string>
+	<string name="applist_refresh_msg">正在重新整理應用程式…</string>
+	<string name="applist_refresh_error_title">錯誤</string>
+	<string name="applist_refresh_error_msg">無法取得應用程式清單</string>
+	<string name="applist_quit_app">正在結束</string>
+	<string name="applist_quit_success">已成功結束</string>
+	<string name="applist_quit_fail">結束失敗</string>
+	<string name="applist_quit_confirmation">您確定要結束正在執行的應用程式嗎？所有未儲存的資料將會遺失。</string>
+	<string name="applist_details_id">應用程式 ID：</string>
 
 	<!-- Add computer manually activity -->
-	<string name="title_add_pc">æ‰‹å‹•æ–°å¢é›»è…¦</string>
-	<string name="msg_add_pc">æ­£åœ¨é€£ç·è‡³é›»è…¦â€¦</string>
-	<string name="addpc_fail">ç„¡æ³•é€£ç·è‡³æŒ‡å®ç„é›»è…¦ă€‚è«‹ç¢ºèªé˜²ç«ç‰†å…è¨±æ‰€éœ€ç„é€£æ¥åŸ ă€‚</string>
-	<string name="addpc_success">å·²æˆåŸæ–°å¢é›»è…¦</string>
-	<string name="addpc_unknown_host">ç„¡æ³•è§£æé›»è…¦ä½å€ă€‚è«‹ç¢ºèªè¼¸å…¥ç„ä½å€æ²’æœ‰æ‹¼å¯«éŒ¯èª¤ă€‚</string>
-	<string name="addpc_enter_ip">æ‚¨å¿…é ˆè¼¸å…¥ IP ä½å€</string>
-	<string name="addpc_wrong_sitelocal">è©²ä½å€çœ‹èµ·ä¾†ä¸æ­£ç¢ºă€‚è‹¥è¦é€éç¶²é›ç¶²è·¯é€²è¡Œä¸²æµï¼Œæ‚¨å¿…é ˆä½¿ç”¨è·¯ç”±å™¨ç„å…¬é–‹ IP ä½å€ă€‚</string>
+	<string name="title_add_pc">手動新增電腦</string>
+	<string name="msg_add_pc">正在連線至電腦…</string>
+	<string name="addpc_fail">無法連線至指定的電腦。請確認防火牆允許所需的連接埠。</string>
+	<string name="addpc_success">已成功新增電腦</string>
+	<string name="addpc_unknown_host">無法解析電腦位址。請確認輸入的位址沒有拼寫錯誤。</string>
+	<string name="addpc_enter_ip">您必須輸入 IP 位址</string>
+	<string name="addpc_wrong_sitelocal">該位址看起來不正確。若要透過網際網路進行串流，您必須使用路由器的公開 IP 位址。</string>
 
 	<!-- Preferences -->
-	<string name="category_general_settings">ä¸€èˆ¬è¨­å®</string>
-	<string name="category_video_settings">å½±ç‰‡è¨­å®</string>
-	<string name="title_resolution_list">å½±ç‰‡è§£æåº¦</string>
-	<string name="summary_resolution_list">æé«˜ä»¥æ”¹å–„å½±åƒæ¸…æ™°åº¦ă€‚é™ä½ä»¥ä¾¿åœ¨ä½éè£ç½®å’Œè¼ƒæ…¢ç„ç¶²è·¯ä¸ç²å¾—æ›´ä½³æ•ˆèƒ½ă€‚</string>
-	<string name="title_native_res_dialog">åŸç”Ÿè§£æåº¦è­¦å‘</string>
-	<string name="text_native_res_dialog">ä¸²æµä¼ºæœå™¨å¯èƒ½ä¸æ”¯æ´åŸç”Ÿè§£æåº¦å’Œ/æˆ– FPSă€‚æ‚¨å¯èƒ½éœ€è¦æ‰‹å‹•ç‚ºä¸»æ©Ÿé›»è…¦è¨­å®ç›¸ç¬¦ç„è‡ªè¨‚é¡¯ç¤ºæ¨¡å¼ă€‚\n\nè‹¥æ‚¨é¸æ“‡åœ¨ NVIDIA æ§åˆ¶é¢æ¿ä¸­å»ºç«‹è‡ªè¨‚è§£æåº¦ä»¥ç¬¦åˆè¢å¹•è¨­å®ï¼Œè«‹å‹™å¿…é–±è®€ä¸¦ç†è§£ NVIDIA å°å¯èƒ½é€ æˆç„è¢å¹•æå£ă€é›»è…¦ä¸ç©©å®å’Œå…¶ä»–æ½›åœ¨å•é¡Œç„è­¦å‘ă€‚\n\nå› åœ¨æ‚¨ç„é›»è…¦ä¸å»ºç«‹è‡ªè¨‚è§£æåº¦æ‰€å°è‡´ç„ä»»ä½•å•é¡Œï¼Œæˆ‘å€‘æ¦‚ä¸è² è²¬ă€‚\n\næ‚¨ç„è¢å¹•å¯èƒ½ä¸æ”¯æ´å¿…è¦ç„é¡¯ç¤ºé…ç½®ă€‚å¦‚æœæ˜¯é€™æ¨£ï¼Œæ‚¨å¯ä»¥å˜—è©¦è¨­å®è™›æ“¬è¢å¹•ă€‚æœ€å¾Œï¼Œå¦‚æœæ‚¨ç„è£ç½®æˆ–ä¸»æ©Ÿé›»è…¦ä¸æ”¯æ´åœ¨ç‰¹å®è§£æåº¦æˆ–æ›´æ–°ç‡ä¸‹é€²è¡Œä¸²æµï¼Œå¾ˆéºæ†¾å°‡ç„¡æ³•ä½¿ç”¨ă€‚</string>
-	<string name="title_fps_list">å½±ç‰‡å¹€ç‡</string>
-	<string name="summary_fps_list">æé«˜å¯è®“å½±ç‰‡ä¸²æµæ›´æµæ¢ă€‚é™ä½å‰‡å¯åœ¨ä½éè£ç½®ä¸ç²å¾—æ›´ä½³æ•ˆèƒ½ă€‚</string>
-	<string name="title_seekbar_bitrate">å½±ç‰‡ä½å…ƒç‡</string>
-	<string name="summary_seekbar_bitrate">æé«˜ä»¥ç²å¾—æ›´ä½³ç„å½±åƒå“è³ªă€‚é™ä½å‰‡å¯åœ¨è¼ƒæ…¢ç„é€£ç·ä¸æ”¹å–„æ•ˆèƒ½ă€‚</string>
-	<string name="title_seekbar_metered_bitrate">è¨ˆé‡ç¶²è·¯ä¸‹ç„å½±ç‰‡ä½å…ƒç‡</string>
-	<string name="summary_seekbar_metered_bitrate">è¼ƒé«˜ç„ä½å…ƒç‡æœƒæ¶ˆè€—æ›´å¤æ•¸æ“ï¼Œè¼ƒä½ç„ä½å…ƒç‡å¯æ”¹å–„åœ¨è¨ˆé‡ç¶²è·¯ä¸‹ç„æµæ¢åº¦ă€‚\nè¨­å®ç‚º 0 æ™‚ï¼Œä½å…ƒç‡ç‚ºä¸è¿°è¨­å®ç„ 1/4ă€‚</string>
+	<string name="category_general_settings">一般設定</string>
+	<string name="category_video_settings">影片設定</string>
+	<string name="title_resolution_list">影片解析度</string>
+	<string name="summary_resolution_list">提高以改善影像清晰度。降低以便在低階裝置和較慢的網路上獲得更佳效能。</string>
+	<string name="title_native_res_dialog">原生解析度警告</string>
+	<string name="text_native_res_dialog">串流伺服器可能不支援原生解析度和/或 FPS。您可能需要手動為主機電腦設定相符的自訂顯示模式。\n\n若您選擇在 NVIDIA 控制面板中建立自訂解析度以符合螢幕設定，請務必閱讀並理解 NVIDIA 對可能造成的螢幕損壞、電腦不穩定和其他潛在問題的警告。\n\n因在您的電腦上建立自訂解析度所導致的任何問題，我們概不負責。\n\n您的螢幕可能不支援必要的顯示配置。如果是這樣，您可以嘗試設定虛擬螢幕。最後，如果您的裝置或主機電腦不支援在特定解析度或更新率下進行串流，很遺憾將無法使用。</string>
+	<string name="title_fps_list">影片幀率</string>
+	<string name="summary_fps_list">提高可讓影片串流更流暢。降低則可在低階裝置上獲得更佳效能。</string>
+	<string name="title_seekbar_bitrate">影片位元率</string>
+	<string name="summary_seekbar_bitrate">提高以獲得更佳的影像品質。降低則可在較慢的連線上改善效能。</string>
+	<string name="title_seekbar_metered_bitrate">計量網路下的影片位元率</string>
+	<string name="summary_seekbar_metered_bitrate">較高的位元率會消耗更多數據，較低的位元率可改善在計量網路下的流暢度。\n設定為 0 時，位元率為上述設定的 1/4。</string>
 	<string name="suffix_seekbar_bitrate_mbps">Mbps</string>
-	<string name="title_resolution_scale_factor">è§£æåº¦ç¸®æ”¾ä¿‚æ•¸</string>
-	<string name="summary_resolution_scale_factor">ä¼ºæœå™¨ç«¯è«‹æ±‚ç„è™›æ“¬è¢å¹•è§£æåº¦å°‡ä¹˜ä»¥æ­¤ä¿‚æ•¸ă€‚ä¸²æµè§£æåº¦ä¸å—å½±éŸ¿ă€‚\nä¾‹å¦‚ï¼120% æœƒå°‡ 2000x1000 è®ç‚º 2400x1200ă€‚\nè¨­å®è¼ƒé«˜ç„ç¸®æ”¾ä¿‚æ•¸å¯æ”¹å–„éƒ¨åˆ†éæˆ²ç„å½±åƒå“è³ªă€‚\néœ€è¦ Apollo æ‰èƒ½ç”Ÿæ•ˆă€‚</string>
-	<string name="resolution_prefix_native">åŸç”Ÿ</string>
-	<string name="resolution_prefix_native_fullscreen">åŸç”Ÿå…¨è¢å¹•</string>
-	<string name="resolution_prefix_native_landscape">ï¼ˆæ©«å‘ï¼‰</string>
-	<string name="resolution_prefix_native_portrait">ï¼ˆç›´å‘ï¼‰</string>
-	<string name="resolution_prefix_custom">è‡ªè¨‚</string>
+	<string name="title_resolution_scale_factor">解析度縮放係數</string>
+	<string name="summary_resolution_scale_factor">伺服器端請求的虛擬螢幕解析度將乘以此係數。串流解析度不受影響。\n例如：120% 會將 2000x1000 變為 2400x1200。\n設定較高的縮放係數可改善部分遊戲的影像品質。\n需要 Apollo 才能生效。</string>
+	<string name="resolution_prefix_native">原生</string>
+	<string name="resolution_prefix_native_fullscreen">原生全螢幕</string>
+	<string name="resolution_prefix_native_landscape">（橫向）</string>
+	<string name="resolution_prefix_native_portrait">（直向）</string>
+	<string name="resolution_prefix_custom">自訂</string>
 	<string name="fps_suffix_fps">FPS</string>
-	<string name="title_native_fps_dialog">åŸç”Ÿ FPS è­¦å‘</string>
-	<string name="title_checkbox_auto_invert_video_resolution">è‡ªå‹•åè½‰è§£æåº¦</string>
-	<string name="summary_checkbox_auto_invert_video_resolution">ç•¶è™•æ–¼ç›´å‘æ¨¡å¼æ™‚ï¼Œè‡ªå‹•åè½‰å½±ç‰‡ä¸²æµç„å¯¬åº¦èˆ‡é«˜åº¦ă€‚\nä¾‹å¦‚ï¼1920x1080 å°‡è®ç‚º 1080x1920ă€‚</string>
-	<string name="title_video_scale_mode">å½±ç‰‡ç¸®æ”¾æ¨¡å¼</string>
-	<string name="summary_video_scale_mode">åœ¨ă€Œç¬¦åˆă€ă€ă€Œå¡«æ»¿ă€èˆ‡ă€Œæ‹‰ä¼¸ă€ä¹‹é–“é¸æ“‡</string>
-	<string name="video_scale_mode_fit">ç¬¦åˆ</string>
-	<string name="video_scale_mode_fill">å¡«æ»¿</string>
-	<string name="video_scale_mode_stretch">æ‹‰ä¼¸</string>
+	<string name="title_native_fps_dialog">原生 FPS 警告</string>
+	<string name="title_checkbox_auto_invert_video_resolution">自動反轉解析度</string>
+	<string name="summary_checkbox_auto_invert_video_resolution">當處於直向模式時，自動反轉影片串流的寬度與高度。\n例如：1920x1080 將變為 1080x1920。</string>
+	<string name="title_video_scale_mode">影片縮放模式</string>
+	<string name="summary_video_scale_mode">在「符合」、「填滿」與「拉伸」之間選擇</string>
+	<string name="video_scale_mode_fit">符合</string>
+	<string name="video_scale_mode_fill">填滿</string>
+	<string name="video_scale_mode_stretch">拉伸</string>
 
-	<string name="category_audio_settings">éŸ³è¨è¨­å®</string>
-	<string name="title_audio_config_list">ç’°ç¹éŸ³æ•ˆé…ç½®</string>
-	<string name="summary_audio_config_list">ç‚ºå®¶åº­å‡é™¢ç³»çµ±å•Ÿç”¨ 5.1 æˆ– 7.1 ç’°ç¹éŸ³æ•ˆ</string>
-	<string name="title_checkbox_enable_audiofx">å•Ÿç”¨ç³»çµ±ç­‰åŒ–å™¨æ”¯æ´</string>
-	<string name="summary_checkbox_enable_audiofx">å…è¨±åœ¨ä¸²æµæ™‚ä½¿ç”¨éŸ³æ•ˆï¼Œä½†å¯èƒ½æœƒå¢å éŸ³è¨å»¶é²</string>
+	<string name="category_audio_settings">音訊設定</string>
+	<string name="title_audio_config_list">環繞音效配置</string>
+	<string name="summary_audio_config_list">為家庭劇院系統啟用 5.1 或 7.1 環繞音效</string>
+	<string name="title_checkbox_enable_audiofx">啟用系統等化器支援</string>
+	<string name="summary_checkbox_enable_audiofx">允許在串流時使用音效，但可能會增加音訊延遲</string>
 
-	<string name="category_gamepad_settings">éæˆ²æ‰‹æè¨­å®</string>
-	<string name="title_checkbox_multi_controller">è‡ªå‹•åµæ¸¬æ‰‹æå­˜åœ¨</string>
-	<string name="summary_checkbox_multi_controller">å–æ¶ˆå‹¾é¸æ­¤é¸é …å°‡å¼·åˆ¶æ‰‹æå§‹çµ‚å­˜åœ¨</string>
-	<string name="title_checkbox_vibrate_fallback">ä»¥éœ‡å‹•æ¨¡æ“¬éœ‡æ’¼å›é¥‹</string>
-	<string name="summary_checkbox_vibrate_fallback">è‹¥æ‚¨ç„æ‰‹æä¸æ”¯æ´éœ‡æ’¼å›é¥‹ï¼Œå°‡ä»¥è£ç½®éœ‡å‹•é€²è¡Œæ¨¡æ“¬</string>
-	<string name="title_seekbar_vibrate_fallback_strength">èª¿æ•´æ¨¡æ“¬éœ‡æ’¼å¼·åº¦</string>
-	<string name="summary_seekbar_vibrate_fallback_strength">æ”¾å¤§æˆ–é™ä½è£ç½®ä¸ç„éœ‡å‹•å¼·åº¦</string>
+	<string name="category_gamepad_settings">遊戲手把設定</string>
+	<string name="title_checkbox_multi_controller">自動偵測手把存在</string>
+	<string name="summary_checkbox_multi_controller">取消勾選此選項將強制手把始終存在</string>
+	<string name="title_checkbox_vibrate_fallback">以震動模擬震撼回饋</string>
+	<string name="summary_checkbox_vibrate_fallback">若您的手把不支援震撼回饋，將以裝置震動進行模擬</string>
+	<string name="title_seekbar_vibrate_fallback_strength">調整模擬震撼強度</string>
+	<string name="summary_seekbar_vibrate_fallback_strength">放大或降低裝置上的震動強度</string>
 	<string name="suffix_seekbar_vibrate_fallback_strength">%</string>
-	<string name="title_seekbar_deadzone">èª¿æ•´é¡æ¯”æ–æ¡¿æ­»å€</string>
-	<string name="summary_seekbar_deadzone">æ­£å€¼è¨­å®ä¸€èˆ¬æ­»å€ï¼Œè² å€¼å‰‡å¥—ç”¨æ­»å€è£œå„Ÿă€‚ä½¿ç”¨æ­»å€è£œå„Ÿæ™‚ï¼Œè«‹ç¢ºä¿æ‚¨ç„æ‰‹æå¯èª¿æ•´æ­»å€ï¼Œå¦å‰‡å¯èƒ½é›£ä»¥ä¿æŒç½®ä¸­ă€‚</string>
+	<string name="title_seekbar_deadzone">調整類比搖桿死區</string>
+	<string name="summary_seekbar_deadzone">正值設定一般死區，負值則套用死區補償。使用死區補償時，請確保您的手把可調整死區，否則可能難以保持置中。</string>
 	<string name="suffix_seekbar_deadzone">%</string>
-	<string name="title_checkbox_xb1_driver">Xbox 360/One/Nintendo Pro USB æ‰‹æé©…å‹•ç¨‹å¼</string>
-	<string name="summary_checkbox_xb1_driver">ç‚ºä¸å…·åŸç”Ÿ Xbox/Nintendo Pro æ”¯æ´ç„è£ç½®å•Ÿç”¨å…§å»º USB é©…å‹•ç¨‹å¼</string>
-	<string name="title_checkbox_usb_bind_all">è¦†å¯«åŸç”Ÿ Xbox æ‰‹ææ”¯æ´</string>
-	<string name="summary_checkbox_usb_bind_all">å³ä½¿è£ç½®å…·å‚™åŸç”Ÿ Xbox/Nintendo Pro æ”¯æ´ï¼Œä¹Ÿå°æ‰€æœ‰æ”¯æ´ç„æ‰‹æä½¿ç”¨ Cynix ç„ USB é©…å‹•ç¨‹å¼</string>
-	<string name="title_checkbox_mouse_emulation">ä»¥æ‰‹ææ¨¡æ“¬æ»‘é¼ </string>
-	<string name="summary_checkbox_mouse_emulation">é•·æŒ‰ Start éµå¯åœ¨æ‰‹ææ¨¡å¼èˆ‡æ»‘é¼ æ¨¡å¼é–“åˆ‡æ›</string>
-	<string name="title_checkbox_remember_mouse_mode">è¨˜ä½æ»‘é¼ æ¨¡å¼</string>
-	<string name="summary_checkbox_remember_mouse_mode">è¨˜ä½ä¸²æµæœŸé–“æ‰€é¸ç„æ»‘é¼ æ¨¡å¼ă€‚åœç”¨æ™‚ï¼Œä¸²æµæœŸé–“æ›´æ”¹ç„æ»‘é¼ æ¨¡å¼å°‡æ˜¯æ«æ™‚ç„ă€‚</string>
-	<string name="title_checkbox_flip_face_buttons">äº¤æ›é¢æ¿æŒ‰éµ</string>
-	<string name="summary_checkbox_flip_face_buttons">å°æ‰‹æèˆ‡è¢å¹•æ§åˆ¶å°‡ A/B èˆ‡ X/Y é¢æ¿æŒ‰éµå°èª¿</string>
-	<string name="title_checkbox_gamepad_touchpad_as_mouse">ä¸€å¾‹ä»¥è§¸æ§æ¿æ§åˆ¶æ»‘é¼ </string>
-	<string name="summary_checkbox_gamepad_touchpad_as_mouse">å³ä½¿ä»¥è§¸æ§æ¿æ¨¡æ“¬æ‰‹æï¼Œä»å¼·åˆ¶ä»¥æ‰‹æè§¸æ§æ¿è¼¸å…¥æ§åˆ¶ä¸»æ©Ÿæ»‘é¼ ă€‚</string>
-	<string name="title_checkbox_gamepad_motion_sensors">å…è¨±ä½¿ç”¨æ‰‹æé™€èºå„€</string>
-	<string name="summary_checkbox_gamepad_motion_sensors">åœ¨ä»¥å…·é™€èºå„€ç„æ‰‹æé€²è¡Œæ¨¡æ“¬æ™‚ï¼Œå…è¨±æ”¯æ´ç„ä¸»æ©Ÿè«‹æ±‚é™€èºå„€è³‡æ–™ă€‚è‹¥éæˆ²æœªä½¿ç”¨é™€èºå„€ï¼Œåœç”¨å¯ç•¥å¾®é™ä½è€—é›»èˆ‡ç¶²è·¯ç”¨é‡ă€‚</string>
-	<string name="title_checkbox_gamepad_motion_fallback">æ¨¡æ“¬æ‰‹æé™€èºå„€æ”¯æ´</string>
-	<string name="summary_checkbox_gamepad_motion_fallback">è‹¥é€£æ¥ç„æ‰‹ææˆ– Android ç‰ˆæœ¬ä¸æ”¯æ´æ‰‹æé™€èºå„€ï¼Œå‰‡ä½¿ç”¨è£ç½®å…§å»ºç„é™€èºå„€ă€‚\næ³¨æ„ï¼å•Ÿç”¨å¾Œï¼Œæ‚¨ç„æ‰‹æåœ¨ä¸»æ©Ÿä¸å¯èƒ½æœƒè¢«è¾¨è­˜ç‚º PlayStation æ‰‹æă€‚</string>
-	<string name="title_checkbox_force_device_motion">ä¸€å¾‹ä½¿ç”¨è£ç½®ç„é™€èºå„€</string>
-	<string name="summary_checkbox_force_device_motion">å³ä½¿æ‰‹ææ”¯æ´é™€èºå„€ï¼Œä»å¼·åˆ¶ä½¿ç”¨è£ç½®å…§å»ºç„é™€èºå„€ă€‚</string>
-	<string name="title_enable_rumble">å•Ÿç”¨éœ‡å‹•å›é¥‹</string>
-	<string name="summary_enable_rumble">åœ¨æ”¯æ´ç„æ‰‹æä¸å•Ÿç”¨éœ‡å‹•å›é¥‹ă€‚</string>
-	<string name="category_input_settings">è¼¸å…¥è¨­å®</string>
-	<string name="title_checkbox_touchscreen_trackpad">å°‡è§¸æ§è¢å¹•ç•¶ä½œè§¸æ§æ¿</string>
-	<string name="summary_checkbox_touchscreen_trackpad">å•Ÿç”¨æ™‚ï¼Œè§¸æ§è¢å¹•è¡Œç‚ºå¦‚åŒè§¸æ§æ¿ï¼›åœç”¨æ™‚ï¼Œè§¸æ§è¢å¹•ç›´æ¥æ§åˆ¶æ»‘é¼ æ¸¸æ¨™ă€‚</string>
-	<string name="title_checkbox_absolute_mouse_mode">é ç«¯æ¡Œé¢æ»‘é¼ æ¨¡å¼</string>
-	<string name="summary_checkbox_absolute_mouse_mode">å¯è®“æ»‘é¼ å é€Ÿåº¦åœ¨é ç«¯æ¡Œé¢ä½¿ç”¨æ™‚æ›´è‡ªç„¶ï¼Œä½†èˆ‡è¨±å¤éæˆ²ä¸ç›¸å®¹ă€‚</string>
-	<string name="title_checkbox_mouse_nav_buttons">å•Ÿç”¨ä¸ä¸€é /ä¸‹ä¸€é æ»‘é¼ æŒ‰éµ</string>
-	<string name="summary_checkbox_mouse_nav_buttons">å•Ÿç”¨æ­¤é¸é …å¯èƒ½å°è‡´éƒ¨åˆ†è£ç½®ç„¡æ³•æ­£å¸¸å³éµé»æ“</string>
+	<string name="title_checkbox_xb1_driver">Xbox 360/One/Nintendo Pro USB 手把驅動程式</string>
+	<string name="summary_checkbox_xb1_driver">為不具原生 Xbox/Nintendo Pro 支援的裝置啟用內建 USB 驅動程式</string>
+	<string name="title_checkbox_usb_bind_all">覆寫原生 Xbox 手把支援</string>
+	<string name="summary_checkbox_usb_bind_all">即使裝置具備原生 Xbox/Nintendo Pro 支援，也對所有支援的手把使用 Artemis 的 USB 驅動程式</string>
+	<string name="title_checkbox_mouse_emulation">以手把模擬滑鼠</string>
+	<string name="summary_checkbox_mouse_emulation">長按 Start 鍵可在手把模式與滑鼠模式間切換</string>
+	<string name="title_checkbox_remember_mouse_mode">記住滑鼠模式</string>
+	<string name="summary_checkbox_remember_mouse_mode">記住串流期間所選的滑鼠模式。停用時，串流期間更改的滑鼠模式將是暫時的。</string>
+	<string name="title_checkbox_flip_face_buttons">交換面板按鍵</string>
+	<string name="summary_checkbox_flip_face_buttons">對手把與螢幕控制將 A/B 與 X/Y 面板按鍵對調</string>
+	<string name="title_checkbox_gamepad_touchpad_as_mouse">一律以觸控板控制滑鼠</string>
+	<string name="summary_checkbox_gamepad_touchpad_as_mouse">即使以觸控板模擬手把，仍強制以手把觸控板輸入控制主機滑鼠。</string>
+	<string name="title_checkbox_gamepad_motion_sensors">允許使用手把陀螺儀</string>
+	<string name="summary_checkbox_gamepad_motion_sensors">在以具陀螺儀的手把進行模擬時，允許支援的主機請求陀螺儀資料。若遊戲未使用陀螺儀，停用可略微降低耗電與網路用量。</string>
+	<string name="title_checkbox_gamepad_motion_fallback">模擬手把陀螺儀支援</string>
+	<string name="summary_checkbox_gamepad_motion_fallback">若連接的手把或 Android 版本不支援手把陀螺儀，則使用裝置內建的陀螺儀。\n注意：啟用後，您的手把在主機上可能會被辨識為 PlayStation 手把。</string>
+	<string name="title_checkbox_force_device_motion">一律使用裝置的陀螺儀</string>
+	<string name="summary_checkbox_force_device_motion">即使手把支援陀螺儀，仍強制使用裝置內建的陀螺儀。</string>
+	<string name="title_enable_rumble">啟用震動回饋</string>
+	<string name="summary_enable_rumble">在支援的手把上啟用震動回饋。</string>
+	<string name="category_input_settings">輸入設定</string>
+	<string name="title_checkbox_touchscreen_trackpad">將觸控螢幕當作觸控板</string>
+	<string name="summary_checkbox_touchscreen_trackpad">啟用時，觸控螢幕行為如同觸控板；停用時，觸控螢幕直接控制滑鼠游標。</string>
+	<string name="title_checkbox_absolute_mouse_mode">遠端桌面滑鼠模式</string>
+	<string name="summary_checkbox_absolute_mouse_mode">可讓滑鼠加速度在遠端桌面使用時更自然，但與許多遊戲不相容。</string>
+	<string name="title_checkbox_mouse_nav_buttons">啟用上一頁/下一頁滑鼠按鍵</string>
+	<string name="summary_checkbox_mouse_nav_buttons">啟用此選項可能導致部分裝置無法正常右鍵點擊</string>
 
-	<string name="category_on_screen_controls_settings">è¢å¹•æ§åˆ¶è¨­å®</string>
-	<string name="title_checkbox_show_onscreen_controls">é¡¯ç¤ºè¢å¹•æ§åˆ¶æŒ‰éµ</string>
-	<string name="summary_checkbox_show_onscreen_controls">åœ¨è§¸æ§è¢å¹•ä¸é¡¯ç¤ºè™›æ“¬æ‰‹æ</string>
-	<string name="title_hide_osc_when_has_gamepad">ä½¿ç”¨æ‰‹ææ™‚é±è—è™›æ“¬æ‰‹æ</string>
-	<string name="summary_hide_osc_when_has_gamepad">ç•¶é€£æ¥å¯¦é«”æ‰‹ææ™‚é±è—è™›æ“¬æ‰‹æ</string>
-	<string name="title_checkbox_vibrate_osc">å•Ÿç”¨éœ‡å‹•</string>
-	<string name="summary_checkbox_vibrate_osc">è®“è£ç½®éœ‡å‹•ä»¥æ¨¡æ“¬è¢å¹•æ§åˆ¶ç„éœ‡æ’¼å›é¥‹</string>
-	<string name="title_only_l3r3">åƒ…é¡¯ç¤º L3 èˆ‡ R3</string>
-	<string name="summary_only_l3r3">é±è—é™¤ L3 èˆ‡ R3 ä»¥å¤–ç„æ‰€æœ‰è™›æ“¬æŒ‰éµ</string>
-	<string name="title_show_guide_button">é¡¯ç¤º Guide éµ</string>
-	<string name="summary_show_guide_button">åœ¨è¢å¹•ä¸é¡¯ç¤º Guide éµ</string>
-	<string name="title_reset_osc">æ¸…é™¤å·²å„²å­˜ç„è¢å¹•æ§åˆ¶ç‰ˆé¢</string>
-	<string name="summary_reset_osc">å°‡æ‰€æœ‰è¢å¹•æ§åˆ¶é‡è¨­ç‚ºé è¨­å¤§å°èˆ‡ä½ç½®</string>
-	<string name="dialog_title_reset_osc">é‡è¨­ç‰ˆé¢</string>
-	<string name="dialog_text_reset_osc">ç¢ºå®è¦åˆªé™¤å·²å„²å­˜ç„è¢å¹•æ§åˆ¶ç‰ˆé¢å—ï¼Ÿ</string>
-	<string name="toast_reset_osc_success">è¢å¹•æ§åˆ¶å·²é‡è¨­ç‚ºé è¨­å€¼</string>
-	<string name="title_osc_opacity">èª¿æ•´è¢å¹•æ§åˆ¶ä¸é€æ˜åº¦</string>
-	<string name="summary_osc_opacity">ä½¿è¢å¹•æ§åˆ¶æ›´é€æ˜æˆ–æ›´ä¸é€æ˜</string>
-	<string name="dialog_title_osc_opacity">èª¿æ•´ä¸é€æ˜åº¦</string>
+	<string name="category_on_screen_controls_settings">螢幕控制設定</string>
+	<string name="title_checkbox_show_onscreen_controls">顯示螢幕控制按鍵</string>
+	<string name="summary_checkbox_show_onscreen_controls">在觸控螢幕上顯示虛擬手把</string>
+	<string name="title_hide_osc_when_has_gamepad">使用手把時隱藏虛擬手把</string>
+	<string name="summary_hide_osc_when_has_gamepad">當連接實體手把時隱藏虛擬手把</string>
+	<string name="title_checkbox_vibrate_osc">啟用震動</string>
+	<string name="summary_checkbox_vibrate_osc">讓裝置震動以模擬螢幕控制的震撼回饋</string>
+	<string name="title_only_l3r3">僅顯示 L3 與 R3</string>
+	<string name="summary_only_l3r3">隱藏除 L3 與 R3 以外的所有虛擬按鍵</string>
+	<string name="title_show_guide_button">顯示 Guide 鍵</string>
+	<string name="summary_show_guide_button">在螢幕上顯示 Guide 鍵</string>
+	<string name="title_reset_osc">清除已儲存的螢幕控制版面</string>
+	<string name="summary_reset_osc">將所有螢幕控制重設為預設大小與位置</string>
+	<string name="dialog_title_reset_osc">重設版面</string>
+	<string name="dialog_text_reset_osc">確定要刪除已儲存的螢幕控制版面嗎？</string>
+	<string name="toast_reset_osc_success">螢幕控制已重設為預設值</string>
+	<string name="title_osc_opacity">調整螢幕控制不透明度</string>
+	<string name="summary_osc_opacity">使螢幕控制更透明或更不透明</string>
+	<string name="dialog_title_osc_opacity">調整不透明度</string>
 	<string name="suffix_osc_opacity">%</string>
 
-	<string name="category_ui_settings">ä»‹é¢è¨­å®</string>
-	<string name="title_checkbox_enable_pip">å•Ÿç”¨å­æ¯ç•«é¢æ—è§€æ¨¡å¼</string>
-	<string name="summary_checkbox_enable_pip">å…è¨±åœ¨å¤å·¥æ™‚è§€çœ‹ä¸²æµï¼ˆä¸å¯æ§åˆ¶ï¼‰</string>
-	<string name="title_language_list">èªè¨€</string>
-	<string name="summary_language_list">Cynix ä½¿ç”¨ç„èªè¨€</string>
-	<string name="title_checkbox_small_icon_mode">ä½¿ç”¨å°å‹å°é¢åœ–</string>
-	<string name="summary_checkbox_small_icon_mode">åœ¨æ‡‰ç”¨ç¨‹å¼æ ¼ç‹€æª¢è¦–ä¸­ä½¿ç”¨è¼ƒå°å°é¢åœ–ï¼Œå¯åœ¨åŒä¸€ç•«é¢é¡¯ç¤ºæ›´å¤æ‡‰ç”¨ç¨‹å¼</string>
+	<string name="category_ui_settings">介面設定</string>
+	<string name="title_checkbox_enable_pip">啟用子母畫面旁觀模式</string>
+	<string name="summary_checkbox_enable_pip">允許在多工時觀看串流（不可控制）</string>
+	<string name="title_language_list">語言</string>
+	<string name="summary_language_list">Artemis 使用的語言</string>
+	<string name="title_checkbox_small_icon_mode">使用小型封面圖</string>
+	<string name="summary_checkbox_small_icon_mode">在應用程式格狀檢視中使用較小封面圖，可在同一畫面顯示更多應用程式</string>
 
-	<string name="category_host_settings">ä¸»æ©Ÿè¨­å®</string>
-	<string name="title_checkbox_enable_sops">æœ€ä½³åŒ–éæˆ²è¨­å®</string>
-	<string name="summary_checkbox_enable_sops">å…è¨± GFE èª¿æ•´éæˆ²è¨­å®ä»¥é”åˆ°æœ€ä½³ä¸²æµæ•ˆæœ</string>
-	<string name="title_checkbox_host_audio">åœ¨é›»è…¦æ’­æ”¾éŸ³è¨</string>
-	<string name="summary_checkbox_host_audio">åœ¨é›»è…¦èˆ‡æ­¤è£ç½®åŒæ™‚æ’­æ”¾éŸ³è¨</string>
+	<string name="category_host_settings">主機設定</string>
+	<string name="title_checkbox_enable_sops">最佳化遊戲設定</string>
+	<string name="summary_checkbox_enable_sops">允許 GFE 調整遊戲設定以達到最佳串流效果</string>
+	<string name="title_checkbox_host_audio">在電腦播放音訊</string>
+	<string name="summary_checkbox_host_audio">在電腦與此裝置同時播放音訊</string>
 
-	<string name="category_advanced_settings">é€²éè¨­å®</string>
-	<string name="title_unlock_fps">è§£é–æ‰€æœ‰å¯ç”¨å¹€ç‡</string>
-	<string name="summary_unlock_fps">åœ¨é«˜éè£ç½®ä¸ä»¥ 90 æˆ– 120 FPS ä¸²æµå¯é™ä½å»¶é²ï¼Œä½†åœ¨ä¸æ”¯æ´ç„è£ç½®ä¸å¯èƒ½é€ æˆå»¶é²æˆ–ä¸ç©©å®</string>
-	<string name="title_checkbox_reduce_refresh_rate">å…è¨±é™ä½æ›´æ–°ç‡</string>
-	<string name="summary_checkbox_reduce_refresh_rate">è¼ƒä½ç„è¢å¹•æ›´æ–°ç‡å¯ç¯€çœé›»å›ï¼Œä½†æœƒå¢å éƒ¨åˆ†å½±ç‰‡å»¶é²</string>
-	<string name="title_checkbox_disable_warnings">åœç”¨è­¦å‘è¨æ¯</string>
-	<string name="summary_checkbox_disable_warnings">ä¸²æµæ™‚åœç”¨è¢å¹•ä¸ç„é€£ç·è­¦å‘è¨æ¯</string>
-	<string name="title_disable_frame_drop">æ°¸ä¸ä¸Ÿå¹€</string>
-	<string name="summary_disable_frame_drop">å¯æ¸›å°‘éƒ¨åˆ†è£ç½®ç„å¾®å¡é “ï¼Œä½†å¯èƒ½å¢å å»¶é²</string>
-	<string name="title_video_format">è®æ›´ç·¨ç¢¼å™¨è¨­å®</string>
-	<string name="summary_video_format">è‹¥è£ç½®æ”¯æ´ï¼Œè¼ƒæ–°ç„ç·¨ç¢¼å™¨å¯é™ä½å½±ç‰‡é »å¯¬éœ€æ±‚ă€‚è‹¥ä¸»æ©Ÿè»Ÿé«”æˆ– GPU ä¸æ”¯æ´ï¼Œç·¨ç¢¼å™¨é¸æ“‡å¯èƒ½è¢«å¿½ç•¥ă€‚</string>
-	<string name="title_enable_hdr">å•Ÿç”¨ HDRï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_enable_hdr">ç•¶éæˆ²èˆ‡é›»è…¦ GPU æ”¯æ´æ™‚ï¼Œä¸²æµ HDRă€‚HDR éœ€è¦æ”¯æ´ HEVC Main 10 ç·¨ç¢¼ç„ GPUă€‚</string>
-	<string name="title_full_range">å¼·åˆ¶å…¨ç¯„åœå½±åƒï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_full_range">è‹¥æ‚¨ç„è£ç½®ç„¡æ³•æ­£ç¢ºé¡¯ç¤ºå…¨ç¯„åœå½±åƒå…§å®¹ï¼Œå°‡å°è‡´æ˜æ—å€åŸŸç´°ç¯€æµå¤±ă€‚</string>
-	<string name="title_prevent_packet_loss">é˜²æ­¢å°åŒ…éºå¤±</string>
-	<string name="summary_prevent_packet_loss">è‹¥è£ç½®å› ä¸æ˜åŸå› å‡ºç¾å°åŒ…éºå¤±ï¼Œå¯å˜—è©¦å•Ÿç”¨æ­¤é¸é …ă€‚</string>
-	<string name="title_enable_perf_overlay">ä¸²æµæ™‚é¡¯ç¤ºæ•ˆèƒ½è³‡è¨</string>
-	<string name="summary_enable_perf_overlay">ä¸²æµæ™‚é¡¯ç¤ºå³æ™‚æ•ˆèƒ½è³‡è¨</string>
-	<string name="title_enable_post_stream_toast">ä¸²æµå¾Œé¡¯ç¤ºå»¶é²è¨æ¯</string>
-	<string name="summary_enable_post_stream_toast">ä¸²æµçµæŸå¾Œé¡¯ç¤ºå»¶é²è³‡è¨è¨æ¯</string>
+	<string name="category_advanced_settings">進階設定</string>
+	<string name="title_unlock_fps">解鎖所有可用幀率</string>
+	<string name="summary_unlock_fps">在高階裝置上以 90 或 120 FPS 串流可降低延遲，但在不支援的裝置上可能造成延遲或不穩定</string>
+	<string name="title_checkbox_reduce_refresh_rate">允許降低更新率</string>
+	<string name="summary_checkbox_reduce_refresh_rate">較低的螢幕更新率可節省電力，但會增加部分影片延遲</string>
+	<string name="title_checkbox_disable_warnings">停用警告訊息</string>
+	<string name="summary_checkbox_disable_warnings">串流時停用螢幕上的連線警告訊息</string>
+	<string name="title_disable_frame_drop">永不丟幀</string>
+	<string name="summary_disable_frame_drop">可減少部分裝置的微卡頓，但可能增加延遲</string>
+	<string name="title_video_format">變更編碼器設定</string>
+	<string name="summary_video_format">若裝置支援，較新的編碼器可降低影片頻寬需求。若主機軟體或 GPU 不支援，編碼器選擇可能被忽略。</string>
+	<string name="title_enable_hdr">啟用 HDR（實驗性）</string>
+	<string name="summary_enable_hdr">當遊戲與電腦 GPU 支援時，串流 HDR。HDR 需要支援 HEVC Main 10 編碼的 GPU。</string>
+	<string name="title_full_range">強制全範圍影像（實驗性）</string>
+	<string name="summary_full_range">若您的裝置無法正確顯示全範圍影像內容，將導致明暗區域細節流失。</string>
+	<string name="title_prevent_packet_loss">防止封包遺失</string>
+	<string name="summary_prevent_packet_loss">若裝置因不明原因出現封包遺失，可嘗試啟用此選項。</string>
+	<string name="title_enable_perf_overlay">串流時顯示效能資訊</string>
+	<string name="summary_enable_perf_overlay">串流時顯示即時效能資訊</string>
+	<string name="title_enable_post_stream_toast">串流後顯示延遲訊息</string>
+	<string name="summary_enable_post_stream_toast">串流結束後顯示延遲資訊訊息</string>
 
-	<string name="category_help">èªªæ˜</string>
-	<string name="title_setup_guide">å®‰è£æŒ‡å—</string>
-	<string name="summary_setup_guide">æª¢è¦–å¦‚ä½•è¨­å®æ‚¨ç„éæˆ²é›»è…¦ä»¥é€²è¡Œä¸²æµç„æŒ‡å¼•</string>
-	<string name="title_troubleshooting">ç–‘é›£æ’è§£æŒ‡å—</string>
-	<string name="summary_troubleshooting">æª¢è¦–è¨ºæ–·èˆ‡ä¿®å¾©å¸¸è¦‹ä¸²æµå•é¡Œç„æç¤º</string>
-	<string name="title_privacy_policy">é±ç§æ¬æ”¿ç­–</string>
-	<string name="summary_privacy_policy">æª¢è¦– Cynix ç„é±ç§æ¬æ”¿ç­–</string>
-	<string name="title_special_key_help">è‡ªè¨‚æŒ‰éµèªªæ˜</string>
-	<string name="summary_special_key_help">æœ‰é—œå¦‚ä½•è¨­å®è‡ªè¨‚ç‰¹æ®æŒ‰éµç„æŒ‡å¼•</string>
-	<string name="summary_performance_link">æŸ¥çœ‹å…¶ä»–è£ç½®ç„æ•ˆèƒ½ă€‚\nè«‹æ³¨æ„ï¼Œé€™äº›è³‡æ–™ç”±ç¤¾ç¾¤ç®¡ç†ï¼Œéç”± Cynix å®˜æ–¹ç®¡ç†ï¼Œä¹Ÿä¸ä»£è¡¨ Cynix ç„å®˜æ–¹ç«‹å ´ă€‚</string>
-	<string name="title_performance_link">æ•ˆèƒ½å„€è¡¨æ¿</string>
+	<string name="category_help">說明</string>
+	<string name="title_setup_guide">安裝指南</string>
+	<string name="summary_setup_guide">檢視如何設定您的遊戲電腦以進行串流的指引</string>
+	<string name="title_troubleshooting">疑難排解指南</string>
+	<string name="summary_troubleshooting">檢視診斷與修復常見串流問題的提示</string>
+	<string name="title_privacy_policy">隱私權政策</string>
+	<string name="summary_privacy_policy">檢視 Artemis 的隱私權政策</string>
+	<string name="title_special_key_help">自訂按鍵說明</string>
+	<string name="summary_special_key_help">有關如何設定自訂特殊按鍵的指引</string>
+	<string name="summary_performance_link">查看其他裝置的效能。\n請注意，這些資料由社群管理，非由 Artemis 官方管理，也不代表 Artemis 的官方立場。</string>
+	<string name="title_performance_link">效能儀表板</string>
 
 	<!-- Toasts -->
-	<string name="toast_controller_type_changed">å› é™€èºå„€æ¨¡æ“¬ï¼Œæ‰‹æé¡å‹å¯èƒ½å·²è®æ›´</string>
+	<string name="toast_controller_type_changed">因陀螺儀模擬，手把類型可能已變更</string>
 
 	<!-- Array strings -->
 	<string name="resolution_360p">360p</string>
@@ -343,50 +343,50 @@
 	<string name="fps_90">90 FPS</string>
 	<string name="fps_120">120 FPS</string>
 
-	<string name="audioconf_stereo">ç«‹é«”è²</string>
-	<string name="audioconf_51surround">5.1 ç’°ç¹éŸ³æ•ˆ</string>
-	<string name="audioconf_71surround">7.1 ç’°ç¹éŸ³æ•ˆ</string>
+	<string name="audioconf_stereo">立體聲</string>
+	<string name="audioconf_51surround">5.1 環繞音效</string>
+	<string name="audioconf_71surround">7.1 環繞音效</string>
 
-	<string name="videoformat_auto">è‡ªå‹•ï¼ˆå»ºè­°ï¼‰</string>
-	<string name="videoformat_av1always">å„ªå…ˆä½¿ç”¨ AV1ï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="videoformat_hevcalways">å„ªå…ˆä½¿ç”¨ HEVC</string>
-	<string name="videoformat_h264always">å„ªå…ˆä½¿ç”¨ H.264</string>
+	<string name="videoformat_auto">自動（建議）</string>
+	<string name="videoformat_av1always">優先使用 AV1（實驗性）</string>
+	<string name="videoformat_hevcalways">優先使用 HEVC</string>
+	<string name="videoformat_h264always">優先使用 H.264</string>
 
-	<string name="title_frame_pacing">å½±ç‰‡å¹€å¾‹æ§åˆ¶</string>
-	<string name="summary_frame_pacing">æŒ‡å®å¦‚ä½•åœ¨å½±ç‰‡å»¶é²èˆ‡æµæ¢åº¦ä¹‹é–“å–å¾—å¹³è¡¡</string>
-	<string name="pacing_warp">Warp Driveï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="pacing_warp2">Warp 2ï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="pacing_latency">å„ªå…ˆæœ€ä½å»¶é²</string>
-	<string name="pacing_balanced">å¹³è¡¡</string>
-	<string name="pacing_balanced_alt">æœ‰é™åˆ¶ FPS ç„å¹³è¡¡æ¨¡å¼</string>
-	<string name="pacing_smoothness">å„ªå…ˆæœ€æµæ¢å½±ç‰‡ï¼ˆå¯èƒ½å¤§å¹…å¢å å»¶é²ï¼‰</string>
+	<string name="title_frame_pacing">影片幀律控制</string>
+	<string name="summary_frame_pacing">指定如何在影片延遲與流暢度之間取得平衡</string>
+	<string name="pacing_warp">Warp Drive（實驗性）</string>
+	<string name="pacing_warp2">Warp 2（實驗性）</string>
+	<string name="pacing_latency">優先最低延遲</string>
+	<string name="pacing_balanced">平衡</string>
+	<string name="pacing_balanced_alt">有限制 FPS 的平衡模式</string>
+	<string name="pacing_smoothness">優先最流暢影片（可能大幅增加延遲）</string>
 
 
-	<string name="keyboard_service_label">Cynix å¯¦é«”éµç›¤</string>
-	<string name="accessibility_description_text">åƒ…åœ¨ç³»çµ±æ””æˆªå¯¦é«”éµç›¤å¿«æ·éµæ™‚ä½¿ç”¨ă€‚åœ¨æŸäº›ç³»çµ±ä¸­ï¼Œéƒ¨åˆ†å¿«æ·éµå·²è¢« Android ç³»çµ±å®ç¾©ä¸¦ä½¿ç”¨ï¼Œå°è‡´ç„¡æ³•å‚³éè‡³ä¸»æ©Ÿé›»è…¦ă€‚Cynix ä¸æœƒæª¢è¦–æ‚¨ç„è¼¸å…¥ï¼Œä¹Ÿä¸æœƒæ”¶é›†æ‚¨ç„å¯†ç¢¼ă€ä¿¡ç”¨å¡è™Ÿæˆ–ä»»ä½•å…¶ä»–ç§äººè³‡è¨ă€‚</string>
+	<string name="keyboard_service_label">Artemis 實體鍵盤</string>
+	<string name="accessibility_description_text">僅在系統攔截實體鍵盤快捷鍵時使用。在某些系統中，部分快捷鍵已被 Android 系統定義並使用，導致無法傳遞至主機電腦。Artemis 不會檢視您的輸入，也不會收集您的密碼、信用卡號或任何其他私人資訊。</string>
 
 
 	<!-- In Game menu -->
-	<string name="game_menu_toggle_keyboard">é¡¯ç¤ºè»Ÿé«”éµç›¤</string>
-	<string name="game_menu_toggle_hud">åˆ‡æ›å³æ™‚æ•ˆèƒ½è³‡è¨</string>
-	<string name="game_menu_toggle_floating_button">åˆ‡æ›æµ®å‹•æŒ‰éˆ•</string>
-	<string name="game_menu_select_mouse_mode">é¸æ“‡æ»‘é¼ æ¨¡å¼</string>
-	<string name="game_menu_select_steam_mode">é¸æ“‡ä¸²æµæ¨¡å¼</string>
-	<string name="game_menu_enable_zoom_mode">å•Ÿç”¨å¹³ç§»/ç¸®æ”¾</string>
-	<string name="game_menu_disable_zoom_mode">åœç”¨å¹³ç§»/ç¸®æ”¾</string>
-	<string name="game_menu_rotate_screen">æ—‹è½‰è¢å¹•</string>
-	<string name="game_menu_toggle_keyboard_model">åˆ‡æ›ç‰¹æ®æŒ‰éµ</string>
-	<string name="game_menu_toggle_virtual_model">åˆ‡æ›è™›æ“¬æ‰‹æ</string>
-	<string name="game_menu_toggle_virtual_keyboard_model">åˆ‡æ›è¢å¹•å®Œæ•´éµç›¤</string>
-	<string name="game_menu_switch_touch_sensitivity_model">åˆ‡æ›è§¸æ§éˆæ•åº¦</string>
+	<string name="game_menu_toggle_keyboard">顯示軟體鍵盤</string>
+	<string name="game_menu_toggle_hud">切換即時效能資訊</string>
+	<string name="game_menu_toggle_floating_button">切換浮動按鈕</string>
+	<string name="game_menu_select_mouse_mode">選擇滑鼠模式</string>
+	<string name="game_menu_select_steam_mode">選擇串流模式</string>
+	<string name="game_menu_enable_zoom_mode">啟用平移/縮放</string>
+	<string name="game_menu_disable_zoom_mode">停用平移/縮放</string>
+	<string name="game_menu_rotate_screen">旋轉螢幕</string>
+	<string name="game_menu_toggle_keyboard_model">切換特殊按鍵</string>
+	<string name="game_menu_toggle_virtual_model">切換虛擬手把</string>
+	<string name="game_menu_toggle_virtual_keyboard_model">切換螢幕完整鍵盤</string>
+	<string name="game_menu_switch_touch_sensitivity_model">切換觸控靈敏度</string>
 
 
-	<string name="game_menu_toggle_mouse_on">å•Ÿç”¨æ‰‹ææ»‘é¼ æ§åˆ¶</string>
-	<string name="game_menu_toggle_mouse_off">åœç”¨æ‰‹ææ»‘é¼ æ§åˆ¶</string>
-	<string name="game_menu_disconnect">ä¸­æ–·é€£ç·</string>
-	<string name="game_menu_cancel">å–æ¶ˆ</string>
-	<string name="game_menu_task_manager">é–‹å•Ÿå·¥ä½œç®¡ç†å“¡</string>
-	<string name="game_menu_send_keys">å‚³é€ç‰¹æ®æŒ‰éµ</string>
+	<string name="game_menu_toggle_mouse_on">啟用手把滑鼠控制</string>
+	<string name="game_menu_toggle_mouse_off">停用手把滑鼠控制</string>
+	<string name="game_menu_disconnect">中斷連線</string>
+	<string name="game_menu_cancel">取消</string>
+	<string name="game_menu_task_manager">開啟工作管理員</string>
+	<string name="game_menu_send_keys">傳送特殊按鍵</string>
 	<string name="game_menu_send_keys_esc">ESC</string>
 	<string name="game_menu_send_keys_f11">F11</string>
 	<string name="game_menu_send_keys_alt_f4">Alt + F4</string>
@@ -398,424 +398,398 @@
 	<string name="game_menu_send_keys_ctrl_alt_tab">Ctrl + Alt + Tab</string>
 	<string name="game_menu_send_keys_shift_tab">Shift + Tab (Steam Overlay)</string>
 	<string name="game_menu_send_keys_alt_enter">Alt + Enter</string>
-	<string name="game_menu_send_keys_win_shift_left">Win + Shift + å·¦éµï¼ˆåœ¨é¡¯ç¤ºå™¨é–“ç§»å‹•æ‡‰ç”¨ç¨‹å¼ï¼‰</string>
-	<string name="game_menu_send_keys_ctrl_alt_shift_q">Ctrl + Alt + Shift + Qï¼ˆé›»è…¦çµæŸä¸²æµï¼‰</string>
-	<string name="game_menu_send_keys_ctrl_alt_shift_f1">Ctrl + Alt + Shift + F1ï¼ˆåˆ‡æ›é¡¯ç¤ºå™¨ï¼‰</string>
-	<string name="game_menu_send_keys_ctrl_alt_shift_f12">Ctrl + Alt + Shift + F12ï¼ˆåˆ‡æ›é¡¯ç¤ºå™¨ï¼‰</string>
+	<string name="game_menu_send_keys_win_shift_left">Win + Shift + 左鍵（在顯示器間移動應用程式）</string>
+	<string name="game_menu_send_keys_ctrl_alt_shift_q">Ctrl + Alt + Shift + Q（電腦結束串流）</string>
+	<string name="game_menu_send_keys_ctrl_alt_shift_f1">Ctrl + Alt + Shift + F1（切換顯示器）</string>
+	<string name="game_menu_send_keys_ctrl_alt_shift_f12">Ctrl + Alt + Shift + F12（切換顯示器）</string>
 
-	<string name="toggle_pan_zoom_mode">åˆ‡æ›å¹³ç§»/ç¸®æ”¾æ¨¡å¼</string>
-	<string name="pan_zoom_mode_enabled">å·²å•Ÿç”¨å¹³ç§»/ç¸®æ”¾æ¨¡å¼</string>
-	<string name="pan_zoom_mode_disabled">å·²åœç”¨å¹³ç§»/ç¸®æ”¾æ¨¡å¼</string>
+	<string name="toggle_pan_zoom_mode">切換平移/縮放模式</string>
+	<string name="pan_zoom_mode_enabled">已啟用平移/縮放模式</string>
+	<string name="pan_zoom_mode_disabled">已停用平移/縮放模式</string>
 
-	<string name="title_analog_scrolling">ä½¿ç”¨é¡æ¯”æ–æ¡¿æ²å‹•</string>
-	<string name="summary_analog_scrolling">åœ¨æ»‘é¼ æ¨¡æ“¬æ¨¡å¼ä¸‹é¸æ“‡é¡æ¯”æ–æ¡¿ä¾†é€²è¡Œæ²å‹•</string>
-	<string name="analogscroll_none">ç„¡ï¼ˆé›™æ–æ¡¿ç†æ§åˆ¶æ»‘é¼ ï¼‰</string>
-	<string name="analogscroll_right">å³æ–æ¡¿</string>
-	<string name="analogscroll_left">å·¦æ–æ¡¿</string>
+	<string name="title_analog_scrolling">使用類比搖桿捲動</string>
+	<string name="summary_analog_scrolling">在滑鼠模擬模式下選擇類比搖桿來進行捲動</string>
+	<string name="analogscroll_none">無（雙搖桿皆控制滑鼠）</string>
+	<string name="analogscroll_right">右搖桿</string>
+	<string name="analogscroll_left">左搖桿</string>
 
 	<string name="perf_overlay_lite_net">%1$dms</string>
 	<string name="perf_overlay_lite_dectime">%1$.2fms</string>
 	<string name="perf_overlay_lite_netdrops">%1$.2f%%</string>
 	<string name="perf_overlay_lite_streamdetails">%1$s</string>
 	<string name="perf_overlay_lite_fps">%1$.2f</string>
-	<string name="perf_overlay_drawn_fps">GPU FPSï¼</string>
-	<string name="perf_overlay_ai_fps">3D FPSï¼</string>
-	<string name="perf_overlay_ai_delegate">ä»£ç†ï¼</string>
-	<string name="perf_overlay_lite_decoder">è§£ç¢¼å™¨ï¼%1$s</string>
+	<string name="perf_overlay_drawn_fps">GPU FPS：</string>
+	<string name="perf_overlay_ai_fps">3D FPS：</string>
+	<string name="perf_overlay_ai_delegate">代理：</string>
+	<string name="perf_overlay_lite_decoder">解碼器：%1$s</string>
 
-	<string name="title_import_keyboard_layout">åŒ¯å…¥éµç›¤ä½ˆå±€</string>
-	<string name="title_export_keyboard_layout">åŒ¯å‡ºéµç›¤ä½ˆå±€</string>
-	<string name="summary_import_keyboard_layout">é€™å°‡è¦†å¯«ç›®å‰ç„ä½ˆå±€ă€‚</string>
-	<string name="summary_export_keyboard_layout">åŒ¯å‡ºç›®å‰ç„éµç›¤ä½ˆå±€</string>
+	<string name="title_import_keyboard_layout">匯入鍵盤佈局</string>
+	<string name="title_export_keyboard_layout">匯出鍵盤佈局</string>
+	<string name="summary_import_keyboard_layout">這將覆寫目前的佈局。</string>
+	<string name="summary_export_keyboard_layout">匯出目前的鍵盤佈局</string>
 
-	<string name="title_manual_enter_bitrate">è‡ªè¨‚ä½å…ƒç‡</string>
-	<string name="summary_manual_enter_bitrate">æ‰‹å‹•è¼¸å…¥ä½å…ƒç‡ă€‚\nå¯è¶…éæ‹‰æ¡¿ç„æœ€å¤§ç¯„åœă€‚</string>
-	<string name="dialog_manual_enter_bitrate">è«‹ä»¥ Mbps è¼¸å…¥ä½å…ƒç‡ă€‚å››æ¨äº”å…¥åˆ° 0.5ă€‚</string>
+	<string name="title_manual_enter_bitrate">自訂位元率</string>
+	<string name="summary_manual_enter_bitrate">手動輸入位元率。\n可超過拉桿的最大範圍。</string>
+	<string name="dialog_manual_enter_bitrate">請以 Mbps 輸入位元率。四捨五入到 0.5。</string>
 
-	<string name="title_custom_refresh_rate">è‡ªè¨‚æ›´æ–°ç‡</string>
-	<string name="summary_custom_refresh_rate">æ‰‹å‹•è¼¸å…¥æ›´æ–°ç‡ă€‚åƒ…æ”¯æ´ Apolloă€‚</string>
-	<string name="dialog_custom_refresh_rate">è«‹ä»¥ Hz è¼¸å…¥æ›´æ–°ç‡ă€‚å¯ç‚ºå°æ•¸ă€‚</string>
+	<string name="title_custom_refresh_rate">自訂更新率</string>
+	<string name="summary_custom_refresh_rate">手動輸入更新率。僅支援 Apollo。</string>
+	<string name="dialog_custom_refresh_rate">請以 Hz 輸入更新率。可為小數。</string>
 
-	<string name="title_render_mode">æ¸²æŸ“æ¨¡å¼</string>
-	<string name="title_render_mode_convergence_title">3D æœƒè</string>
-	<string name="title_render_mode_convergence_description">åƒè€ƒå€¼ï¼50 - å¹³è¡¡ / 0 - è¢å¹•å‰ / 100 - è¢å¹•å¾Œ</string>
-	<string name="title_render_mode_balance_shift_title">3D è¦–è¦ºå¹³è¡¡</string>
-	<string name="title_render_mode_balance_shift_description">åƒè€ƒå€¼ï¼50 - é›™çœ¼å„åˆ†æ“” 50% ç„æ·±åº¦æ•ˆæœï¼›0ï¼å·¦çœ¼ï¼ˆ100% å‡¸å‡ºï¼‰- å³çœ¼ï¼ˆ100% ä¸è®ï¼‰ï¼›100ï¼å·¦çœ¼ä¸è®ă€å³çœ¼å‡¸å‡ºă€‚å°‡æ•¸å€¼è¨­ç‚º 0 æˆ– 100 å¯ç²å¾—æ›´æ¸…æ™°ç„æˆåƒï¼Œå› ç‚ºç¸½æœ‰ä¸€å´åƒç´ ä¿æŒæœªåç§»</string>
-	<string name="title_render_mode_strength_title">3D æ•ˆæœå¼·åº¦</string>
-	<string name="title_render_mode_strength_description">åƒè€ƒå€¼ï¼50ă€‚æ•¸å€¼è¶é«˜æ•ˆæœè¶å¼·ï¼Œä½†å¯èƒ½é€ æˆçœ¼ç›ç–²å‹ä¸”ä¸è‡ªç„¶ï¼›æ•¸å€¼è¶ä½æ›´è­·çœ¼ï¼Œé«”é©—æ›´æŸ”å’Œă€‚</string>
+	<string name="title_render_mode">渲染模式</string>
+	<string name="title_render_mode_convergence_title">3D 會聚</string>
+	<string name="title_render_mode_convergence_description">參考值：50 - 平衡 / 0 - 螢幕前 / 100 - 螢幕後</string>
+	<string name="title_render_mode_balance_shift_title">3D 視覺平衡</string>
+	<string name="title_render_mode_balance_shift_description">參考值：50 - 雙眼各分擔 50% 的深度效果；0：左眼（100% 凸出）- 右眼（100% 不變）；100：左眼不變、右眼凸出。將數值設為 0 或 100 可獲得更清晰的成像，因為總有一側像素保持未偏移</string>
+	<string name="title_render_mode_strength_title">3D 效果強度</string>
+	<string name="title_render_mode_strength_description">參考值：50。數值越高效果越強，但可能造成眼睛疲勞且不自然；數值越低更護眼，體驗更柔和。</string>
 
-	<string name="title_touchscreen_mode">è§¸æ§è¢å¹•æ¨¡å¼</string>
-	<string name="summary_render_mode">é è¨­ç‚º 2D æˆ– SBS 3Dă€‚3D æœƒè‡ªå‹•å å€å¯¬åº¦ä¸¦å¥—ç”¨æ•ˆæœï¼Œç„¡éœ€è¨­å®ă€‚æ”¯æ´ AI 2D è½‰ 3Dă€‚</string>
-	<string name="summary_touchscreen_mode">åœ¨å¤é»è§¸æ§/å–®é»è§¸æ§/è§¸æ§æ¿/åœç”¨æ¨¡å¼é–“é¸æ“‡ă€‚\nç•¶é¸æ“‡åœç”¨æ™‚ï¼Œæ‰‹å¯«ç­†/è§¸æ§ç­†ä»å¯ä½¿ç”¨ă€‚\nä½¿ç”¨å¤–æ¥é¡¯ç¤ºå™¨æ™‚å°‡å¼·åˆ¶ç‚ºè§¸æ§æ¿ï¼ˆè‡ªç„¶ï¼‰æ¨¡å¼ă€‚</string>
+	<string name="title_touchscreen_mode">觸控螢幕模式</string>
+	<string name="summary_render_mode">預設為 2D 或 SBS 3D。3D 會自動加倍寬度並套用效果，無需設定。支援 AI 2D 轉 3D。</string>
+	<string name="summary_touchscreen_mode">在多點觸控/單點觸控/觸控板/停用模式間選擇。\n當選擇停用時，手寫筆/觸控筆仍可使用。\n使用外接顯示器時將強制為觸控板（自然）模式。</string>
 
-	<string name="title_checkbox_mouse_local_cursor">ä½¿ç”¨æœ¬æ©Ÿæ»‘é¼ æ¸¸æ¨™</string>
-	<string name="summary_checkbox_mouse_local_cursor">é è¨­æœƒæ“·å–å¤–æ¥å¯¦é«”æ»‘é¼ æ¸¸æ¨™ï¼Œæœ¬é¸é …å¯é¡¯ç¤º Android ç³»çµ±æ¸¸æ¨™</string>
+	<string name="title_checkbox_mouse_local_cursor">使用本機滑鼠游標</string>
+	<string name="summary_checkbox_mouse_local_cursor">預設會擷取外接實體滑鼠游標，本選項可顯示 Android 系統游標</string>
 
-	<string name="title_checkbox_multi_touch_gestures">å•Ÿç”¨å¤é»è§¸æ§æ‰‹å‹¢</string>
-	<string name="summary_checkbox_multi_touch_gestures">åœ¨å¤é»è§¸æ§æ¨¡å¼ä¸‹ï¼ä¸‰æŒ‡é»æ“é–‹å•Ÿéµç›¤ă€å››æŒ‡é»æ“é–‹å•Ÿå…¨éµç›¤ă€äº”æŒ‡é»æ“é–‹å•Ÿå¿«é€Ÿé¸å–®ă€‚</string>
+	<string name="title_checkbox_multi_touch_gestures">啟用多點觸控手勢</string>
+	<string name="summary_checkbox_multi_touch_gestures">在多點觸控模式下：三指點擊開啟鍵盤、四指點擊開啟全鍵盤、五指點擊開啟快速選單。</string>
 
-	<string name="title_checkbox_onscreen_style_official">å®˜æ–¹è™›æ“¬æ‰‹æå¤–è§€</string>
-	<string name="summary_checkbox_onscreen_style_official">è‹¥åå¥½èˆç‰ˆå®˜æ–¹è™›æ“¬æ‰‹ææŒ‰éˆ•æ¨£å¼ï¼Œå¯é¸æ“‡æ­¤é …ă€‚\nè‹¥é¸æ“‡åº•éƒ¨è™›æ“¬æŒ‰éˆ•ï¼ŒæŒ‰éµå¤–å½¢å¯ç‚ºæ–¹å½¢ă€ä¸€èˆ¬æŒ‰éµé è¨­ç‚ºæ–¹å½¢ă€‘</string>
+	<string name="title_checkbox_onscreen_style_official">官方虛擬手把外觀</string>
+	<string name="summary_checkbox_onscreen_style_official">若偏好舊版官方虛擬手把按鈕樣式，可選擇此項。\n若選擇底部虛擬按鈕，按鍵外形可為方形【一般按鍵預設為方形】</string>
 
-	<string name="title_checkbox_enable_perf_overlay_lite">å•Ÿç”¨ç²¾ç°¡æ¨¡å¼</string>
-	<string name="summary_checkbox_enable_perf_overlay_lite">é¡¯ç¤ºç°¡åŒ–ç„æ•ˆèƒ½è³‡è¨ï¼ç¶²è·¯é€Ÿåº¦ / å»¶é² / è§£ç¢¼ / å°åŒ…éºå¤±ç‡ / FPS</string>
+	<string name="title_checkbox_enable_perf_overlay_lite">啟用精簡模式</string>
+	<string name="summary_checkbox_enable_perf_overlay_lite">顯示簡化的效能資訊：網路速度 / 延遲 / 解碼 / 封包遺失率 / FPS</string>
 
-	<string name="title_checkbox_enable_perf_logging">å•Ÿç”¨æ•ˆèƒ½è¨˜éŒ„</string>
-	<string name="summary_checkbox_enable_perf_logging">ă€Œé›¢ç·æ™‚ă€ä¾çµ„æ…‹å„²å­˜æ•ˆèƒ½è³‡æ–™ă€‚</string>
+	<string name="title_checkbox_enable_perf_logging">啟用效能記錄</string>
+	<string name="summary_checkbox_enable_perf_logging">「離線時」依組態儲存效能資料。</string>
 
-	<string name="title_checkbox_enable_perf_overlay_lite_dialog">ç²¾ç°¡æ¨¡å¼é»æ“å½ˆå‡ºå¿«é€Ÿé¸é …</string>
-	<string name="summary_checkbox_enable_perf_overlay_lite_dialog">å–ä»£è¿”å›éµé‚è¼¯ï¼Œæ”¹ç‚ºå½ˆå‡ºéæˆ²å¿«é€Ÿé¸å–®ă€‚</string>
+	<string name="title_checkbox_enable_perf_overlay_lite_dialog">精簡模式點擊彈出快速選項</string>
+	<string name="summary_checkbox_enable_perf_overlay_lite_dialog">取代返回鍵邏輯，改為彈出遊戲快速選單。</string>
 
-	<string name="title_show_overlay_zoom_toggle_button">é¡¯ç¤ºè¦†è“‹å±¤ç¸®æ”¾åˆ‡æ›æŒ‰éˆ•</string>
-	<string name="summary_show_overlay_zoom_toggle_button">åœ¨ç•«é¢é ‚éƒ¨é¡¯ç¤ºå¯æ‹–æ›³ç„æŒ‰éˆ•ï¼Œç”¨æ–¼åˆ‡æ›å¹³ç§»/ç¸®æ”¾æ¨¡å¼ă€‚</string>
+	<string name="title_show_overlay_zoom_toggle_button">顯示覆蓋層縮放切換按鈕</string>
+	<string name="summary_show_overlay_zoom_toggle_button">在畫面頂部顯示可拖曳的按鈕，用於切換平移/縮放模式。</string>
 
-	<string name="title_virtual_trackpad_settings">è™›æ“¬è§¸æ§æ¿è¨­å®</string>
+	<string name="title_virtual_trackpad_settings">虛擬觸控板設定</string>
 
-	<string name="title_quit_dialog">è¿”å›é¸å–®</string>
-	<string name="summary_quit_dialog">å•Ÿç”¨å¾Œï¼Œåœ¨ä¸²æµä»‹é¢æŒ‰ä¸‹å¯¦é«”è¿”å›éµæœƒé¡¯ç¤ºç›¸é—œé¸é …ï¼\nè»Ÿé«”éµç›¤ă€æ•ˆèƒ½è³‡è¨ă€è§¸æ§æ¨¡å¼åˆ‡æ›ă€å‚³é€ç‰¹æ®æŒ‰éµ</string>
+	<string name="title_quit_dialog">返回選單</string>
+	<string name="summary_quit_dialog">啟用後，在串流介面按下實體返回鍵會顯示相關選項！\n軟體鍵盤、效能資訊、觸控模式切換、傳送特殊按鍵</string>
 
-	<string name="title_floating_button">æµ®å‹•æŒ‰éˆ•</string>
-	<string name="summary_floating_button">å•Ÿç”¨æµ®å‹•æŒ‰éˆ•</string>
+	<string name="title_floating_button">浮動按鈕</string>
+	<string name="summary_floating_button">啟用浮動按鈕</string>
 
-	<string name="dialog_custom_resolution">è¨­å®è§£æåº¦ä¸¦é›¢é–‹è¨­å®é é¢å¾Œç”Ÿæ•ˆï¼</string>
-	<string name="summary_custom_resolution">æ–°å¢è‡ªè¨‚è§£æåº¦ï¼Œä»¥ x åˆ†é”ï¼›ä¸å¸¸è¦‹ç„è§£æåº¦å¯èƒ½ç„¡æ³•é‹ä½œă€‚\nä¾‹å¦‚ï¼1920x1080\nè‹¥éåŸç”Ÿè§£æåº¦ï¼Œé è¨­å¯èƒ½ä¸æœƒå¡«æ»¿ç€æµ·å€åŸŸă€‚è‹¥é•·å¯¬æ¯”ç›¸åŒï¼Œå¯æ‰‹å‹•è¨­å®æ‹‰ä¼¸ç•«é¢ä»¥å…¨è¢å¹•é¡¯ç¤ºă€‚</string>
-	<string name="title_custom_resolution">è‡ªè¨‚è§£æåº¦</string>
+	<string name="dialog_custom_resolution">設定解析度並離開設定頁面後生效！</string>
+	<string name="summary_custom_resolution">新增自訂解析度，以 x 分隔；不常見的解析度可能無法運作。\n例如：1920x1080\n若非原生解析度，預設可能不會填滿瀏海區域。若長寬比相同，可手動設定拉伸畫面以全螢幕顯示。</string>
+	<string name="title_custom_resolution">自訂解析度</string>
 
-	<string name="title_auto_orientation">è‡ªå‹•æ–¹å‘</string>
-	<string name="summary_auto_orientation">ä¸²æµé–‹å§‹æ™‚ï¼Œç•«é¢å°‡ä¾è£ç½®æ–¹å‘é¡¯ç¤ºă€‚</string>
+	<string name="title_auto_orientation">自動方向</string>
+	<string name="summary_auto_orientation">串流開始時，畫面將依裝置方向顯示。</string>
 
-	<string name="title_import_special_button">åŒ¯å…¥è‡ªè¨‚æŒ‰éµ</string>
-	<string name="summary_import_special_button">å¯æ–¼è¿”å›é¸å–®èˆ‡ç‰¹æ®æŒ‰éµä¸­ä½¿ç”¨ă€‚\næ³¨æ„ï¼åŒ¯å…¥æœƒè¦†å¯«ç›®å‰è¨­å®ï¼Œè«‹å…ˆå‚™ä»½ă€‚</string>
+	<string name="title_import_special_button">匯入自訂按鍵</string>
+	<string name="summary_import_special_button">可於返回選單與特殊按鍵中使用。\n注意：匯入會覆寫目前設定，請先備份。</string>
 
-	<string name="summary_share_performance_logs">èˆ‡æœ‹å‹æˆ–ç¤¾ç¾¤åˆ†äº«æ‚¨ç„æ•ˆèƒ½è³‡æ–™</string>
-	<string name="title_share_performance_logs_button">åˆ†äº«æ•ˆèƒ½æ—¥èªŒ</string>
+	<string name="summary_share_performance_logs">與朋友或社群分享您的效能資料</string>
+	<string name="title_share_performance_logs_button">分享效能日誌</string>
 
-	<string name="title_software_update">è»Ÿé«”æ›´æ–°</string>
-	<string name="summary_software_update">Cynix Nior ç‰ˆæœ¬ï¼ˆClassicOldSongï¼‰ï¼å‰å¾€ GitHub Releases å–å¾—æœ€æ–°ç‰ˆæœ¬</string>
+	<string name="title_software_update">軟體更新</string>
+	<string name="summary_software_update">Artemis Nior 版本（ClassicOldSong）－前往 GitHub Releases 取得最新版本</string>
 
-	<string name="title_follow_update">è¿½è¹¤æ›´æ–°</string>
-	<string name="summary_follow_update">ä½¿ç”¨ Obtainium è¿½è¹¤ Cynix æ›´æ–°</string>
+	<string name="title_follow_update">追蹤更新</string>
+	<string name="summary_follow_update">使用 Obtainium 追蹤 Artemis 更新</string>
 
-	<string name="title_special_key_layout">ç‰¹æ®æŒ‰éµä½ˆå±€</string>
-	<string name="title_show_virtual_key">åœ¨è¢å¹•ä¸é¡¯ç¤ºè™›æ“¬æŒ‰éµ</string>
-	<string name="summary_show_virtual_key">åœ¨è§¸æ§è¢å¹•ä¸é¡¯ç¤ºä¸€å±¤è™›æ“¬ç‰¹æ®æŒ‰éµă€‚\nå…¶é€æ˜åº¦èˆ‡ä¸æ–¹è™›æ“¬æ‰‹æå…±äº«ă€‚</string>
+	<string name="title_special_key_layout">特殊按鍵佈局</string>
+	<string name="title_show_virtual_key">在螢幕上顯示虛擬按鍵</string>
+	<string name="summary_show_virtual_key">在觸控螢幕上顯示一層虛擬特殊按鍵。\n其透明度與上方虛擬手把共享。</string>
 
-	<string name="title_default_layout_scheme">é è¨­ä½ˆå±€è¨­å®æª”</string>
-	<string name="summary_default_layout_scheme">æ¯å€‹ä½ˆå±€è¨­å®æª”åˆå§‹ç†ç›¸åŒï¼ˆä¾ keyboards.json ç”¢ç”Ÿï¼‰ï¼Œå¯è‡ªè¡Œåˆªé™¤èˆ‡èª¿æ•´</string>
+	<string name="title_default_layout_scheme">預設佈局設定檔</string>
+	<string name="summary_default_layout_scheme">每個佈局設定檔初始皆相同（依 keyboards.json 產生），可自行刪除與調整</string>
 
-	<string name="summary_vibrate_keyboard">é»æ“è¢å¹•æŒ‰éµæ™‚è§¸ç™¼æ‰‹æ©Ÿéœ‡å‹•é¦¬é”ă€‚æœ¬é¸é …ä¹Ÿå¯å¥—ç”¨æ–¼è™›æ“¬æ‰‹ææŒ‰éµă€‚</string>
-	<string name="title_square_buttons">ä¸€èˆ¬æŒ‰éµç‚ºæ–¹å½¢</string>
-	<string name="summary_square_buttons">è™›æ“¬æŒ‰éµå½¢ç‹€ç‚ºæ–¹å½¢ï¼Œé è¨­ç‚ºåœ“å½¢ă€‚</string>
+	<string name="summary_vibrate_keyboard">點擊螢幕按鍵時觸發手機震動馬達。本選項也可套用於虛擬手把按鍵。</string>
+	<string name="title_square_buttons">一般按鍵為方形</string>
+	<string name="summary_square_buttons">虛擬按鍵形狀為方形，預設為圓形。</string>
 
-	<string name="title_reset_keyboard_layout">é‡è¨­è™›æ“¬éµç›¤ä½ˆå±€</string>
-	<string name="summary_reset_keyboard_layout">åˆå§‹åŒ–ç‰¹æ®æŒ‰éµä½ˆå±€ï¼ˆé‡è¨­é è¨­é¸å–ç„ä½ˆå±€æ–¹æ¡ˆï¼‰</string>
+	<string name="title_reset_keyboard_layout">重設虛擬鍵盤佈局</string>
+	<string name="summary_reset_keyboard_layout">初始化特殊按鍵佈局（重設預設選取的佈局方案）</string>
 
-	<string name="title_joyconfix">ç›¸å®¹ Switch JoyCon</string>
-	<string name="summary_joyconfix">è‹¥æ‚¨ç„ JoyCon ç„¡æ³•ä½¿ç”¨æˆ–æŒ‰éµè¾¨è­˜æœ‰å•é¡Œï¼Œå¯å˜—è©¦å•Ÿç”¨æ­¤åŸèƒ½ă€‚é©é… Android 10 ä»¥ä¸ă€‚</string>
+	<string name="title_joyconfix">相容 Switch JoyCon</string>
+	<string name="summary_joyconfix">若您的 JoyCon 無法使用或按鍵辨識有問題，可嘗試啟用此功能。適配 Android 10 以上。</string>
 
-	<string name="title_keyboard_opacity">è™›æ“¬å…¨éµç›¤ä¸é€æ˜åº¦</string>
-	<string name="title_onscreen_keyboard_autofit">è™›æ“¬å…¨éµç›¤åœç”¨è‡ªå‹•é©é…</string>
-	<string name="title_onscreen_keyboard_height">è™›æ“¬å…¨éµç›¤é«˜åº¦</string>
-	<string name="title_onscreen_keyboard_width">è™›æ“¬å…¨éµç›¤å¯¬åº¦</string>
-	<string name="title_onscreen_keyboard_align_mode">è™›æ“¬å…¨éµç›¤å°é½æ¨¡å¼</string>
-	<string name="summary_onscreen_keyboard_height">èª¿æ•´è™›æ“¬å…¨éµç›¤é«˜åº¦</string>
-	<string name="summary_onscreen_keyboard_autofit">ä¸è‡ªå‹•èª¿æ•´éµç›¤å¤§å°èˆ‡ä½ç½®ï¼Œå…è¨±è‡ªè¨‚å¤§å°</string>
-	<string name="summary_onscreen_keyboard_width">èª¿æ•´è™›æ“¬å…¨éµç›¤å¯¬åº¦</string>
-	<string name="summary_onscreen_keyboard_align_mode">è™›æ“¬å…¨éµç›¤ç›¸å°æª¢è¦–å€ç„å°é½æ–¹å¼</string>
+	<string name="title_keyboard_opacity">虛擬全鍵盤不透明度</string>
+	<string name="title_onscreen_keyboard_autofit">虛擬全鍵盤停用自動適配</string>
+	<string name="title_onscreen_keyboard_height">虛擬全鍵盤高度</string>
+	<string name="title_onscreen_keyboard_width">虛擬全鍵盤寬度</string>
+	<string name="title_onscreen_keyboard_align_mode">虛擬全鍵盤對齊模式</string>
+	<string name="summary_onscreen_keyboard_height">調整虛擬全鍵盤高度</string>
+	<string name="summary_onscreen_keyboard_autofit">不自動調整鍵盤大小與位置，允許自訂大小</string>
+	<string name="summary_onscreen_keyboard_width">調整虛擬全鍵盤寬度</string>
+	<string name="summary_onscreen_keyboard_align_mode">虛擬全鍵盤相對檢視區的對齊方式</string>
 
-	<string name="title_free_analog_stick">è‡ªç”±é¡æ¯”æ–æ¡¿</string>
-	<string name="summary_free_analog_stick">è™›æ“¬æ‰‹æç„å·¦å³æ–æ¡¿ä¸­å¿ƒé»ä¸å›ºå®ï¼Œå¯åœ¨ä¸€å®ç¯„åœå…§è‡ªç”±ç§»å‹•ă€‚</string>
-	<string name="summary_free_analog_stick_opacity">é è¨­åƒ…åœ¨æ–æ¡¿ç§»å‹•æ™‚é¡¯ç¤ºèƒŒæ™¯ă€‚è‹¥ä¸å–œæ­¡ï¼Œå¯èª¿æ•´å…¶ä¸é€æ˜åº¦æ•ˆæœă€‚</string>
-	<string name="title_free_analog_stick_opacity">è‡ªç”±é¡æ¯”æ–æ¡¿èƒŒæ™¯ä¸é€æ˜åº¦</string>
+	<string name="title_free_analog_stick">自由類比搖桿</string>
+	<string name="summary_free_analog_stick">虛擬手把的左右搖桿中心點不固定，可在一定範圍內自由移動。</string>
+	<string name="summary_free_analog_stick_opacity">預設僅在搖桿移動時顯示背景。若不喜歡，可調整其不透明度效果。</string>
+	<string name="title_free_analog_stick_opacity">自由類比搖桿背景不透明度</string>
 
-	<string name="title_exdisplay_mode">å¤–æ¥é¡¯ç¤ºæ¨¡å¼ï¼ˆBetaï¼‰</string>
-	<string name="title_fullexdisplay_mode">å…¨å¤–æ¥é¡¯ç¤ºæ¨¡å¼ï¼ˆBetaï¼‰</string>
-	<string name="summary_exdisplay_mode">åœ¨å¤–æ¥é¡¯ç¤ºå™¨ä¸é¡¯ç¤ºä¸²æµç•«é¢ï¼›è™›æ“¬æŒ‰éµă€æ•ˆèƒ½è³‡è¨èˆ‡å…¶ä»–æ§åˆ¶é¡¯ç¤ºæ–¼æ‰‹æ©Ÿè¢å¹•ă€‚</string>
-	<string name="summary_fullexdisplay_mode">å…è¨±æ²‰æµ¸å¼å‰¯è¢å¹•æ¨¡å¼ä¸¦è‡ªå‹•åŒ¹é…æ›´æ–°ç‡èˆ‡è§£æåº¦ă€‚æ­¤æ¨¡å¼ä¸‹æ‰‹å‹•è¨­å®ä¸æœƒç”Ÿæ•ˆă€‚</string>
+	<string name="title_exdisplay_mode">外接顯示模式（Beta）</string>
+	<string name="title_fullexdisplay_mode">全外接顯示模式（Beta）</string>
+	<string name="summary_exdisplay_mode">在外接顯示器上顯示串流畫面；虛擬按鍵、效能資訊與其他控制顯示於手機螢幕。</string>
+	<string name="summary_fullexdisplay_mode">允許沉浸式副螢幕模式並自動匹配更新率與解析度。此模式下手動設定不會生效。</string>
 
-	<string name="title_top_center_display">ç½®é ‚ç½®ä¸­é¡¯ç¤º</string>
-	<string name="summary_top_center_display">ç•¶è§£æåº¦éåŸç”Ÿæ™‚ï¼Œä¸²æµç•«é¢å°‡å°é½è¢å¹•é ‚éƒ¨è€Œéç½®ä¸­ă€‚</string>
+	<string name="title_top_center_display">置頂置中顯示</string>
+	<string name="summary_top_center_display">當解析度非原生時，串流畫面將對齊螢幕頂部而非置中。</string>
 
-	<string name="title_touch_sensitivity">è§¸æ§éˆæ•åº¦</string>
-	<string name="summary_touch_sensitivity">å•Ÿç”¨å¾Œï¼Œå¯æ‰‹å‹•èª¿æ•´è§¸æ§éˆæ•åº¦ă€‚</string>
-	<string name="title_global_touch_sensitivity">è§¸æ§éˆæ•åº¦å…¨åŸŸç”Ÿæ•ˆ</string>
-	<string name="summary_global_touch_sensitivity">é è¨­ä¸å‹¾é¸ï¼Œåƒ…åœ¨è¢å¹•å³åé‚ç”Ÿæ•ˆï¼ˆé©åˆåŸç¥ç­‰ï¼‰ï¼›å‹¾é¸å¾Œåœ¨å…¨è¢å¹•ç¯„åœç”Ÿæ•ˆă€‚</string>
-	<string name="title_auto_touch_sensitivity">è§¸æ§åº§æ¨™è¶…å‡ºé‚ç•Œæ™‚è‡ªå‹•å›åˆ°è¢å¹•ä¸­å¿ƒ</string>
-	<string name="summary_auto_touch_sensitivity">é«˜éˆæ•åº¦æ™‚ï¼Œå°å¹…æ»‘å‹•å³å¯èƒ½è¶…ç•Œå°è‡´ç„¡æ³•ç§»å‹•ï¼Œå¯å‹¾é¸æ­¤é …ă€‚</string>
-	<string name="title_touch_sensitivity_x">è¢å¹•éˆæ•åº¦èª¿æ•´ X è»¸</string>
-	<string name="summary_touch_sensitivity_x">å¤é»è§¸æ§æ¨¡å¼ä¸‹ï¼Œè‹¥éƒ¨åˆ†éæˆ²ä¸ç¬¦éˆæ•åº¦éœ€æ±‚ï¼Œå¯ç”¨æ­¤é¸é …èª¿æ•´è¦–è§’éˆæ•åº¦ă€‚</string>
-	<string name="title_touch_sensitivity_y">è¢å¹•éˆæ•åº¦èª¿æ•´ Y è»¸</string>
-	<string name="summary_touch_sensitivity_y">å¤é»è§¸æ§æ¨¡å¼ä¸‹ï¼Œè‹¥éƒ¨åˆ†éæˆ²ä¸ç¬¦éˆæ•åº¦éœ€æ±‚ï¼Œå¯ç”¨æ­¤é¸é …èª¿æ•´è¦–è§’éˆæ•åº¦ă€‚</string>
+	<string name="title_touch_sensitivity">觸控靈敏度</string>
+	<string name="summary_touch_sensitivity">啟用後，可手動調整觸控靈敏度。</string>
+	<string name="title_global_touch_sensitivity">觸控靈敏度全域生效</string>
+	<string name="summary_global_touch_sensitivity">預設不勾選，僅在螢幕右半邊生效（適合原神等）；勾選後在全螢幕範圍生效。</string>
+	<string name="title_auto_touch_sensitivity">觸控座標超出邊界時自動回到螢幕中心</string>
+	<string name="summary_auto_touch_sensitivity">高靈敏度時，小幅滑動即可能超界導致無法移動，可勾選此項。</string>
+	<string name="title_touch_sensitivity_x">螢幕靈敏度調整 X 軸</string>
+	<string name="summary_touch_sensitivity_x">多點觸控模式下，若部分遊戲不符靈敏度需求，可用此選項調整視角靈敏度。</string>
+	<string name="title_touch_sensitivity_y">螢幕靈敏度調整 Y 軸</string>
+	<string name="summary_touch_sensitivity_y">多點觸控模式下，若部分遊戲不符靈敏度需求，可用此選項調整視角靈敏度。</string>
 
-	<string name="title_debug_info">åµéŒ¯è³‡è¨</string>
-	<string name="summary_debug_info">æ¸¬è©¦æ‰‹æéœ‡å‹•èˆ‡å…¶ä»–é …ç›®ă€‚</string>
+	<string name="title_debug_info">偵錯資訊</string>
+	<string name="summary_debug_info">測試手把震動與其他項目。</string>
 
-	<string name="title_touchpad_sensitivity_x">è§¸æ§æ¿éˆæ•åº¦ X è»¸</string>
-	<string name="summary_touchpad_sensitivity_x">é©ç”¨æ–¼æ»‘é¼ è§¸æ§æ¿æ¨¡å¼èˆ‡è™›æ“¬ç‰¹æ®æŒ‰éµç„è§¸æ§æ¿æ§åˆ¶ï¼›\nå…©è€…å…±äº«ä¸€å€‹éˆæ•åº¦å€¼ï¼Œä½†å¯¦é›è¡¨ç¾å¯èƒ½ä¸åŒă€‚\næœ‰äººæœƒåŒæ™‚ç”¨å…©è€…å—ï¼Ÿ</string>
-	<string name="title_touchpad_sensitivity_y">è§¸æ§æ¿éˆæ•åº¦ Y è»¸</string>
-	<string name="summary_touchpad_sensitivity_y">é©ç”¨æ–¼æ»‘é¼ è§¸æ§æ¿æ¨¡å¼èˆ‡è™›æ“¬ç‰¹æ®æŒ‰éµç„è§¸æ§æ¿æ§åˆ¶ï¼›\nå…©è€…å…±äº«ä¸€å€‹éˆæ•åº¦å€¼ï¼Œä½†å¯¦é›è¡¨ç¾å¯èƒ½ä¸åŒă€‚\næœ‰äººæœƒåŒæ™‚ç”¨å…©è€…å—ï¼Ÿ</string>
+	<string name="title_touchpad_sensitivity_x">觸控板靈敏度 X 軸</string>
+	<string name="summary_touchpad_sensitivity_x">適用於滑鼠觸控板模式與虛擬特殊按鍵的觸控板控制；\n兩者共享一個靈敏度值，但實際表現可能不同。\n有人會同時用兩者嗎？</string>
+	<string name="title_touchpad_sensitivity_y">觸控板靈敏度 Y 軸</string>
+	<string name="summary_touchpad_sensitivity_y">適用於滑鼠觸控板模式與虛擬特殊按鍵的觸控板控制；\n兩者共享一個靈敏度值，但實際表現可能不同。\n有人會同時用兩者嗎？</string>
 
-	<string name="title_device_rumble">å¼·åˆ¶ä½¿ç”¨è£ç½®éœ‡å‹•</string>
-	<string name="summary_device_rumble">è‹¥æ‚¨å°é€£æ¥æ‰‹æç„éœ‡å‹•ä¸æ»¿æ„ï¼Œå¯å•Ÿç”¨æ­¤é¸é …ă€‚\nè‹¥å¼·åˆ¶ä½¿ç”¨ Cynix å…§å»º USB é©…å‹•ç¨‹å¼å‰‡ç„¡æ•ˆ</string>
+	<string name="title_device_rumble">強制使用裝置震動</string>
+	<string name="summary_device_rumble">若您對連接手把的震動不滿意，可啟用此選項。\n若強制使用 Artemis 內建 USB 驅動程式則無效</string>
 
-	<string name="title_clear_default_special_button">åœç”¨é è¨­ç‰¹æ®æŒ‰éµ</string>
-	<string name="summary_clear_default_special_button">è‹¥è¦ºå¾—è¿”å›é¸å–®ä¸­ç„å…§å»ºæŒ‡ä»¤ç„¡ç”¨ï¼Œå¯åœç”¨ä¸¦æ”¹ç”¨æ‚¨åŒ¯å…¥ç„æŒ‡ä»¤ă€‚</string>
+	<string name="title_clear_default_special_button">停用預設特殊按鍵</string>
+	<string name="summary_clear_default_special_button">若覺得返回選單中的內建指令無用，可停用並改用您匯入的指令。</string>
 
-	<string name="title_trackpad_sensitivity_x">è§¸æ§æ¿éˆæ•åº¦ X</string>
-	<string name="summary_trackpad_sensitivity_x">è§¸æ§æ¿ X è»¸éˆæ•åº¦ï¼Œè² å€¼ç‚ºæ–¹å‘åè½‰</string>
-	<string name="title_trackpad_sensitivity_y">è§¸æ§æ¿éˆæ•åº¦ Y</string>
-	<string name="summary_trackpad_sensitivity_y">è§¸æ§æ¿ Y è»¸éˆæ•åº¦ï¼Œè² å€¼ç‚ºæ–¹å‘åè½‰</string>
+	<string name="title_trackpad_sensitivity_x">觸控板靈敏度 X</string>
+	<string name="summary_trackpad_sensitivity_x">觸控板 X 軸靈敏度，負值為方向反轉</string>
+	<string name="title_trackpad_sensitivity_y">觸控板靈敏度 Y</string>
+	<string name="summary_trackpad_sensitivity_y">觸控板 Y 軸靈敏度，負值為方向反轉</string>
 
-	<string name="title_trackpad_drag_drop_vibration">å•Ÿç”¨è§¸æ§æ¿æ‹–æ”¾éœ‡å‹•</string>
-	<string name="summary_trackpad_drag_drop_vibration">åœ¨ Samsung è§¸æ§æ¿è£ç½®ä¸ï¼Œæ‹–æ”¾æ“ä½œæä¾›éœ‡å‹•å›é¥‹ă€‚</string>
-	<string name="title_trackpad_drag_drop_threshold">è§¸æ§æ¿æ‹–æ”¾å•Ÿå‹•ç„æŒ‰ä½æ™‚é–“</string>
-	<string name="summary_trackpad_drag_drop_threshold">è¨­å®åœ¨ Samsung è£ç½®ä¸å•Ÿå‹•æ‹–æ”¾å‰éœ€æŒ‰ä½ç„æ™‚é–“ă€‚</string>
+	<string name="title_trackpad_drag_drop_vibration">啟用觸控板拖放震動</string>
+	<string name="summary_trackpad_drag_drop_vibration">在 Samsung 觸控板裝置上，拖放操作提供震動回饋。</string>
+	<string name="title_trackpad_drag_drop_threshold">觸控板拖放啟動的按住時間</string>
+	<string name="summary_trackpad_drag_drop_threshold">設定在 Samsung 裝置上啟動拖放前需按住的時間。</string>
 
-	<string name="title_trackpad_swap_axis">äº¤æ›è§¸æ§æ¿è¼¸å…¥ç„ X/Y è»¸</string>
-	<string name="summary_trackpad_swap_axis">åœ¨éƒ¨åˆ†è£ç½®ä¸ï¼Œè§¸æ§æ¿è¼¸å…¥å¯èƒ½ç™¼ç”Ÿè»¸å‘æ—‹è½‰ă€‚å•Ÿç”¨æ­¤é¸é …æˆ–æœ‰å¹«å©ă€‚</string>
+	<string name="title_trackpad_swap_axis">交換觸控板輸入的 X/Y 軸</string>
+	<string name="summary_trackpad_swap_axis">在部分裝置上，觸控板輸入可能發生軸向旋轉。啟用此選項或有幫助。</string>
 
-	<string name="title_checkbox_force_qwerty">å¼·åˆ¶ä½¿ç”¨ QWERTY ä½ˆå±€</string>
-	<string name="summary_checkbox_force_qwerty">å¼·åˆ¶ä½¿ç”¨ QWERTY éµç›¤ä½ˆå±€ă€‚\nGFE éœ€è¦ă€‚\nè‹¥è¦ä½¿ç”¨å…¶ä»–ä½ˆå±€ï¼Œè«‹é—œé–‰æ­¤é¸é …ă€‚</string>
+	<string name="title_checkbox_force_qwerty">強制使用 QWERTY 佈局</string>
+	<string name="summary_checkbox_force_qwerty">強制使用 QWERTY 鍵盤佈局。\nGFE 需要。\n若要使用其他佈局，請關閉此選項。</string>
 
-	<string name="title_checkbox_back_as_meta">è¿”å›éµä½œç‚º Meta</string>
-	<string name="summary_back_as_meta">åœ¨æŒ‰ä¸‹å¯¦é«”è¿”å›éµæ™‚é€å‡º Metaï¼ˆWinï¼‰éµă€‚</string>
-	<string name="title_back_as_guide">è¿”å›éµä½œç‚º Guide</string>
-	<string name="summary_back_as_guide">åœ¨æ‰‹æä¸æŒ‰ä¸‹è¿”å›éµæ™‚é€å‡º Guideï¼ˆPS/HOMEï¼‰æŒ‰éµă€‚</string>
+	<string name="title_checkbox_back_as_meta">返回鍵作為 Meta</string>
+	<string name="summary_back_as_meta">在按下實體返回鍵時送出 Meta（Win）鍵。</string>
+	<string name="title_back_as_guide">返回鍵作為 Guide</string>
+	<string name="summary_back_as_guide">在手把上按下返回鍵時送出 Guide（PS/HOME）按鍵。</string>
 
-	<string name="title_checkbox_ignore_synth_events">å¿½ç•¥åˆæˆäº‹ä»¶</string>
-	<string name="summary_ignore_synth_events">å¿½ç•¥ Android ç³»çµ±ç™¼é€ç„åˆæˆäº‹ä»¶ă€‚å¯è§£æ±ºéƒ¨åˆ†è£ç½®ä¸æ»‘é¼ é»æ“è§¸ç™¼å…¶ä»–æ„å¤–æŒ‰éµç„å•é¡Œă€‚\nå•Ÿç”¨å¾Œï¼Œç³»çµ±è»Ÿé«”éµç›¤å°‡ç„¡æ³•ä½¿ç”¨ă€‚</string>
+	<string name="title_checkbox_ignore_synth_events">忽略合成事件</string>
+	<string name="summary_ignore_synth_events">忽略 Android 系統發送的合成事件。可解決部分裝置上滑鼠點擊觸發其他意外按鍵的問題。\n啟用後，系統軟體鍵盤將無法使用。</string>
 
-	<string name="title_smart_clipboard_sync">æ™ºæ…§å‰ªè²¼ç°¿åŒæ­¥ï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_smart_clipboard_sync">ä¸²æµé–‹å§‹/æ¢å¾©æ™‚è‡ªå‹•ä¸å‚³å‰ªè²¼ç°¿å…§å®¹è‡³ä¼ºæœå™¨ï¼›å¤±å»ç„¦é»æ™‚è‡ªä¼ºæœå™¨ä¸‹è¼‰ï¼ˆéœ€æ­é… Apolloï¼‰ă€‚</string>
-	<string name="title_smart_clipboard_sync_toast">å‰ªè²¼ç°¿åŒæ­¥æç¤º</string>
-	<string name="summary_smart_clipboard_sync_toast">é¡¯ç¤ºå‰ªè²¼ç°¿åŒæ­¥çµæœç„æç¤ºè¨æ¯</string>
-	<string name="title_hide_clipboard_content">é±è—å‰ªè²¼ç°¿å…§å®¹</string>
-	<string name="summary_hide_clipboard_content">å°‡é ç«¯å‰ªè²¼ç°¿æ¨™è¨˜ç‚ºæ•æ„Ÿè³‡è¨</string>
+	<string name="title_smart_clipboard_sync">智慧剪貼簿同步（實驗性）</string>
+	<string name="summary_smart_clipboard_sync">串流開始/恢復時自動上傳剪貼簿內容至伺服器；失去焦點時自伺服器下載（需搭配 Apollo）。</string>
+	<string name="title_smart_clipboard_sync_toast">剪貼簿同步提示</string>
+	<string name="summary_smart_clipboard_sync_toast">顯示剪貼簿同步結果的提示訊息</string>
+	<string name="title_hide_clipboard_content">隱藏剪貼簿內容</string>
+	<string name="summary_hide_clipboard_content">將遠端剪貼簿標記為敏感資訊</string>
 
-	<string name="title_settings_misc">é›œé …</string>
-	<string name="perf_overlay_lite_bandwidth">é »å¯¬</string>
-	<string name="perf_overlay_lite_network_decoding_delay">ç¶²è·¯/è§£ç¢¼å»¶é²</string>
-	<string name="perf_overlay_lite_packet_loss">å°åŒ…éºå¤±</string>
-	<string name="wrong_import_format">åŒ¯å…¥æ ¼å¼éŒ¯èª¤ï¼Œè«‹æª¢æŸ¥ï¼</string>
+	<string name="title_settings_misc">雜項</string>
+	<string name="perf_overlay_lite_bandwidth">頻寬</string>
+	<string name="perf_overlay_lite_network_decoding_delay">網路/解碼延遲</string>
+	<string name="perf_overlay_lite_packet_loss">封包遺失</string>
+	<string name="wrong_import_format">匯入格式錯誤，請檢查！</string>
 
-	<string name="title_checkbox_gamepad_enable_battery_report">å•Ÿç”¨æ‰‹æé›»é‡å›å ±</string>
-	<string name="summary_checkbox_gamepad_enable_battery_report">åœ¨å¯èƒ½æ™‚å›å ±æ‰‹æé›»é‡ç‹€æ…‹ă€‚\nè‹¥å¶ç™¼è§¸æ§è¢å¹•/è§¸æ§æ¿/æ‰‹å¯«ç­†/æ»‘é¼ è¼¸å…¥å¡é “ï¼Œåœç”¨æ­¤é¸é …å¯èƒ½æœ‰å¹«å©ă€‚</string>
+	<string name="title_checkbox_gamepad_enable_battery_report">啟用手把電量回報</string>
+	<string name="summary_checkbox_gamepad_enable_battery_report">在可能時回報手把電量狀態。\n若偶發觸控螢幕/觸控板/手寫筆/滑鼠輸入卡頓，停用此選項可能有幫助。</string>
 
-	<string name="title_checkbox_enforce_display_mode">å¼·åˆ¶é¡¯ç¤ºæ¨¡å¼</string>
-	<string name="summary_checkbox_enforce_display_mode">å¼·åˆ¶ Surface ä½¿ç”¨æœ€ä½³é¡¯ç¤ºæ¨¡å¼ă€‚\néƒ¨åˆ†ç³»çµ±ï¼ˆå¦‚ ColorOSï¼‰éœ€è¦æ­¤é¸é …æ‰èƒ½æ­£ç¢ºè¨­å®æ›´æ–°ç‡/è§£æåº¦ă€‚\nè«‹å‹¿åœ¨ ChromeCast 4K ä¸å•Ÿç”¨ï¼Œå¯èƒ½å°è‡´å•é¡Œă€‚</string>
+	<string name="title_checkbox_enforce_display_mode">強制顯示模式</string>
+	<string name="summary_checkbox_enforce_display_mode">強制 Surface 使用最佳顯示模式。\n部分系統（如 ColorOS）需要此選項才能正確設定更新率/解析度。\n請勿在 ChromeCast 4K 上啟用，可能導致問題。</string>
 
-	<string name="title_checkbox_ultra_low_latency">è¶…ä½å»¶é²ï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_checkbox_ultra_low_latency">åƒ…å° SD8Gen2/8(s)Gen3/8Elite èˆ‡ MTK è£ç½®æœ‰æ•ˆă€‚</string>
+	<string name="title_checkbox_ultra_low_latency">超低延遲（實驗性）</string>
+	<string name="summary_checkbox_ultra_low_latency">僅對 SD8Gen2/8(s)Gen3/8Elite 與 MTK 裝置有效。</string>
 
-	<string name="title_checkbox_forceTightThresholds">ç·å¯† VSyncï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_checkbox_forceTightThresholds">æ›´ç·ç„ VSync é–€æª»ä»¥é™ä½å»¶é²ï¼›å¯èƒ½å¢å æ‰å¹€ă€‚</string>
+	<string name="title_checkbox_forceTightThresholds">緊密 VSync（實驗性）</string>
+	<string name="summary_checkbox_forceTightThresholds">更緊的 VSync 門檻以降低延遲；可能增加掉幀。</string>
 
-	<string name="title_checkbox_use_virtual_display">ä½¿ç”¨è™›æ“¬é¡¯ç¤ºå™¨</string>
-	<string name="summary_checkbox_use_virtual_display">é è¨­ä½¿ç”¨è™›æ“¬é¡¯ç¤ºå™¨ă€‚\nè™›æ“¬é¡¯ç¤ºå™¨å¯è‡ªå‹•åŒ¹é…ç”¨æˆ¶ç«¯è§£æåº¦èˆ‡å¹€ç‡è¨­å®ï¼Œå¸¶ä¾†ç„¡ç¸«ç„ä¸²æµé«”é©—ă€‚\néœ€è¦ Apollo ä½œç‚ºä¸»æ©Ÿä¸²æµè»Ÿé«”ă€‚</string>
+	<string name="title_checkbox_use_virtual_display">使用虛擬顯示器</string>
+	<string name="summary_checkbox_use_virtual_display">預設使用虛擬顯示器。\n虛擬顯示器可自動匹配用戶端解析度與幀率設定，帶來無縫的串流體驗。\n需要 Apollo 作為主機串流軟體。</string>
 
-	<string name="title_checkbox_resume_without_confirm">å¿«é€Ÿç¹¼çºŒ</string>
-	<string name="summary_checkbox_resume_without_confirm">æŒ‰ä¸‹ç¹¼çºŒæŒ‰éˆ•æ™‚ä¸é¡¯ç¤ºé¸å–®ï¼Œç›´æ¥ç¹¼çºŒæ‡‰ç”¨ç¨‹å¼ă€‚</string>
+	<string name="title_checkbox_resume_without_confirm">快速繼續</string>
+	<string name="summary_checkbox_resume_without_confirm">按下繼續按鈕時不顯示選單，直接繼續應用程式。</string>
 
-	<string name="title_checkbox_enable_sticky_modifier_key_virtual_keyboard">é»æ»¯å¼çµ„åˆéµ</string>
-	<string name="summary_checkbox_enable_sticky_modifier_key_virtual_keyboard">åœ¨è™›æ“¬å…¨éµç›¤èˆ‡è‡ªè¨‚è¢å¹•éµç›¤ä¸å•Ÿç”¨é»æ»¯å¼çµ„åˆéµă€‚</string>
+	<string name="title_checkbox_enable_sticky_modifier_key_virtual_keyboard">黏滯式組合鍵</string>
+	<string name="summary_checkbox_enable_sticky_modifier_key_virtual_keyboard">在虛擬全鍵盤與自訂螢幕鍵盤上啟用黏滯式組合鍵。</string>
 
-	<string name="virtual_keyboard_hide">é±è—\nKBD</string>
+	<string name="virtual_keyboard_hide">隱藏\nKBD</string>
 
-	<string name="mouse_mode_multi_touch">å¤é»è§¸æ§</string>
-	<string name="render_mode_2d">é è¨­ 2D</string>
+	<string name="mouse_mode_multi_touch">多點觸控</string>
+	<string name="render_mode_2d">預設 2D</string>
 	<string name="render_mode_3d_sbs">AI SBS 3D</string>
-	<string name="render_mode_3d_sbs_movie">AI SBS 3D é›»å½±ï¼ˆåŒæ­¥ï¼‰</string>
-	<string name="mouse_mode_absolute_touch">å–®é»è§¸æ§</string>
-	<string name="mouse_mode_track_pad_natural">è§¸æ§æ¿ï¼ˆè‡ªç„¶/é›™æ“æ‹–æ›³ï¼‰</string>
-	<string name="mouse_mode_track_pad_gaming">è§¸æ§æ¿ï¼ˆéæˆ²/é•·æŒ‰æ‹–æ›³ï¼‰</string>
-	<string name="mouse_mode_disabled">åœç”¨</string>
-	<string name="mouse_mode_absolute_touch_swapped">å–®é»è§¸æ§ï¼ˆå·¦å³éµå°èª¿ï¼‰</string>
+	<string name="render_mode_3d_sbs_movie">AI SBS 3D 電影（同步）</string>
+	<string name="mouse_mode_absolute_touch">單點觸控</string>
+	<string name="mouse_mode_track_pad_natural">觸控板（自然/雙擊拖曳）</string>
+	<string name="mouse_mode_track_pad_gaming">觸控板（遊戲/長按拖曳）</string>
+	<string name="mouse_mode_disabled">停用</string>
+	<string name="mouse_mode_absolute_touch_swapped">單點觸控（左右鍵對調）</string>
 
-	<string name="keyboard_layout_set_1">è¨­å®æª” 1</string>
-	<string name="keyboard_layout_set_2">è¨­å®æª” 2</string>
-	<string name="keyboard_layout_set_3">è¨­å®æª” 3</string>
-	<string name="keyboard_layout_set_4">è¨­å®æª” 4</string>
-	<string name="keyboard_layout_set_5">è¨­å®æª” 5</string>
+	<string name="keyboard_layout_set_1">設定檔 1</string>
+	<string name="keyboard_layout_set_2">設定檔 2</string>
+	<string name="keyboard_layout_set_3">設定檔 3</string>
+	<string name="keyboard_layout_set_4">設定檔 4</string>
+	<string name="keyboard_layout_set_5">設定檔 5</string>
 
-	<string name="toggle_local_mouse_cursor">åˆ‡æ›æœ¬æ©Ÿæ»‘é¼ æ¸¸æ¨™ï¼ˆéœ€å¯¦é«”æ»‘é¼ ï¼‰</string>
+	<string name="toggle_local_mouse_cursor">切換本機滑鼠游標（需實體滑鼠）</string>
 
-	<string name="debug_info_android_version">Android ç‰ˆæœ¬ï¼</string>
-	<string name="debug_info_api_version">API ç‰ˆæœ¬ï¼</string>
-	<string name="debug_info_kernel_version">æ ¸å¿ƒç‰ˆæœ¬ï¼</string>
-	<string name="debug_info_brand_model">å“ç‰Œèˆ‡å‹è™Ÿï¼</string>
-	<string name="debug_info_has_vibration_motor">å…·éœ‡å‹•é¦¬é”</string>
-	<string name="debug_info_no_vibration_motor">ç„¡éœ‡å‹•é¦¬é”</string>
-	<string name="debug_info_test_device_vibration">æ¸¬è©¦è£ç½®éœ‡å‹•ï¼ˆ%sï¼‰</string>
-	<string name="debug_info_vibration_amplitude">éœ‡å‹•æŒ¯å¹…ï¼ˆ%dï¼‰</string>
-	<string name="debug_info_simple_vibration">ç°¡å–®éœ‡å‹• 1 ç§’</string>
-	<string name="debug_info_continuous_hd_vibration">é€£çºŒé«˜å“è³ªéœ‡å‹•</string>
-	<string name="debug_info_please_choose">è«‹é¸æ“‡</string>
-	<string name="debug_info_no_gamepad_detected">æœªåµæ¸¬åˆ°æ‰‹æï¼Œè«‹é€£æ¥æ‰‹æă€é»é¸é‡æ–°æ•´ç†å¾Œå†è©¦ï¼</string>
-	<string name="debug_info_no_vibrator">æœªåœ¨æ‰‹æä¸åµæ¸¬åˆ°éœ‡å‹•è£ç½®ï¼</string>
-	<string name="debug_info_set_amplitude">è¨­å®æŒ¯å¹… 0â€“255ï¼ˆåƒ…å°é«˜å“è³ªéœ‡å‹•æœ‰æ•ˆï¼‰</string>
-	<string name="debug_info_name">åç¨±ï¼ </string>
-	<string name="debug_info_sensors">é™€èºå„€ï¼ </string>
-	<string name="debug_info_no_relevant_driver">ç„¡ï¼ˆç„¡ç›¸é—œé©…å‹•æˆ–ä¸æ”¯æ´è©²æ‰‹æï¼‰</string>
-	<string name="debug_info_no_api_below_android12">Android 12 ä»¥ä¸‹ç„¡å°æ‡‰ API</string>
-	<string name="debug_info_vid_pid">VID_PIDï¼ </string>
-	<string name="debug_info_vibration">éœ‡å‹•ï¼ </string>
-	<string name="debug_info_supported">æ”¯æ´</string>
-	<string name="debug_info_not_supported">ä¸æ”¯æ´</string>
-	<string name="debug_info_details">è©³ç´°è³‡è¨ï¼ </string>
-	<string name="debug_info_number_of_gamepads">æ‰‹ææ•¸é‡ï¼ </string>
-	<string name="debug_info_accelerometer">+å é€Ÿåº¦è¨ˆ</string>
-	<string name="debug_info_gyroscope">+é™€èºå„€</string>
-	<string name="debug_info_stop_vibration">åœæ­¢éœ‡å‹•</string>
-	<string name="debug_info_refresh_gamepad_info">é»æ“ä»¥é‡æ–°æ•´ç†æ‰‹æè³‡è¨</string>
-	<string name="debug_info_refresh_gamepad_list">é‡æ–°æ•´ç†æ‰‹ææ¸…å–®</string>
-	<string name="debug_info_test_gamepad_rumble">æ¸¬è©¦æ‰‹æéœ‡å‹•</string>
+	<string name="debug_info_android_version">Android 版本：</string>
+	<string name="debug_info_api_version">API 版本：</string>
+	<string name="debug_info_kernel_version">核心版本：</string>
+	<string name="debug_info_brand_model">品牌與型號：</string>
+	<string name="debug_info_has_vibration_motor">具震動馬達</string>
+	<string name="debug_info_no_vibration_motor">無震動馬達</string>
+	<string name="debug_info_test_device_vibration">測試裝置震動（%s）</string>
+	<string name="debug_info_vibration_amplitude">震動振幅（%d）</string>
+	<string name="debug_info_simple_vibration">簡單震動 1 秒</string>
+	<string name="debug_info_continuous_hd_vibration">連續高品質震動</string>
+	<string name="debug_info_please_choose">請選擇</string>
+	<string name="debug_info_no_gamepad_detected">未偵測到手把，請連接手把、點選重新整理後再試！</string>
+	<string name="debug_info_no_vibrator">未在手把上偵測到震動裝置！</string>
+	<string name="debug_info_set_amplitude">設定振幅 0–255（僅對高品質震動有效）</string>
+	<string name="debug_info_name">名稱： </string>
+	<string name="debug_info_sensors">陀螺儀： </string>
+	<string name="debug_info_no_relevant_driver">無（無相關驅動或不支援該手把）</string>
+	<string name="debug_info_no_api_below_android12">Android 12 以下無對應 API</string>
+	<string name="debug_info_vid_pid">VID_PID： </string>
+	<string name="debug_info_vibration">震動： </string>
+	<string name="debug_info_supported">支援</string>
+	<string name="debug_info_not_supported">不支援</string>
+	<string name="debug_info_details">詳細資訊： </string>
+	<string name="debug_info_number_of_gamepads">手把數量： </string>
+	<string name="debug_info_accelerometer">+加速度計</string>
+	<string name="debug_info_gyroscope">+陀螺儀</string>
+	<string name="debug_info_stop_vibration">停止震動</string>
+	<string name="debug_info_refresh_gamepad_info">點擊以重新整理手把資訊</string>
+	<string name="debug_info_refresh_gamepad_list">重新整理手把清單</string>
+	<string name="debug_info_test_gamepad_rumble">測試手把震動</string>
 
-	<string name="pref_enter_value_0_9999">è«‹è¼¸å…¥ 0 åˆ° 9999 ä¹‹é–“ç„æ•¸å€¼ă€‚</string>
-	<string name="pref_set_success">è¨­å®å·²æˆåŸå„²å­˜ï¼</string>
-	<string name="pref_empty_file">ç©ºç™½æª”æ¡ˆï¼</string>
-	<string name="pref_import_success">åŒ¯å…¥æˆåŸï¼</string>
-	<string name="pref_error_occurred">ç™¼ç”ŸéŒ¯èª¤ï¼ </string>
-	<string name="pref_save_keyboard_profile">å„²å­˜ OSK è¨­å®æª”</string>
+	<string name="pref_enter_value_0_9999">請輸入 0 到 9999 之間的數值。</string>
+	<string name="pref_set_success">設定已成功儲存！</string>
+	<string name="pref_empty_file">空白檔案！</string>
+	<string name="pref_import_success">匯入成功！</string>
+	<string name="pref_error_occurred">發生錯誤： </string>
+	<string name="pref_save_keyboard_profile">儲存 OSK 設定檔</string>
 
-	<string name="game_menu_advanced">é€²éé¸å–®</string>
-	<string name="game_dialog_title_quit_confirm">ç¢ºå®è¦é›¢é–‹ï¼Ÿ</string>
-	<string name="game_dialog_message_quit_confirm">è«‹ç¢ºèªæ²’æœ‰æœªå„²å­˜ç„é€²åº¦ă€‚é›¢é–‹å·¥ä½œéæ®µå°‡çµ‚æ­¢æ‚¨ç›®å‰åŸ·è¡Œç„æ‡‰ç”¨ç¨‹å¼ă€‚</string>
-	<string name="game_menu_quit_session">çµæŸå·¥ä½œéæ®µ</string>
-	<string name="game_menu_server_cmd">ä¼ºæœå™¨æŒ‡ä»¤</string>
-	<string name="game_menu_fetch_clipboard">å–å¾—å‰ªè²¼ç°¿</string>
-	<string name="game_menu_upload_clipboard">ä¸å‚³å‰ªè²¼ç°¿</string>
-	<string name="game_dialog_title_server_cmd_empty">ç„¡ä¼ºæœå™¨æŒ‡ä»¤</string>
-	<string name="game_dialog_message_server_cmd_empty">è«‹ç¢ºèªæ‚¨ä½¿ç”¨ç„æ˜¯ Apollo ä½œç‚ºä¼ºæœå™¨è»Ÿé«”ï¼Œä¸”å·²æˆäºˆæ­¤å®¢æˆ¶ç«¯ă€Œä¼ºæœå™¨æŒ‡ä»¤ă€æ¬é™ă€‚</string>
+	<string name="game_menu_advanced">進階選單</string>
+	<string name="game_dialog_title_quit_confirm">確定要離開？</string>
+	<string name="game_dialog_message_quit_confirm">請確認沒有未儲存的進度。離開工作階段將終止您目前執行的應用程式。</string>
+	<string name="game_menu_quit_session">結束工作階段</string>
+	<string name="game_menu_server_cmd">伺服器指令</string>
+	<string name="game_menu_fetch_clipboard">取得剪貼簿</string>
+	<string name="game_menu_upload_clipboard">上傳剪貼簿</string>
+	<string name="game_dialog_title_server_cmd_empty">無伺服器指令</string>
+	<string name="game_dialog_message_server_cmd_empty">請確認您使用的是 Apollo 作為伺服器軟體，且已授予此客戶端「伺服器指令」權限。</string>
 
-	<string name="vdisplay_not_ready">ä¼ºæœå™¨ä¸ç„è™›æ“¬é¡¯ç¤ºå™¨é©…å‹•å°æœªå°±ç·’ă€‚è«‹ç¢ºèªå·²å®‰è£ä¸¦å•Ÿç”¨ SudoVDA é©…å‹•ç¨‹å¼ă€‚</string>
-	<string name="vdisplay_not_supported"><![CDATA[æ­¤ä¼ºæœå™¨ä¸æ”¯æ´è™›æ“¬é¡¯ç¤ºå™¨ă€‚è«‹ä½¿ç”¨ <a href="https://github.com/ClassicOldSong/Apollo">Apollo</a> ä½œç‚ºä¸»æ©Ÿä¸²æµè»Ÿé«”ă€‚]]></string>
-	<string name="clipboard_sync_unsupported">æ­¤ä¼ºæœå™¨ä¸æ”¯æ´å‰ªè²¼ç°¿åŒæ­¥ă€‚è«‹å®‰è£æˆ–å°‡ä¼ºæœå™¨å‡ç´è‡³æœ€æ–°ç‰ˆæœ¬ç„ Apolloă€‚</string>
-	<string name="send_clipboard_failed">å‚³é€å‰ªè²¼ç°¿å¤±æ•—ï¼ </string>
+	<string name="vdisplay_not_ready">伺服器上的虛擬顯示器驅動尚未就緒。請確認已安裝並啟用 SudoVDA 驅動程式。</string>
+	<string name="vdisplay_not_supported"><![CDATA[此伺服器不支援虛擬顯示器。請使用 <a href="https://github.com/ClassicOldSong/Apollo">Apollo</a> 作為主機串流軟體。]]></string>
+	<string name="clipboard_sync_unsupported">此伺服器不支援剪貼簿同步。請安裝或將伺服器升級至最新版本的 Apollo。</string>
+	<string name="send_clipboard_failed">傳送剪貼簿失敗： </string>
 
-	<string name="external_display_info">å¤–æ¥é¡¯ç¤ºå™¨é€£æ¥ï¼%1$dx%2$dï¼Œ%3$.1fHz</string>
-	<string name="notification_channel_name">å¤–æ¥é¡¯ç¤ºæ§åˆ¶</string>
-	<string name="notification_title">å¤–æ¥é¡¯ç¤ºå·²å•Ÿç”¨</string>
-	<string name="notification_text">é»æ“ä»¥é–‹å•Ÿè§¸æ§æ¿æ§åˆ¶å™¨</string>
-	<string name="permission_denied">é€çŸ¥æ¬é™è¢«æ‹’</string>
-	<string name="no_external_display">æœªåµæ¸¬åˆ°å¤–æ¥é¡¯ç¤ºå™¨</string>
-	<string name="no_game_instance">æ²’æœ‰å¯ç”¨ç„éæˆ²å¯¦ä¾‹</string>
-	<string name="get_clipboard_failed">å–å¾—å‰ªè²¼ç°¿å¤±æ•—ï¼ </string>
-	<string name="send_clipboard_success">å‰ªè²¼ç°¿å‚³é€æˆåŸ</string>
-	<string name="get_clipboard_success">å‰ªè²¼ç°¿å–å¾—æˆåŸ</string>
+	<string name="external_display_info">外接顯示器連接：%1$dx%2$d，%3$.1fHz</string>
+	<string name="notification_channel_name">外接顯示控制</string>
+	<string name="notification_title">外接顯示已啟用</string>
+	<string name="notification_text">點擊以開啟觸控板控制器</string>
+	<string name="permission_denied">通知權限被拒</string>
+	<string name="no_external_display">未偵測到外接顯示器</string>
+	<string name="no_game_instance">沒有可用的遊戲實例</string>
+	<string name="get_clipboard_failed">取得剪貼簿失敗： </string>
+	<string name="send_clipboard_success">剪貼簿傳送成功</string>
+	<string name="get_clipboard_success">剪貼簿取得成功</string>
 
-	<string name="proceed">ç¹¼çºŒ</string>
-	<string name="cancel">å–æ¶ˆ</string>
-	<string name="unlocking_or_starting">ä¼ºæœå™¨æ­£åœ¨å•Ÿå‹•æˆ–é›»è…¦æ­£åœ¨è§£é–ä¸­ï¼Œè«‹ç¨å€™â€¦</string>
-	<string name="error_msg_permission_denied">æ¬é™è¢«æ‹’</string>
-	<string name="error_msg_timeout">é€£ç·é€¾æ™‚</string>
+	<string name="proceed">繼續</string>
+	<string name="cancel">取消</string>
+	<string name="unlocking_or_starting">伺服器正在啟動或電腦正在解鎖中，請稍候…</string>
+	<string name="error_msg_permission_denied">權限被拒</string>
+	<string name="error_msg_timeout">連線逾時</string>
 
-	<string name="permission_launch_app">å•Ÿå‹•æ‡‰ç”¨ç¨‹å¼</string>
-	<string name="permission_sync_clipboard">åŒæ­¥å‰ªè²¼ç°¿</string>
+	<string name="permission_launch_app">啟動應用程式</string>
+	<string name="permission_sync_clipboard">同步剪貼簿</string>
 	
-	<string name="searchpreference_search">æœå°‹â€¦</string>
-	<string name="searchpreference_clear">æ¸…é™¤</string>
-	<string name="searchpreference_history_entry">æ­·å²ç´€éŒ„é …ç›®</string>
-	<string name="searchpreference_more">æ›´å¤</string>
-	<string name="searchpreference_clear_history">æ¸…é™¤æ­·å²ç´€éŒ„</string>
-	<string name="searchpreference_no_results">æ²’æœ‰çµæœ</string>
+	<string name="searchpreference_search">搜尋…</string>
+	<string name="searchpreference_clear">清除</string>
+	<string name="searchpreference_history_entry">歷史紀錄項目</string>
+	<string name="searchpreference_more">更多</string>
+	<string name="searchpreference_clear_history">清除歷史紀錄</string>
+	<string name="searchpreference_no_results">沒有結果</string>
 
 	<!-- Keyboard -->
-	<string name="keyboard_clear_all">å…¨éƒ¨æ¸…é™¤</string>
-	<string name="keyboard_add_keys">æ–°å¢æŒ‰éµ</string>
-	<string name="keyboard_select_keys">é¸æ“‡è¦æ–°å¢ç„æŒ‰éµ</string>
-	<string name="keyboard_clear_all_confirm_title">æ¸…é™¤æ‰€æœ‰æŒ‰éµ</string>
-	<string name="keyboard_clear_all_confirm_message">ç¢ºå®è¦é±è—æ‰€æœ‰è¢å¹•æ§åˆ¶å—ï¼Ÿä¹‹å¾Œå¯åœ¨é…ç½®æ¨¡å¼ä¸­å†è¡Œæ–°å¢ă€‚</string>
-	<string name="keyboard_keys_added">æˆåŸæ–°å¢ %d å€‹æŒ‰éµ</string>
-	<string name="keyboard_duplicates_skipped">å·²ç•¥é %d å€‹é‡è¤‡é …ç›®</string>
-	<string name="keyboard_configure_movable">æ‚¨ç¾åœ¨å¯ä»¥ç§»å‹•è¨­å®æŒ‰éˆ•ă€‚</string>
-	<string name="keyboard_load_error">è¼‰å…¥éµç›¤è¨­å®æ™‚ç™¼ç”ŸéŒ¯èª¤ï¼%s</string>
-	<string name="keyboard_add">æ–°å¢</string>
-	<string name="keyboard_key_custom">%sï¼ˆè‡ªè¨‚ï¼‰</string>
+	<string name="keyboard_clear_all">全部清除</string>
+	<string name="keyboard_add_keys">新增按鍵</string>
+	<string name="keyboard_select_keys">選擇要新增的按鍵</string>
+	<string name="keyboard_clear_all_confirm_title">清除所有按鍵</string>
+	<string name="keyboard_clear_all_confirm_message">確定要隱藏所有螢幕控制嗎？之後可在配置模式中再行新增。</string>
+	<string name="keyboard_keys_added">成功新增 %d 個按鍵</string>
+	<string name="keyboard_duplicates_skipped">已略過 %d 個重複項目</string>
+	<string name="keyboard_configure_movable">您現在可以移動設定按鈕。</string>
+	<string name="keyboard_load_error">載入鍵盤設定時發生錯誤：%s</string>
+	<string name="keyboard_add">新增</string>
+	<string name="keyboard_key_custom">%s（自訂）</string>
 
 	<!-- Compliance -->
 	<string name="category_basic_settings" />
 	<string name="title_checkbox_stretch_video" />
 
 	<!-- ShortcutHelper Toast Messages -->
-	<string name="export_launcher_computer_details_incomplete">ç„¡æ³•åŒ¯å‡ºï¼é›»è…¦è³‡è¨ä¸å®Œæ•´ă€‚</string>
-	<string name="export_launcher_app_details_incomplete">ç„¡æ³•åŒ¯å‡ºï¼æ‡‰ç”¨ç¨‹å¼è³‡è¨ä¸å®Œæ•´ă€‚</string>
-	<string name="failed_to_initiate_file_export">ç„¡æ³•å•Ÿå‹•åŒ¯å‡ºï¼%s</string>
-	<string name="file_export_failed_no_location_selected">åŒ¯å‡ºå¤±æ•—ï¼æœªé¸å–ä½ç½®ă€‚</string>
-	<string name="file_export_failed_no_content_to_write">åŒ¯å‡ºå¤±æ•—ï¼æ²’æœ‰å¯å¯«å…¥ç„å…§å®¹ă€‚</string>
-	<string name="file_exported_successfully">æª”æ¡ˆåŒ¯å‡ºæˆåŸă€‚</string>
-	<string name="failed_to_open_file_for_writing">é–‹å•Ÿæª”æ¡ˆå¯«å…¥å¤±æ•—ă€‚</string>
-	<string name="error_writing_file">å¯«å…¥æª”æ¡ˆéŒ¯èª¤ï¼%s</string>
-	<string name="unexpected_error_during_file_export">åŒ¯å‡ºæœŸé–“ç™¼ç”Ÿæœªé æœŸç„éŒ¯èª¤ă€‚</string>
+	<string name="export_launcher_computer_details_incomplete">無法匯出：電腦資訊不完整。</string>
+	<string name="export_launcher_app_details_incomplete">無法匯出：應用程式資訊不完整。</string>
+	<string name="failed_to_initiate_file_export">無法啟動匯出：%s</string>
+	<string name="file_export_failed_no_location_selected">匯出失敗：未選取位置。</string>
+	<string name="file_export_failed_no_content_to_write">匯出失敗：沒有可寫入的內容。</string>
+	<string name="file_exported_successfully">檔案匯出成功。</string>
+	<string name="failed_to_open_file_for_writing">開啟檔案寫入失敗。</string>
+	<string name="error_writing_file">寫入檔案錯誤：%s</string>
+	<string name="unexpected_error_during_file_export">匯出期間發生未預期的錯誤。</string>
 
 	<!-- AppView Toast Messages -->
-	<string name="file_export_cancelled">å·²å–æ¶ˆåŒ¯å‡ºă€‚</string>
-	<string name="app_removed_from_pc">å·²è‡ªé›»è…¦ç§»é™¤æ‡‰ç”¨ç¨‹å¼</string>
-	<string name="title_export_sunshine_launcher_file">ç‚º Sunshine åŒ¯å‡ºå•Ÿå‹•æª”</string>
-	<string name="message_export_sunshine_launcher_file">ç‚º Sunshine åŒ¯å‡ºå•Ÿå‹•æª”ä¸å¤ ç©©å®ï¼Œå¯èƒ½é¨æ™‚å¤±æ•ˆă€‚æ¯æ¬¡è®æ›´æ‡‰ç”¨ç¨‹å¼åç¨±æˆ–åœ–ç‰‡å¾Œéƒ½éœ€è¦é‡æ–°åŒ¯å‡ºă€‚\næ¬²ç²å¾—æ›´ç©©å®é«”é©—ï¼Œè«‹ä½¿ç”¨ Apolloă€‚</string>
+	<string name="file_export_cancelled">已取消匯出。</string>
+	<string name="app_removed_from_pc">已自電腦移除應用程式</string>
+	<string name="title_export_sunshine_launcher_file">為 Sunshine 匯出啟動檔</string>
+	<string name="message_export_sunshine_launcher_file">為 Sunshine 匯出啟動檔不夠穩定，可能隨時失效。每次變更應用程式名稱或圖片後都需要重新匯出。\n欲獲得更穩定體驗，請使用 Apollo。</string>
 
-	<string name="title_enable_commit_text">å•Ÿç”¨ commit-text è¼¸å…¥ï¼ˆæ»‘å‹•/èªéŸ³ï¼‰</string>
-	<string name="summary_enable_commit_text">å°‡è»Ÿé«”éµç›¤ç„å¤å­—å…ƒè¼¸å…¥ï¼ˆæ‰‹å‹¢è¼¸å…¥ă€å»ºè­°å­—è©ă€èªéŸ³è½å¯«ï¼‰è½‰é€åˆ°ä¸»æ©Ÿă€‚å¯èƒ½æœƒå½±éŸ¿ä¾è³´é€éµè¼¸å…¥ç„éæˆ²ă€‚</string>
-	<string name="title_checkbox_remember_zoom_pan">è¨˜ä½ç¸®æ”¾èˆ‡å¹³ç§»</string>
-	<string name="summary_checkbox_remember_zoom_pan">åœ¨å·¥ä½œéæ®µä¹‹é–“å„²å­˜ç¸®æ”¾èˆ‡å¹³ç§»ä½ç½®</string>
-	<string name="title_checkbox_enable_perf_overlay_bottom">å°‡æ•ˆèƒ½è³‡è¨ç§»è‡³åº•éƒ¨</string>
-	<string name="summary_checkbox_enable_perf_overlay_bottom">åœ¨éåŸç”Ÿè§£æåº¦ä¸²æµă€åŒæ™‚å•Ÿç”¨ă€Œç½®é ‚ç½®ä¸­é¡¯ç¤ºă€èˆ‡ç²¾ç°¡æ¨¡å¼æ™‚ç‰¹åˆ¥æœ‰ç”¨ă€‚</string>
+	<string name="title_enable_commit_text">啟用 commit-text 輸入（滑動/語音）</string>
+	<string name="summary_enable_commit_text">將軟體鍵盤的多字元輸入（手勢輸入、建議字詞、語音聽寫）轉送到主機。可能會影響依賴逐鍵輸入的遊戲。</string>
+	<string name="title_checkbox_remember_zoom_pan">記住縮放與平移</string>
+	<string name="summary_checkbox_remember_zoom_pan">在工作階段之間儲存縮放與平移位置</string>
+	<string name="title_checkbox_enable_perf_overlay_bottom">將效能資訊移至底部</string>
+	<string name="summary_checkbox_enable_perf_overlay_bottom">在非原生解析度串流、同時啟用「置頂置中顯示」與精簡模式時特別有用。</string>
 
-	<string name="title_edit_profile">ç·¨è¼¯è¨­å®æª”</string>
-	<string name="profile_manager_new_profile">æ–°å¢è¨­å®æª”</string>
-	<string name="profile_manager_profile_not_found">æ‰¾ä¸åˆ°è¨­å®æª”</string>
-	<string name="profile_manager_edit_profile">"ç·¨è¼¯è¨­å®æª”ï¼"</string>
-	<string name="profile_manager_profile">"è¨­å®æª” "</string>
-	<string name="profile_manager_profile_saved">å·²å„²å­˜è¨­å®æª”ă€%să€ă€‚</string>
-	<string name="profile_manager_edit_profile_name">ç·¨è¼¯è¨­å®æª”åç¨±</string>
-	<string name="profile_manager_name_cannot_be_blank">åç¨±ä¸å¯ç‚ºç©ºç™½</string>
-	<string name="profile_manager_edit_profile_with">ç·¨è¼¯è¨­å®æª”ï¼%s</string>
-	<string name="profile_manager_new_profile_with">æ–°å¢è¨­å®æª”ï¼%s</string>
-	<string name="profile_manager_no_profiles_yet">å°ç„¡è¨­å®æª”</string>
-	<string name="profile_manager_profiles_description">è¨­å®æª”å¯è®“ä½ å»ºç«‹ä¸¦å„²å­˜ä¸åŒç„ä¸²æµçµ„æ…‹ă€‚æ¯å€‹è¨­å®æª”éƒ½æœ‰è‡ªå·±ç„è¨­å®ï¼Œä¸¦å¯å¿«é€Ÿåˆ‡æ›ă€‚</string>
-	<string name="profile_manager_tap_create_profile">é»é¸ + ä»¥å»ºç«‹ç¬¬ä¸€å€‹è¨­å®æª”</string>
-	<string name="profile_manager_choose_profile">é¸æ“‡è¨­å®æª”</string>
-	<string name="profile_manager_deactivated_profile">å·²åœç”¨ç„è¨­å®æª”</string>
-	<string name="profile_manager_activated_profile">å·²å•Ÿç”¨è¨­å®æª”ă€%să€</string>
-	<string name="profile_manager_delete_profile">åˆªé™¤è¨­å®æª”</string>
-	<string name="profile_manager_confirm_profile_deleteion">ç¢ºå®è¦åˆªé™¤ă€%să€å—ï¼Ÿ</string>
-	<string name="profile_manager_delete">åˆªé™¤</string>
-	<string name="profile_manager_profile_deleted">å·²åˆªé™¤è¨­å®æª”ă€%să€</string>
-	<string name="profile_manager_failed_to_save">ç„¡æ³•å„²å­˜è¨­å®æª”ă€‚è«‹æŸ¥çœ‹ logcat ä»¥å–å¾—è©³ç´°è³‡è¨ă€‚</string>
-	<string name="profile_manager_failed_to_load">ç„¡æ³•è¼‰å…¥è¨­å®æª”ă€‚è«‹æŸ¥çœ‹ logcat ä»¥å–å¾—è©³ç´°è³‡è¨ă€‚</string>
-	<string name="profile_manager_active_profile">ä½¿ç”¨ä¸­ç„è¨­å®æª”ï¼%s</string>
-	<string name="rename">é‡æ–°å‘½å</string>
-	<string name="save">å„²å­˜</string>
+	<string name="title_edit_profile">編輯設定檔</string>
+	<string name="profile_manager_new_profile">新增設定檔</string>
+	<string name="profile_manager_profile_not_found">找不到設定檔</string>
+	<string name="profile_manager_edit_profile">"編輯設定檔："</string>
+	<string name="profile_manager_profile">"設定檔 "</string>
+	<string name="profile_manager_profile_saved">已儲存設定檔『%s』。</string>
+	<string name="profile_manager_edit_profile_name">編輯設定檔名稱</string>
+	<string name="profile_manager_name_cannot_be_blank">名稱不可為空白</string>
+	<string name="profile_manager_edit_profile_with">編輯設定檔：%s</string>
+	<string name="profile_manager_new_profile_with">新增設定檔：%s</string>
+	<string name="profile_manager_no_profiles_yet">尚無設定檔</string>
+	<string name="profile_manager_profiles_description">設定檔可讓你建立並儲存不同的串流組態。每個設定檔都有自己的設定，並可快速切換。</string>
+	<string name="profile_manager_tap_create_profile">點選 + 以建立第一個設定檔</string>
+	<string name="profile_manager_choose_profile">選擇設定檔</string>
+	<string name="profile_manager_deactivated_profile">已停用的設定檔</string>
+	<string name="profile_manager_activated_profile">已啟用設定檔『%s』</string>
+	<string name="profile_manager_delete_profile">刪除設定檔</string>
+	<string name="profile_manager_confirm_profile_deleteion">確定要刪除『%s』嗎？</string>
+	<string name="profile_manager_delete">刪除</string>
+	<string name="profile_manager_profile_deleted">已刪除設定檔『%s』</string>
+	<string name="profile_manager_failed_to_save">無法儲存設定檔。請查看 logcat 以取得詳細資訊。</string>
+	<string name="profile_manager_failed_to_load">無法載入設定檔。請查看 logcat 以取得詳細資訊。</string>
+	<string name="profile_manager_active_profile">使用中的設定檔：%s</string>
+	<string name="rename">重新命名</string>
+	<string name="save">儲存</string>
 
-	<string name="title_low_latency_frame_balance">ä½å»¶é²éåˆ—ï¼ˆå¯¦é©—æ€§ï¼‰</string>
-	<string name="summary_low_latency_frame_balance">é€éä¸Ÿæ£„ç·©è¡å¹€ä»¥æœ€å°åŒ–å»¶é²ă€‚</string>
-	<string name="category_perf_monitor_settings">æ•ˆèƒ½ç›£è¦–å™¨</string>
+	<string name="title_low_latency_frame_balance">低延遲隊列（實驗性）</string>
+	<string name="summary_low_latency_frame_balance">透過丟棄緩衝幀以最小化延遲。</string>
+	<string name="category_perf_monitor_settings">效能監視器</string>
 
-	<string name="title_checkbox_full_screen">å•Ÿç”¨å…¨è¢å¹•</string>
-	<string name="summary_checkbox_full_screen">ä»¥æ²‰æµ¸æ¨¡å¼é±è—ç³»çµ±åˆ—</string>
-    <!-- Layout Management -->
-    <string name="game_menu_gamepad_layouts">手把配置</string>
-    <string name="game_menu_keyboard_layouts">鍵盤配置</string>
-    <string name="gamepad_layout_toggle_gamepad">切換虛擬手把</string>
-    <string name="gamepad_layout_create">建立配置</string>
-    <string name="gamepad_layout_duplicate">複製配置</string>
-    <string name="gamepad_layout_rename">重新命名配置</string>
-    <string name="gamepad_layout_delete">刪除配置</string>
-    <string name="gamepad_layout_delete_confirm">確定要刪除 `"%s`" 嗎？</string>
-    <string name="gamepad_layout_default_name">預設手把</string>
-    <string name="gamepad_layout_switched">已切換到 `"%s`"</string>
-    <string name="gamepad_layout_created">已建立 `"%s`"</string>
-    <string name="gamepad_layout_renamed">已重新命名為 `"%s`"</string>
-    <string name="gamepad_layout_deleted">已刪除 `"%s`"</string>
-    <string name="gamepad_layout_name_empty">配置名稱不能為空</string>
-
-    <string name="keyboard_layout_toggle_keyboard">切換虛擬鍵盤</string>
-    <string name="keyboard_layout_create">建立配置</string>
-    <string name="keyboard_layout_duplicate">複製配置</string>
-    <string name="keyboard_layout_rename">重新命名配置</string>
-    <string name="keyboard_layout_delete">刪除配置</string>
-    <string name="keyboard_layout_default_name">預設鍵盤</string>
-    <string name="keyboard_layout_switched">已切換到 `"%s`"</string>
-    <string name="keyboard_layout_created">已建立 `"%s`"</string>
-    <string name="keyboard_layout_renamed">已重新命名為 `"%s`"</string>
-    <string name="keyboard_layout_deleted">已刪除 `"%s`"</string>
+	<string name="title_checkbox_full_screen">啟用全螢幕</string>
+	<string name="summary_checkbox_full_screen">以沉浸模式隱藏系統列</string>
 </resources>
