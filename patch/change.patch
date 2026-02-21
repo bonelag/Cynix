@@ -1390,3 +1390,38 @@ index 5b009c89..d03bd91a 100755
 -            app:iconSpaceReserved="false" />
      </PreferenceCategory>
  </PreferenceScreen>
+diff --git a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
+index 53cbf68..a34d52c 100644
+--- a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
++++ b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
+@@ -128,12 +128,10 @@ public class AndroidAudioRenderer implements AudioRenderer {
+             switch (i) {
+                 case 0:
+                 case 2:
+-                    bufferSize = bytesPerFrame * 2;
+-                    break;
+-
+                 case 1:
+                 case 3:
+-                    // Try the larger buffer size
++                    // Always use safe larger buffer size based on Android API recommendations
++                    // Avoids extreme 10ms buffers causing CPU scheduler underruns (crackling)
+                     bufferSize = Math.max(AudioTrack.getMinBufferSize(sampleRate,
+                             channelConfig,
+                             AudioFormat.ENCODING_PCM_16BIT),
+@@ -187,11 +185,12 @@ public class AndroidAudioRenderer implements AudioRenderer {
+ 
+     @Override
+     public void playDecodedAudio(short[] audioData) {
+-        // Only queue up to 40 ms of pending audio data in addition to what AudioTrack is buffering for us.
+-        if (MoonBridge.getPendingAudioDuration() < 40) {
++        // Queue up to 100 ms of pending audio data in addition to what AudioTrack is buffering for us.
++        // 40ms is too aggressive and causes audio dropouts (crackling) with variable network pacing.
++        if (MoonBridge.getPendingAudioDuration() < 100) {
+             // This will block until the write is completed. That can cause a backlog
+             // of pending audio data, so we do the above check to be able to bound
+-            // latency at 40 ms in that situation.
++            // latency at 100 ms in that situation.
+             track.write(audioData, 0, audioData.length);
+         }
+         else {
