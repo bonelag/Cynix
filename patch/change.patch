@@ -1,13 +1,19 @@
 diff --git a/app/build.gradle b/app/build.gradle
-index 3a3494f0..2a2d619f 100644
+index 3a3494f0..63d5ad1f 100644
 --- a/app/build.gradle
 +++ b/app/build.gradle
-@@ -9,10 +9,10 @@ android {
+@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
+ android {
+     ndkVersion "27.0.12077973"
  
-     defaultConfig {
+-    compileSdk = 36
++    compileSdk 34
+ 
+     namespace 'com.limelight'
+ 
+@@ -11,8 +11,8 @@ android {
          minSdk 21
--        targetSdk 34
-+        targetSdk 34  
+         targetSdk 34
  
 -        versionName "20.2.6"
 -        versionCode = 57
@@ -129,7 +135,42 @@ index 3a3494f0..2a2d619f 100644
      splits {
          abi {
              enable true
-@@ -188,4 +160,4 @@ dependencies {
+@@ -164,28 +136,26 @@ android {
+ }
+ 
+ dependencies {
+-    implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.81'
++    implementation 'com.google.android.material:material:1.11.0'
++    implementation 'org.bouncycastle:bcprov-jdk18on:1.77'
++    implementation 'org.bouncycastle:bcpkix-jdk18on:1.77'
+     implementation 'org.jcodec:jcodec:0.2.5'
+     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+-    implementation 'org.jmdns:jmdns:3.6.2'
++    implementation 'org.jmdns:jmdns:3.5.9'
+     implementation 'com.github.cgutman:ShieldControllerExtensions:1.0.1'
+-    implementation 'com.google.code.gson:gson:2.13.1'
+-    implementation 'androidx.annotation:annotation:1.9.1'
++    implementation 'com.google.code.gson:gson:2.10.1'
++    implementation 'org.opencv:opencv:4.10.0'
++    implementation 'org.tensorflow:tensorflow-lite:2.14.0'
++    implementation 'org.tensorflow:tensorflow-lite-gpu-api:2.14.0'
++    implementation 'org.tensorflow:tensorflow-lite-gpu:2.14.0'
++    implementation 'androidx.annotation:annotation:1.9.0'
+     implementation 'androidx.cardview:cardview:1.0.0'
+-    implementation 'androidx.appcompat:appcompat:1.7.1'
++    implementation 'androidx.appcompat:appcompat:1.7.0'
+     implementation 'androidx.preference:preference:1.2.1'
+-    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+-    implementation 'com.google.android.material:material:1.13.0'
+     implementation 'com.github.ByteHamster:SearchPreference:v2.5.1'
+-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+-    implementation 'com.google.ai.edge.litert:litert:1.4.0'
+-    implementation 'com.google.ai.edge.litert:litert-gpu:1.4.0'
+-    implementation 'org.opencv:opencv:4.12.0'
+ 
+-    // Unit test dependencies
+     testImplementation 'junit:junit:4.13.2'
      testImplementation 'androidx.test:core:1.7.0'
      testImplementation 'org.robolectric:robolectric:4.16'
      testImplementation 'org.mockito:mockito-core:5.19.0'
@@ -137,7 +178,7 @@ index 3a3494f0..2a2d619f 100644
 +}
 \ No newline at end of file
 diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
-index 992fc00a..8ec1bc62 100755
+index 992fc00a..c320554f 100755
 --- a/app/src/main/java/com/limelight/Game.java
 +++ b/app/src/main/java/com/limelight/Game.java
 @@ -21,9 +21,11 @@ import com.limelight.binding.input.driver.UsbDriverService;
@@ -163,6 +204,15 @@ index 992fc00a..8ec1bc62 100755
  
      private KeyBoardLayoutController keyBoardLayoutController;
  
+@@ -873,7 +877,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
+                 decoderRenderer.setRenderTarget(streamContainer.getSurface());
+ 
+                 // Starten Sie die NvConnection
+-                conn.start(new AndroidAudioRenderer(Game.this, prefConfig.playHostAudio),
++                conn.start(new AndroidAudioRenderer(Game.this, prefConfig.playHostAudio, prefConfig.pendingAudioDuration),
+                         decoderRenderer, Game.this);
+             }
+         });
 @@ -1089,7 +1093,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
      }
  
@@ -582,6 +632,58 @@ index 63f35322..0795e59b 100755
 +        void onNameEntered(String name);
 +    }
  }
+diff --git a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
+index 53cbf687..cf4efd28 100755
+--- a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
++++ b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
+@@ -17,12 +17,14 @@ public class AndroidAudioRenderer implements AudioRenderer {
+ 
+     private final Context context;
+     private final boolean enableAudioFx;
++    private final int pendingAudioDuration;
+ 
+     private AudioTrack track;
+ 
+-    public AndroidAudioRenderer(Context context, boolean enableAudioFx) {
++    public AndroidAudioRenderer(Context context, boolean enableAudioFx, int pendingAudioDuration) {
+         this.context = context;
+         this.enableAudioFx = enableAudioFx;
++        this.pendingAudioDuration = pendingAudioDuration;
+     }
+ 
+     private AudioTrack createAudioTrack(int channelConfig, int sampleRate, int bufferSize, boolean lowLatency) {
+@@ -128,12 +130,10 @@ public class AndroidAudioRenderer implements AudioRenderer {
+             switch (i) {
+                 case 0:
+                 case 2:
+-                    bufferSize = bytesPerFrame * 2;
+-                    break;
+-
+                 case 1:
+                 case 3:
+-                    // Try the larger buffer size
++                    // Always use safe larger buffer size based on Android API recommendations
++                    // Avoids extreme 10ms buffers causing CPU scheduler underruns (crackling)
+                     bufferSize = Math.max(AudioTrack.getMinBufferSize(sampleRate,
+                             channelConfig,
+                             AudioFormat.ENCODING_PCM_16BIT),
+@@ -187,11 +187,13 @@ public class AndroidAudioRenderer implements AudioRenderer {
+ 
+     @Override
+     public void playDecodedAudio(short[] audioData) {
+-        // Only queue up to 40 ms of pending audio data in addition to what AudioTrack is buffering for us.
+-        if (MoonBridge.getPendingAudioDuration() < 40) {
++        // Queue up to user configured ms of pending audio data in addition to what AudioTrack is buffering for us.
++        // 40ms is too aggressive and causes audio dropouts (crackling) with variable network pacing.
++        // The default 65ms provides a good balance between low latency and preventing buffer underruns.
++        if (MoonBridge.getPendingAudioDuration() < pendingAudioDuration) {
+             // This will block until the write is completed. That can cause a backlog
+             // of pending audio data, so we do the above check to be able to bound
+-            // latency at 40 ms in that situation.
++            // latency in that situation.
+             track.write(audioData, 0, audioData.length);
+         }
+         else {
 diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
 index c0f7f09f..e69396b3 100755
 --- a/app/src/main/java/com/limelight/binding/input/virtual_controller/VirtualController.java
@@ -761,6 +863,101 @@ index 760352d7..c9e1bd42 100755
  
          for (keyBoardVirtualControllerElement element : controller.getElements()) {
              String prefKey = "" + element.elementId;
+diff --git a/app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java b/app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java
+index 96249d87..68ce189c 100755
+--- a/app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java
++++ b/app/src/main/java/com/limelight/preferences/PreferenceConfiguration.java
+@@ -60,6 +60,7 @@ public class PreferenceConfiguration {
+     private static final String SMALL_ICONS_PREF_STRING = "checkbox_small_icon_mode";
+     private static final String MULTI_CONTROLLER_PREF_STRING = "checkbox_multi_controller";
+     static final String AUDIO_CONFIG_PREF_STRING = "list_audio_config";
++    static final String PENDING_AUDIO_DURATION_PREF_STRING = "seekbar_pending_audio_duration";
+     private static final String USB_DRIVER_PREF_SRING = "checkbox_usb_driver";
+     private static final String VIDEO_FORMAT_PREF_STRING = "video_format";
+     private static final String ONSCREEN_CONTROLLER_PREF_STRING = "checkbox_show_onscreen_controls";
+@@ -178,6 +179,7 @@ public class PreferenceConfiguration {
+     private static final boolean DEFAULT_FLIP_FACE_BUTTONS = false;
+     private static final boolean DEFAULT_TOUCHSCREEN_TRACKPAD = true;
+     private static final String DEFAULT_AUDIO_CONFIG = "2"; // Stereo
++    private static final int DEFAULT_PENDING_AUDIO_DURATION = 65; // ms
+     private static final boolean DEFAULT_LATENCY_TOAST = false;
+     private static final String DEFAULT_FRAME_PACING = "latency";
+     private static final boolean DEFAULT_ABSOLUTE_MOUSE_MODE = false;
+@@ -365,6 +367,7 @@ public class PreferenceConfiguration {
+     public int vibrateFallbackToDeviceStrength;
+     public boolean touchscreenTrackpad;
+     public MoonBridge.AudioConfiguration audioConfiguration;
++    public int pendingAudioDuration;
+     public int framePacing;
+     public boolean absoluteMouseMode;
+     public boolean enableAudioFx;
+@@ -853,6 +856,8 @@ private static int getFramePacingValue(Context context) {
+             config.audioConfiguration = MoonBridge.AUDIO_CONFIGURATION_STEREO;
+         }
+ 
++        config.pendingAudioDuration = prefs.getInt(PENDING_AUDIO_DURATION_PREF_STRING, DEFAULT_PENDING_AUDIO_DURATION);
++
+         config.videoScaleMode = getVideoScaleMode(context);
+ 
+         config.videoFormat = getVideoFormatValue(context);
+diff --git a/app/src/main/java/com/limelight/profiles/ProfilesManager.java b/app/src/main/java/com/limelight/profiles/ProfilesManager.java
+index 0e0a179c..e690c89c 100644
+--- a/app/src/main/java/com/limelight/profiles/ProfilesManager.java
++++ b/app/src/main/java/com/limelight/profiles/ProfilesManager.java
+@@ -47,7 +47,7 @@ public class ProfilesManager {
+     }
+ 
+     public boolean load(Context context) {
+-        LimeLog.info("ArtemisProfile: Loading profile...");
++        LimeLog.info("CynixProfile: Loading profile...");
+         if (context == null) {
+             return false;
+         }
+@@ -86,12 +86,12 @@ public class ProfilesManager {
+                     activeProfileId = data.activeProfileId;
+                 }
+             } catch (IOException e) {
+-                LimeLog.warning("ArtemisProfile: Failed to load profiles from file:" + e);
++                LimeLog.warning("CynixProfile: Failed to load profiles from file:" + e);
+                 e.printStackTrace();
+                 return false;
+             }
+         } catch (Exception e) {
+-            LimeLog.warning("ArtemisProfile: Failed to load profiles:" + e);
++            LimeLog.warning("CynixProfile: Failed to load profiles:" + e);
+             e.printStackTrace();
+             return false;
+         }
+@@ -117,12 +117,12 @@ public class ProfilesManager {
+                 data.activeProfileId = activeProfileId;
+                 gson.toJson(data, writer);
+             } catch (IOException e) {
+-                LimeLog.warning("ArtemisProfile: Failed to save profiles to file:" + e);
++                LimeLog.warning("CynixProfile: Failed to save profiles to file:" + e);
+                 e.printStackTrace();
+                 return false;
+             }
+         } catch (Exception e) {
+-            LimeLog.warning("ArtemisProfile: Failed to save profiles:" + e);
++            LimeLog.warning("CynixProfile: Failed to save profiles:" + e);
+             e.printStackTrace();
+             return false;
+         }
+diff --git a/app/src/main/java/com/limelight/utils/ShortcutHelper.java b/app/src/main/java/com/limelight/utils/ShortcutHelper.java
+index 0c016893..94998253 100755
+--- a/app/src/main/java/com/limelight/utils/ShortcutHelper.java
++++ b/app/src/main/java/com/limelight/utils/ShortcutHelper.java
+@@ -237,8 +237,8 @@ public class ShortcutHelper {
+         }
+ 
+         StringBuilder sb = new StringBuilder();
+-        sb.append("# Artemis app entry\n");
+-        sb.append("# Generated by Artemis for Android\n\n");
++        sb.append("# Cynix app entry\n");
++        sb.append("# Generated by Cynix for Android\n\n");
+ 
+         sb.append("[").append(KEY_HOST_UUID).append("] ").append(computer.uuid).append("\n");
+         sb.append("[").append(KEY_HOST_NAME).append("] ").append(computer.name).append("\n");
 diff --git a/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml b/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
 index 6daa360a..03b57376 100755
 --- a/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
@@ -776,10 +973,10 @@ index 6daa360a..03b57376 100755
  </adaptive-icon>
 \ No newline at end of file
 diff --git a/app/src/main/res/values-ru/strings.xml b/app/src/main/res/values-ru/strings.xml
-index 2eb455f4..aef010af 100755
+index 2eb455f4..b07772e6 100755
 --- a/app/src/main/res/values-ru/strings.xml
 +++ b/app/src/main/res/values-ru/strings.xml
-@@ -652,18 +652,6 @@
+@@ -652,19 +652,6 @@
      <string name="perf_overlay_lite_net">%1$dмс</string>
      <string name="perf_overlay_lite_dectime">%1$.2fмс</string>
      <string name="summary_low_latency_frame_balance">Уменьшает задержку за счёт пропуска кадров в очереди</string>
@@ -795,102 +992,23 @@ index 2eb455f4..aef010af 100755
 -    <string name="summary_perf_chart_decode">График времени декодирования кадра (мс)</string>
 -    <string name="title_perf_chart_fps">График: FPS</string>
 -    <string name="summary_perf_chart_fps">График входящих/отрендереных кадров в секунду</string>
-     <string name="category_perf_monitor_settings">Монитор производительности</string>
+-    <string name="category_perf_monitor_settings">Монитор производительности</string>
      <string name="title_low_latency_frame_balance">LFR (эксперементально)</string>
      <string name="title_checkbox_forceTightThresholds">Агрессивная вертикальная синхронизация (эксперементально)</string>
+     <string name="title_render_mode">Режим рендеринга</string>
 diff --git a/app/src/main/res/values-vi/strings.xml b/app/src/main/res/values-vi/strings.xml
-index 2ae98a30..9e41c618 100755
+index 2ae98a30..fcdcd46b 100755
 --- a/app/src/main/res/values-vi/strings.xml
 +++ b/app/src/main/res/values-vi/strings.xml
-@@ -34,12 +34,12 @@
- 
-     <!-- Network test strings -->
-     <string name="nettest_title_waiting">Đang kiểm tra kết nối mạng</string>
--    <string name="nettest_text_waiting">Artemis đang kiểm tra kết nối mạng của bạn để xác định xem có bất kỳ cổng nào bị chặn hay không.\n\nĐiều này có thể mất vài giây…</string>
-+    <string name="nettest_text_waiting">Cynix đang kiểm tra kết nối mạng của bạn để xác định xem có bất kỳ cổng nào bị chặn hay không.\n\nĐiều này có thể mất vài giây…</string>
-     <string name="nettest_title_done">Kiểm tra mạng hoàn tất</string>
--    <string name="nettest_text_success">Mạng của bạn dường như không chặn Artemis. Nếu bạn vẫn gặp khó khăn khi kết nối, hãy kiểm tra cài đặt tường lửa của PC.\n\nNếu bạn đang cố gắng phát trực tuyến qua Internet, hãy cài đặt Công cụ Lưu trữ Internet Artemis trên PC của bạn và chạy Trình kiểm tra Phát trực tuyến Internet đi kèm để kiểm tra kết nối Internet của PC.</string>
--    <string name="nettest_text_inconclusive">Không thể thực hiện kiểm tra mạng vì không có máy chủ kiểm tra kết nối của Artemis nào có thể truy cập được. Kiểm tra kết nối Internet của bạn hoặc thử lại sau.</string>
--    <string name="nettest_text_failure">Kết nối mạng hiện tại của thiết bị của bạn dường như đang chặn Artemis. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.\n\nCác cổng mạng sau đã bị chặn:\n</string>
--    <string name="nettest_text_blocked">Kết nối mạng hiện tại của thiết bị của bạn đang chặn Artemis. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.</string>
-+    <string name="nettest_text_success">Mạng của bạn dường như không chặn Cynix. Nếu bạn vẫn gặp khó khăn khi kết nối, hãy kiểm tra cài đặt tường lửa của PC.\n\nNếu bạn đang cố gắng phát trực tuyến qua Internet, hãy cài đặt Công cụ Lưu trữ Internet Cynix trên PC của bạn và chạy Trình kiểm tra Phát trực tuyến Internet đi kèm để kiểm tra kết nối Internet của PC.</string>
-+    <string name="nettest_text_inconclusive">Không thể thực hiện kiểm tra mạng vì không có máy chủ kiểm tra kết nối của Cynix nào có thể truy cập được. Kiểm tra kết nối Internet của bạn hoặc thử lại sau.</string>
-+    <string name="nettest_text_failure">Kết nối mạng hiện tại của thiết bị của bạn dường như đang chặn Cynix. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.\n\nCác cổng mạng sau đã bị chặn:\n</string>
-+    <string name="nettest_text_blocked">Kết nối mạng hiện tại của thiết bị của bạn đang chặn Cynix. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.</string>
- 
-     <!-- Pair messages -->
-     <string name="pairing">Đang ghép nối…</string>
-@@ -82,7 +82,7 @@
- 	    Sử dụng phần mềm điều khiển từ xa cũng có thể gây ra lỗi này. Thử khởi động lại máy của bạn hoặc cài đặt lại GFE.
-     </string>
-     <string name="title_decoding_error">Bộ giải mã video bị lỗi</string>
--    <string name="message_decoding_error">Artemis đã gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Thử điều chỉnh cài đặt phát trực tuyến nếu sự cố tiếp tục xảy ra.</string>
-+    <string name="message_decoding_error">Cynix đã gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Thử điều chỉnh cài đặt phát trực tuyến nếu sự cố tiếp tục xảy ra.</string>
-     <string name="title_decoding_reset">Cài đặt video đã được đặt lại</string>
-     <string name="message_decoding_reset">Bộ giải mã video của thiết bị của bạn tiếp tục gặp sự cố ở cài đặt phát trực tuyến đã chọn. Cài đặt phát trực tuyến của bạn đã được đặt lại về mặc định.</string>
-     <string name="error_usb_prohibited">Truy cập USB bị cấm bởi quản trị viên thiết bị của bạn. Kiểm tra cài đặt Knox hoặc MDM của bạn.</string>
-@@ -213,7 +213,7 @@
-     <string name="title_checkbox_xb1_driver">Trình điều khiển gamepad USB Xbox 360/One/NintendoPro</string>
-     <string name="summary_checkbox_xb1_driver">Bật trình điều khiển USB tích hợp cho các thiết bị không có hỗ trợ gamepad Xbox/Nintendo Pro gốc</string>
-     <string name="title_checkbox_usb_bind_all">Ghi đè hỗ trợ gamepad Xbox gốc</string>
--    <string name="summary_checkbox_usb_bind_all">Sử dụng trình điều khiển USB của Artemis cho tất cả các gamepad được hỗ trợ, ngay cả khi hỗ trợ gamepad Xbox/Nintendo Pro gốc có mặt</string>
-+    <string name="summary_checkbox_usb_bind_all">Sử dụng trình điều khiển USB của Cynix cho tất cả các gamepad được hỗ trợ, ngay cả khi hỗ trợ gamepad Xbox/Nintendo Pro gốc có mặt</string>
-     <string name="title_checkbox_mouse_emulation">Mô phỏng chuột qua gamepad</string>
-     <string name="summary_checkbox_mouse_emulation">Nhấn giữ nút Start sẽ chuyển gamepad sang chế độ chuột</string>
-     <string name="title_checkbox_flip_face_buttons">Đảo nút mặt</string>
-@@ -260,7 +260,7 @@
-     <string name="title_checkbox_enable_pip">Bật chế độ Picture-in-Picture</string>
-     <string name="summary_checkbox_enable_pip">Cho phép xem luồng trong khi thực hiện đa nhiệm</string>
-     <string name="title_language_list">Ngôn ngữ</string>
--    <string name="summary_language_list">Ngôn ngữ sử dụng cho Artemis</string>
-+    <string name="summary_language_list">Ngôn ngữ sử dụng cho Cynix</string>
-     <string name="title_checkbox_small_icon_mode">Chế độ biểu tượng nhỏ</string>
-     <string name="summary_checkbox_small_icon_mode">Hiển thị biểu tượng nhỏ hơn trong lưới ứng dụng để hiển thị nhiều ứng dụng hơn</string>
- 
-@@ -296,7 +296,7 @@
-     <string name="title_troubleshooting">Hướng dẫn khắc phục sự cố</string>
-     <string name="summary_troubleshooting">Xem các mẹo để chẩn đoán và khắc phục các sự cố phát trực tuyến phổ biến</string>
-     <string name="title_privacy_policy">Chính sách quyền riêng tư</string>
--    <string name="summary_privacy_policy">Xem chính sách quyền riêng tư của Artemis</string>
-+    <string name="summary_privacy_policy">Xem chính sách quyền riêng tư của Cynix</string>
-     <string name="title_special_key_help">Trợ giúp phím đặc biệt</string>
-     <string name="summary_special_key_help">Hướng dẫn về cách thiết lập các phím đặc biệt tùy chỉnh</string>
- 
-@@ -335,8 +335,8 @@
-     <string name="pacing_smoothness">Ưu tiên video mượt nhất (có thể tăng đáng kể độ trễ)</string>
- 
- 
--    <string name="keyboard_service_label">Bàn phím vật lý Artemis</string>
--    <string name="accessibility_description_text">Chỉ được sử dụng khi phím tắt bàn phím vật lý bị hệ thống chặn. Trong một số hệ thống, một số phím tắt bàn phím được định nghĩa và sử dụng bởi hệ thống Android, khiến chúng không thể được chuyển qua PC máy chủ. Artemis sẽ không xem qua đầu vào của bạn, cũng không thu thập mật khẩu, số thẻ tín dụng hoặc bất kỳ thông tin cá nhân nào khác của bạn.</string>
-+    <string name="keyboard_service_label">Bàn phím vật lý Cynix</string>
-+    <string name="accessibility_description_text">Chỉ được sử dụng khi phím tắt bàn phím vật lý bị hệ thống chặn. Trong một số hệ thống, một số phím tắt bàn phím được định nghĩa và sử dụng bởi hệ thống Android, khiến chúng không thể được chuyển qua PC máy chủ. Cynix sẽ không xem qua đầu vào của bạn, cũng không thu thập mật khẩu, số thẻ tín dụng hoặc bất kỳ thông tin cá nhân nào khác của bạn.</string>
- 
- 
-     <!-- In Game menu -->
-@@ -433,7 +433,7 @@
-     <string name="summary_import_special_button">Sử dụng được trong Menu Quay lại và phím đặc biệt.\nLưu ý: Nhập sẽ ghi đè cấu hình hiện tại, vui lòng sao lưu trước.</string>
- 
-     <string name="title_software_update">Cập nhật phần mềm</string>
--    <string name="summary_software_update">Phiên bản Artemis Việt Hóa bởi ZeronX - Truy cập GitHub Release để nhận phiên bản mới nhất</string>
-+    <string name="summary_software_update">Phiên bản Cynix Việt Hóa bởi ZeronX - Truy cập GitHub Release để nhận phiên bản mới nhất</string>
- 
-     <string name="title_special_key_layout">Bố cục phím đặc biệt</string>
- 
-@@ -496,7 +496,7 @@
-     <string name="title_touchpad_sensitivity_y">Độ nhạy touchpad - Trục Y</string>
-     <string name="summary_touchpad_sensitivity_y">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng nút đặc biệt ảo;\nCả hai dùng chung giá trị độ nhạy, nhưng hiệu suất có thể khác nhau.\nKhông biết có ai dùng cả hai cùng lúc không?</string>
-     <string name="title_device_rumble">Bắt buộc rung trên thiết bị</string>
--    <string name="summary_device_rumble">Nếu bạn không hài lòng với rung của tay cầm chơi game đã kết nối, bạn có thể bật tùy chọn này.\nKhông có tác dụng nếu buộc sử dụng driver USB tích hợp của Artemis</string>
-+    <string name="summary_device_rumble">Nếu bạn không hài lòng với rung của tay cầm chơi game đã kết nối, bạn có thể bật tùy chọn này.\nKhông có tác dụng nếu buộc sử dụng driver USB tích hợp của Cynix</string>
-     <string name="title_clear_default_special_button">Tắt các phím đặc biệt mặc định</string>
-     <string name="summary_clear_default_special_button">Nếu bạn thấy các lệnh tích hợp trong menu quay lại không hữu ích, bạn có thể tắt chúng và dùng các phím tự nhập.</string>
-     <string name="title_trackpad_sensitivity_x">Độ nhạy trackpad trục X</string>
-@@ -638,4 +638,31 @@
+@@ -638,4 +638,35 @@
      <!-- New Strings -->
      <string name="title_enable_commit_text">Bật nhập commit-text (vuốt/giọng nói)</string>
      <string name="summary_enable_commit_text">Chuyển tiếp văn bản nhiều ký tự từ bàn phím ảo (gõ vuốt, gợi ý, nhập giọng nói). Có thể gây lỗi với trò chơi yêu cầu nhập từng phím.</string>
--</resources>
-\ No newline at end of file
++    
++    
++    <!-- Multi Layout -->
++    <string name="title_pending_audio_duration">Cấu hình độ trễ âm thanh</string>
++    <string name="summary_pending_audio_duration">Điều chỉnh kích thước bộ đệm âm thanh. Giá trị thấp giảm độ trễ nhưng dễ gây rè tiếng.</string>
 +    
 +    <string name="game_menu_gamepad_layouts">Bố cục Virtual Gamepad</string>
 +    <string name="game_menu_keyboard_layouts">Bố cục Virtual Keyboard</string>
@@ -917,434 +1035,22 @@ index 2ae98a30..9e41c618 100755
 +    <string name="keyboard_layout_created">Đã tạo `"%s`"</string>
 +    <string name="keyboard_layout_renamed">Đã đổi tên thành `"%s`"</string>
 +    <string name="keyboard_layout_deleted">Đã xóa `"%s`"</string>
-+
-+</resources>
-diff --git a/app/src/main/res/values-zh-rCN/strings.xml b/app/src/main/res/values-zh-rCN/strings.xml
-index 1f74cb1d..0574ebd8 100755
---- a/app/src/main/res/values-zh-rCN/strings.xml
-+++ b/app/src/main/res/values-zh-rCN/strings.xml
-@@ -1,4 +1,4 @@
--<?xml version="1.0" encoding="utf-8"?>
-+﻿<?xml version="1.0" encoding="utf-8"?>
- <resources>
-     <!-- Shortcut strings -->
-     <string name="scut_deleted_pc"> 电脑已删除 </string>
-@@ -80,7 +80,7 @@
-     <string name="error_unknown_host"> 无法解析主机地址 </string>
-     <string name="error_404">GFE返回了HTTP 404 错误，确保你的电脑显卡支持串流。使用远程桌面软件同样会引起此错误，请尝试重启电脑或重装GFE。</string>
-     <string name="title_decoding_error"> 视频解码器崩溃 </string>
--    <string name="message_decoding_error">由于与该设备的视频解码器不兼容，Artemis 已崩溃。如果崩溃继续，请尝试调整串流设置。</string>
-+    <string name="message_decoding_error">由于与该设备的视频解码器不兼容，Cynix 已崩溃。如果崩溃继续，请尝试调整串流设置。</string>
-     <string name="title_decoding_reset"> 重置视频设置 </string>
-     <string name="message_decoding_reset"> 由于设备的视频解码器在你选择的串流设置上持续崩溃，已重置你的串流设置。 </string>
-     <string name="error_usb_prohibited"> 设备管理员已禁止USB访问。请检查您的Knox或MDM设置。 </string>
-@@ -181,7 +181,7 @@
-     <string name="title_checkbox_xb1_driver">Xbox 360/One/Nintendo Pro 手柄驱动 </string>
-     <string name="summary_checkbox_xb1_driver"> 为缺少原生Xbox/Nintendo Pro手柄支持的设备启用内置USB驱动 </string>
-     <string name="title_checkbox_usb_bind_all"> 覆盖安卓手柄支持 </string>
--    <string name="summary_checkbox_usb_bind_all"> 强制 Artemis 的USB驱动接管所有受支持的Xbox/Nintendo Pro手柄 </string>
-+    <string name="summary_checkbox_usb_bind_all"> 强制 Cynix 的USB驱动接管所有受支持的Xbox/Nintendo Pro手柄 </string>
-     <string name="title_checkbox_mouse_emulation"> 通过手柄模拟鼠标 </string>
-     <string name="summary_checkbox_mouse_emulation"> 长按开始键将手柄切换为鼠标模式 </string>
-     <string name="title_checkbox_remember_mouse_mode">记住鼠标模式</string>
-@@ -208,7 +208,7 @@
-     <string name="toast_reset_osc_success"> 屏幕按钮布局已经重置 </string>
-     <string name="category_ui_settings"> 界面设置 </string>
-     <string name="title_language_list"> 语言 </string>
--    <string name="summary_language_list"> 选择 Artemis 显示的语言 </string>
-+    <string name="summary_language_list"> 选择 Cynix 显示的语言 </string>
-     <string name="title_checkbox_small_icon_mode"> 使用小图标 </string>
-     <string name="summary_checkbox_small_icon_mode"> 使用小图标以在屏幕上显示更多项目 </string>
-     <string name="category_host_settings"> 主机设置 </string>
-@@ -231,16 +231,16 @@
-     <string name="dialog_title_osc_opacity">透明度</string>
-     <string name="suffix_osc_opacity">%</string>
-     <string name="summary_osc_opacity">令屏幕按钮变得更透明/更不透明</string>
--    <string name="nettest_text_failure">您设备的当前网络似乎正在阻止 Artemis 。连接到该网络时，可能无法通过互联网串流。
-+    <string name="nettest_text_failure">您设备的当前网络似乎正在阻止 Cynix 。连接到该网络时，可能无法通过互联网串流。
- \n
- \n以下网络端口被阻止：
- \n</string>
--    <string name="nettest_text_inconclusive">网络测试无法执行，因为无法连接到 Artemis 的连接测试服务器。检查您的互联网连接或稍后再试。</string>
--    <string name="nettest_text_success">您的网络似乎没有屏蔽 Artemis 。如果您仍然无法连接，请检查您的电脑的防火墙设置。
-+    <string name="nettest_text_inconclusive">网络测试无法执行，因为无法连接到 Cynix 的连接测试服务器。检查您的互联网连接或稍后再试。</string>
-+    <string name="nettest_text_success">您的网络似乎没有屏蔽 Cynix 。如果您仍然无法连接，请检查您的电脑的防火墙设置。
- \n
--\n如果您想通过互联网进行流媒体传输，请在您的电脑上安装 Artemis 互联网主机工具，并运行附带的互联网流媒体测试器来检查您的电脑的互联网连接。</string>
-+\n如果您想通过互联网进行流媒体传输，请在您的电脑上安装 Cynix 互联网主机工具，并运行附带的互联网流媒体测试器来检查您的电脑的互联网连接。</string>
-     <string name="nettest_title_done">网络测试完成</string>
--    <string name="nettest_text_waiting"> Artemis 正在测试你的网络连接，请确保所需端口没有被屏蔽。
-+    <string name="nettest_text_waiting"> Cynix 正在测试你的网络连接，请确保所需端口没有被屏蔽。
- \n
- \n这可能需要几秒钟……</string>
-     <string name="nettest_title_waiting">测试网络连接中</string>
-@@ -266,7 +266,7 @@
-     <string name="no_frame_received_error">您的网络连接质量不佳。请降低视频码率设置或更换更快的网络连接。</string>
-     <string name="no_video_received_error">没有接收到来自主机的视频。</string>
-     <string name="video_decoder_init_failed">视频解码器初始化失败。您的设备可能不支持选定的分辨率或帧数。</string>
--    <string name="nettest_text_blocked">您设备当前的网络连接拦截了 Artemis 。连接到该网络时可能无法通过互联网串流。</string>
-+    <string name="nettest_text_blocked">您设备当前的网络连接拦截了 Cynix 。连接到该网络时可能无法通过互联网串流。</string>
-     <string name="perf_overlay_netlatency">平均网络延迟： %1$d ms (抖动： %2$d ms)</string>
-     <string name="perf_overlay_streamdetails">视频流： %1$s %2$.2f FPS</string>
-     <string name="resolution_prefix_native_fullscreen">原生全屏</string>
-@@ -297,7 +297,7 @@
-     <string name="video_scale_mode_fill">填充</string>
-     <string name="video_scale_mode_stretch">拉伸</string>
-     <string name="title_privacy_policy">隐私政策</string>
--    <string name="summary_privacy_policy">查看  Artemis  隐私政策</string>
-+    <string name="summary_privacy_policy">查看  Cynix  隐私政策</string>
-     <string name="category_help">帮助</string>
-     <string name="title_setup_guide">安装向导</string>
-     <string name="title_troubleshooting">解决方案向导</string>
-@@ -351,8 +351,8 @@
-     <string name="error_code_prefix">错误代码:</string>
-     <string name="title_seekbar_vibrate_fallback_strength">调整模拟震动强度</string>
-     <string name="suffix_seekbar_vibrate_fallback_strength">％</string>
--    <string name="keyboard_service_label"> Artemis 物理键盘</string>
--    <string name="accessibility_description_text">此功能仅用于外接实体键盘时，某些系统存在特定的键盘快捷键，此情况会影响串流过程中，无法将相关按键指令传输给目标PC。            Artemis 不会观察您输入的文本，也不会收集您的密码、信用卡号或任何其他信息。</string>
-+    <string name="keyboard_service_label"> Cynix 物理键盘</string>
-+    <string name="accessibility_description_text">此功能仅用于外接实体键盘时，某些系统存在特定的键盘快捷键，此情况会影响串流过程中，无法将相关按键指令传输给目标PC。            Cynix 不会观察您输入的文本，也不会收集您的密码、信用卡号或任何其他信息。</string>
-     <string name="game_menu_toggle_keyboard">弹出软键盘</string>
-     <string name="game_menu_toggle_hud">(显示/隐藏)性能信息</string>
-     <string name="game_menu_toggle_floating_button">(显示/隐藏)悬浮按钮</string>
-@@ -462,7 +462,7 @@
-     <string name="title_touchpad_sensitivity_y">触控板灵敏度Y轴</string>
-     <string name="summary_touchpad_sensitivity_y">适用于鼠标触控板模式及虚拟特殊按键触控板控件；\n两者共用一个灵敏度数值，但是灵敏度表现可能不一样。\n有人两个一起用吗？</string>
-     <string name="title_device_rumble">强制使用设备本身的震动马达</string>
--    <string name="summary_device_rumble">你如果对连接的手柄本身震动效果不满意，可以开启此选项。\n对强制使用 Artemis 自带USB驱动无效。</string>
-+    <string name="summary_device_rumble">你如果对连接的手柄本身震动效果不满意，可以开启此选项。\n对强制使用 Cynix 自带USB驱动无效。</string>
-     <string name="title_clear_default_special_button">禁用默认的特殊按键指令</string>
-     <string name="summary_clear_default_special_button">如果你感觉返回菜单内置的指令对你没什么用的话，可以禁用，只使用自己导入的。</string>
-     <string name="title_import_special_button">导入自定义按键</string>
-@@ -471,7 +471,7 @@
-     <string name="title_software_update">软件更新</string>
-     <string name="summary_software_update">ClassicOldSong 黑月光修改版 - 访问 GitHub Release 以获取更新</string>
-     <string name="title_follow_update">订阅更新</string>
--    <string name="summary_follow_update">使用 Obtainium 订阅 Artemis 的更新</string>
-+    <string name="summary_follow_update">使用 Obtainium 订阅 Cynix 的更新</string>
-     <string name="title_special_key_layout">特殊按键布局</string>
-     <string name="title_show_virtual_key">屏幕显示虚拟按键</string>
-     <string name="summary_show_virtual_key">在触摸屏上显示一层虚拟特殊按键。\n按键透明度与上方选项中虚拟手柄共用。</string>
-@@ -617,9 +617,9 @@
-     <string name="summary_performance_link">查看其他设备的性能数据</string>
-     <string name="email_chooser_title">发送性能统计...</string>
-     <string name="toast_no_email_clients">找不到电子邮件客户端</string>
--    <string name="email_subject">Artemistics - 性能统计</string>
-+    <string name="email_subject">Cynixtics - 性能统计</string>
-     <string name="summary_share_performance_logs">与朋友或社区分享你的性能统计数据</string>
--    <string name="email_prefix_message">"\n        请按原样将此邮件发送至 artemistics.logs@gmail.com 以帮助社区。\n\n        您分享的性能数据将会帮助改进和扩充以下地址的统计数据：\n\n        https://tinyurl.com/artemis-performance\n\n\n    "</string>
-+    <string name="email_prefix_message">"\n        请按原样将此邮件发送至 Cynixtics.logs@gmail.com 以帮助社区。\n\n        您分享的性能数据将会帮助改进和扩充以下地址的统计数据：\n\n        https://tinyurl.com/Cynix-performance\n\n\n    "</string>
- 
-     <!-- Keyboard -->
-     <string name="keyboard_clear_all">清除全部</string>
-@@ -715,4 +715,30 @@
- 
-     <string name="title_checkbox_full_screen">启用全屏</string>
-     <string name="summary_checkbox_full_screen">使用沉浸模式隐藏系统状态栏</string>
--</resources>
-+
-+    <string name="game_menu_gamepad_layouts">手柄布局</string>
-+    <string name="game_menu_keyboard_layouts">键盘布局</string>
-+    <string name="gamepad_layout_toggle_gamepad">切换虚拟手柄</string>
-+    <string name="gamepad_layout_create">创建布局</string>
-+    <string name="gamepad_layout_duplicate">复制布局</string>
-+    <string name="gamepad_layout_rename">重命名布局</string>
-+    <string name="gamepad_layout_delete">删除布局</string>
-+    <string name="gamepad_layout_delete_confirm">确定要删除 `"%s`" 吗？</string>
-+    <string name="gamepad_layout_default_name">默认手柄</string>
-+    <string name="gamepad_layout_switched">已切换到 `"%s`"</string>
-+    <string name="gamepad_layout_created">已创建 `"%s`"</string>
-+    <string name="gamepad_layout_renamed">已重命名为 `"%s`"</string>
-+    <string name="gamepad_layout_deleted">已删除 `"%s`"</string>
-+    <string name="gamepad_layout_name_empty">布局名称不能为空</string>
-+
-+    <string name="keyboard_layout_toggle_keyboard">切换虚拟键盘</string>
-+    <string name="keyboard_layout_create">创建布局</string>
-+    <string name="keyboard_layout_duplicate">复制布局</string>
-+    <string name="keyboard_layout_rename">重命名布局</string>
-+    <string name="keyboard_layout_delete">删除布局</string>
-+    <string name="keyboard_layout_default_name">默认键盘</string>
-+    <string name="keyboard_layout_switched">已切换到 `"%s`"</string>
-+    <string name="keyboard_layout_created">已创建 `"%s`"</string>
-+    <string name="keyboard_layout_renamed">已重命名为 `"%s`"</string>
-+    <string name="keyboard_layout_deleted">已删除 `"%s`"</string>
-+</resources>
-\ No newline at end of file
-diff --git a/app/src/main/res/values-zh-rTW/strings.xml b/app/src/main/res/values-zh-rTW/strings.xml
-index 7ff089b2..a49d9b5f 100755
---- a/app/src/main/res/values-zh-rTW/strings.xml
-+++ b/app/src/main/res/values-zh-rTW/strings.xml
-@@ -1,4 +1,4 @@
--<?xml version="1.0" encoding="utf-8"?>
-+﻿<?xml version="1.0" encoding="utf-8"?>
- <resources>
-     <!-- Shortcut strings -->
- 	<string name="scut_deleted_pc">已刪除電腦</string>
-@@ -39,12 +39,12 @@
- 
- 	<!-- Network test strings -->
- 	<string name="nettest_title_waiting">正在測試網路連線</string>
--	<string name="nettest_text_waiting">Artemis 正在測試您的網路連線，以判斷是否有必要的連接埠被阻擋。\n\n這可能需要幾秒鐘…</string>
-+	<string name="nettest_text_waiting">Cynix 正在測試您的網路連線，以判斷是否有必要的連接埠被阻擋。\n\n這可能需要幾秒鐘…</string>
- 	<string name="nettest_title_done">網路測試完成</string>
--	<string name="nettest_text_success">您的網路似乎沒有阻擋 Artemis。如果您仍然無法連線，請檢查您電腦的防火牆設定。\n\n如果您嘗試透過網際網路進行串流，請在電腦上安裝 Artemis Internet Hosting Tool，並執行內建的 Internet Streaming Tester 以檢查網際網路連線。</string>
--	<string name="nettest_text_inconclusive">無法執行網路測試，因為無法連線至 Artemis 的測試伺服器。請檢查您的網際網路連線，或稍後再試。</string>
--	<string name="nettest_text_failure">您目前的網路連線似乎正在阻擋 Artemis。在此網路下，透過網際網路串流可能無法正常運作。\n\n以下連接埠被阻擋：\n</string>
--	<string name="nettest_text_blocked">您目前的網路連線正在阻擋 Artemis。在此網路下，透過網際網路串流可能無法正常運作。</string>
-+	<string name="nettest_text_success">您的網路似乎沒有阻擋 Cynix。如果您仍然無法連線，請檢查您電腦的防火牆設定。\n\n如果您嘗試透過網際網路進行串流，請在電腦上安裝 Cynix Internet Hosting Tool，並執行內建的 Internet Streaming Tester 以檢查網際網路連線。</string>
-+	<string name="nettest_text_inconclusive">無法執行網路測試，因為無法連線至 Cynix 的測試伺服器。請檢查您的網際網路連線，或稍後再試。</string>
-+	<string name="nettest_text_failure">您目前的網路連線似乎正在阻擋 Cynix。在此網路下，透過網際網路串流可能無法正常運作。\n\n以下連接埠被阻擋：\n</string>
-+	<string name="nettest_text_blocked">您目前的網路連線正在阻擋 Cynix。在此網路下，透過網際網路串流可能無法正常運作。</string>
- 
- 	<!-- Pair messages -->
- 	<string name="pairing">正在配對…</string>
-@@ -87,7 +87,7 @@
- 		使用遠端桌面軟體也可能導致此錯誤。請嘗試重新啟動電腦或重新安裝 GFE。
- 	</string>
- 	<string name="title_decoding_error">影片解碼器當機</string>
--	<string name="message_decoding_error">Artemis 因與此裝置的影片解碼器不相容而當機。如果當機持續發生，請嘗試調整串流設定。</string>
-+	<string name="message_decoding_error">Cynix 因與此裝置的影片解碼器不相容而當機。如果當機持續發生，請嘗試調整串流設定。</string>
- 	<string name="title_decoding_reset">影片設定已重設</string>
- 	<string name="message_decoding_reset">您的裝置影片解碼器在目前的串流設定下持續當機，串流設定已重設為預設值。</string>
- 	<string name="error_usb_prohibited">您的裝置管理員禁止存取 USB。請檢查 Knox 或 MDM 設定。</string>
-@@ -137,13 +137,13 @@
- 
- 	<!-- Performance Report Sharing -->
- 	<string name="email_prefix_message">
--		請將此電子郵件原樣發送至 artemistics.logs@gmail.com 以支持社群。\n
-+		請將此電子郵件原樣發送至 Cynixtics.logs@gmail.com 以支持社群。\n
- 		您分享的效能數據將有助於改善並擴充資料集，該資料集可在以下位置取得：\n
--		https://tinyurl.com/artemis-performance\n\n
-+		https://tinyurl.com/Cynix-performance\n\n
- 	</string>
- 
--	<string name="email_recipient">artemistics.logs@gmail.com</string>
--	<string name="email_subject">Artemistics - 效能日誌</string>
-+	<string name="email_recipient">Cynixtics.logs@gmail.com</string>
-+	<string name="email_subject">Cynixtics - 效能日誌</string>
- 	<string name="email_chooser_title">傳送效能日誌...</string>
- 	<string name="toast_no_email_clients">未安裝電子郵件用戶端。</string>
- 	<string name="toast_no_logs">尚未儲存任何效能數據。</string>
-@@ -233,7 +233,7 @@
- 	<string name="title_checkbox_xb1_driver">Xbox 360/One/Nintendo Pro USB 手把驅動程式</string>
- 	<string name="summary_checkbox_xb1_driver">為不具原生 Xbox/Nintendo Pro 支援的裝置啟用內建 USB 驅動程式</string>
- 	<string name="title_checkbox_usb_bind_all">覆寫原生 Xbox 手把支援</string>
--	<string name="summary_checkbox_usb_bind_all">即使裝置具備原生 Xbox/Nintendo Pro 支援，也對所有支援的手把使用 Artemis 的 USB 驅動程式</string>
-+	<string name="summary_checkbox_usb_bind_all">即使裝置具備原生 Xbox/Nintendo Pro 支援，也對所有支援的手把使用 Cynix 的 USB 驅動程式</string>
- 	<string name="title_checkbox_mouse_emulation">以手把模擬滑鼠</string>
- 	<string name="summary_checkbox_mouse_emulation">長按 Start 鍵可在手把模式與滑鼠模式間切換</string>
- 	<string name="title_checkbox_remember_mouse_mode">記住滑鼠模式</string>
-@@ -283,7 +283,7 @@
- 	<string name="title_checkbox_enable_pip">啟用子母畫面旁觀模式</string>
- 	<string name="summary_checkbox_enable_pip">允許在多工時觀看串流（不可控制）</string>
- 	<string name="title_language_list">語言</string>
--	<string name="summary_language_list">Artemis 使用的語言</string>
-+	<string name="summary_language_list">Cynix 使用的語言</string>
- 	<string name="title_checkbox_small_icon_mode">使用小型封面圖</string>
- 	<string name="summary_checkbox_small_icon_mode">在應用程式格狀檢視中使用較小封面圖，可在同一畫面顯示更多應用程式</string>
- 
-@@ -321,10 +321,10 @@
- 	<string name="title_troubleshooting">疑難排解指南</string>
- 	<string name="summary_troubleshooting">檢視診斷與修復常見串流問題的提示</string>
- 	<string name="title_privacy_policy">隱私權政策</string>
--	<string name="summary_privacy_policy">檢視 Artemis 的隱私權政策</string>
-+	<string name="summary_privacy_policy">檢視 Cynix 的隱私權政策</string>
- 	<string name="title_special_key_help">自訂按鍵說明</string>
- 	<string name="summary_special_key_help">有關如何設定自訂特殊按鍵的指引</string>
--	<string name="summary_performance_link">查看其他裝置的效能。\n請注意，這些資料由社群管理，非由 Artemis 官方管理，也不代表 Artemis 的官方立場。</string>
-+	<string name="summary_performance_link">查看其他裝置的效能。\n請注意，這些資料由社群管理，非由 Cynix 官方管理，也不代表 Cynix 的官方立場。</string>
- 	<string name="title_performance_link">效能儀表板</string>
- 
- 	<!-- Toasts -->
-@@ -362,8 +362,8 @@
- 	<string name="pacing_smoothness">優先最流暢影片（可能大幅增加延遲）</string>
- 
- 
--	<string name="keyboard_service_label">Artemis 實體鍵盤</string>
--	<string name="accessibility_description_text">僅在系統攔截實體鍵盤快捷鍵時使用。在某些系統中，部分快捷鍵已被 Android 系統定義並使用，導致無法傳遞至主機電腦。Artemis 不會檢視您的輸入，也不會收集您的密碼、信用卡號或任何其他私人資訊。</string>
-+	<string name="keyboard_service_label">Cynix 實體鍵盤</string>
-+	<string name="accessibility_description_text">僅在系統攔截實體鍵盤快捷鍵時使用。在某些系統中，部分快捷鍵已被 Android 系統定義並使用，導致無法傳遞至主機電腦。Cynix 不會檢視您的輸入，也不會收集您的密碼、信用卡號或任何其他私人資訊。</string>
- 
- 
- 	<!-- In Game menu -->
-@@ -491,10 +491,10 @@
- 	<string name="title_share_performance_logs_button">分享效能日誌</string>
- 
- 	<string name="title_software_update">軟體更新</string>
--	<string name="summary_software_update">Artemis Nior 版本（ClassicOldSong）－前往 GitHub Releases 取得最新版本</string>
-+	<string name="summary_software_update">Cynix Nior 版本（ClassicOldSong）－前往 GitHub Releases 取得最新版本</string>
- 
- 	<string name="title_follow_update">追蹤更新</string>
--	<string name="summary_follow_update">使用 Obtainium 追蹤 Artemis 更新</string>
-+	<string name="summary_follow_update">使用 Obtainium 追蹤 Cynix 更新</string>
- 
- 	<string name="title_special_key_layout">特殊按鍵佈局</string>
- 	<string name="title_show_virtual_key">在螢幕上顯示虛擬按鍵</string>
-@@ -556,7 +556,7 @@
- 	<string name="summary_touchpad_sensitivity_y">適用於滑鼠觸控板模式與虛擬特殊按鍵的觸控板控制；\n兩者共享一個靈敏度值，但實際表現可能不同。\n有人會同時用兩者嗎？</string>
- 
- 	<string name="title_device_rumble">強制使用裝置震動</string>
--	<string name="summary_device_rumble">若您對連接手把的震動不滿意，可啟用此選項。\n若強制使用 Artemis 內建 USB 驅動程式則無效</string>
-+	<string name="summary_device_rumble">若您對連接手把的震動不滿意，可啟用此選項。\n若強制使用 Cynix 內建 USB 驅動程式則無效</string>
- 
- 	<string name="title_clear_default_special_button">停用預設特殊按鍵</string>
- 	<string name="summary_clear_default_special_button">若覺得返回選單中的內建指令無用，可停用並改用您匯入的指令。</string>
-@@ -792,4 +792,30 @@
- 
- 	<string name="title_checkbox_full_screen">啟用全螢幕</string>
- 	<string name="summary_checkbox_full_screen">以沉浸模式隱藏系統列</string>
-+
-+	<string name="game_menu_gamepad_layouts">手把配置</string>
-+    <string name="game_menu_keyboard_layouts">鍵盤配置</string>
-+    <string name="gamepad_layout_toggle_gamepad">切換虛擬手把</string>
-+    <string name="gamepad_layout_create">建立配置</string>
-+    <string name="gamepad_layout_duplicate">複製配置</string>
-+    <string name="gamepad_layout_rename">重新命名配置</string>
-+    <string name="gamepad_layout_delete">刪除配置</string>
-+    <string name="gamepad_layout_delete_confirm">確定要刪除 `"%s`" 嗎？</string>
-+    <string name="gamepad_layout_default_name">預設手把</string>
-+    <string name="gamepad_layout_switched">已切換到 `"%s`"</string>
-+    <string name="gamepad_layout_created">已建立 `"%s`"</string>
-+    <string name="gamepad_layout_renamed">已重新命名為 `"%s`"</string>
-+    <string name="gamepad_layout_deleted">已刪除 `"%s`"</string>
-+    <string name="gamepad_layout_name_empty">配置名稱不能為空</string>
-+
-+    <string name="keyboard_layout_toggle_keyboard">切換虛擬鍵盤</string>
-+    <string name="keyboard_layout_create">建立配置</string>
-+    <string name="keyboard_layout_duplicate">複製配置</string>
-+    <string name="keyboard_layout_rename">重新命名配置</string>
-+    <string name="keyboard_layout_delete">刪除配置</string>
-+    <string name="keyboard_layout_default_name">預設鍵盤</string>
-+    <string name="keyboard_layout_switched">已切換到 `"%s`"</string>
-+    <string name="keyboard_layout_created">已建立 `"%s`"</string>
-+    <string name="keyboard_layout_renamed">已重新命名為 `"%s`"</string>
-+    <string name="keyboard_layout_deleted">已刪除 `"%s`"</string>
  </resources>
 \ No newline at end of file
 diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 95f64c92..156b4b90 100755
+index 95f64c92..ba9ff568 100755
 --- a/app/src/main/res/values/strings.xml
 +++ b/app/src/main/res/values/strings.xml
-@@ -1,4 +1,4 @@
--<?xml version="1.0" encoding="utf-8"?>
-+﻿<?xml version="1.0" encoding="utf-8"?>
- <resources>
-     <!-- Shortcut strings -->
-     <string name="scut_deleted_pc">PC deleted</string>
-@@ -39,12 +39,12 @@
- 
-     <!-- Network test strings -->
-     <string name="nettest_title_waiting">Testing Network Connection</string>
--    <string name="nettest_text_waiting">Artemis is testing your network connection to determine if any required ports are blocked.\n\nThis may take a few seconds…</string>
-+    <string name="nettest_text_waiting">Cynix is testing your network connection to determine if any required ports are blocked.\n\nThis may take a few seconds…</string>
-     <string name="nettest_title_done">Network Test Complete</string>
--    <string name="nettest_text_success">Your network does not appear to be blocking Artemis. If you still have trouble connecting, check your PC\'s firewall settings.\n\nIf you are trying to stream over the Internet, install the Artemis Internet Hosting Tool on your PC and run the included Internet Streaming Tester to check your PC\'s Internet connection.</string>
--    <string name="nettest_text_inconclusive">The network test could not be performed because none of Artemis\'s connection testing servers were reachable. Check your Internet connection or try again later.</string>
--    <string name="nettest_text_failure">Your device\'s current network connection seems to be blocking Artemis. Streaming over the Internet may not work while connected to this network.\n\nThe following network ports were blocked:\n</string>
--    <string name="nettest_text_blocked">Your device\'s current network connection is blocking Artemis. Streaming over the Internet may not work while connected to this network.</string>
-+    <string name="nettest_text_success">Your network does not appear to be blocking Cynix. If you still have trouble connecting, check your PC\'s firewall settings.\n\nIf you are trying to stream over the Internet, install the Cynix Internet Hosting Tool on your PC and run the included Internet Streaming Tester to check your PC\'s Internet connection.</string>
-+    <string name="nettest_text_inconclusive">The network test could not be performed because none of Cynix\'s connection testing servers were reachable. Check your Internet connection or try again later.</string>
-+    <string name="nettest_text_failure">Your device\'s current network connection seems to be blocking Cynix. Streaming over the Internet may not work while connected to this network.\n\nThe following network ports were blocked:\n</string>
-+    <string name="nettest_text_blocked">Your device\'s current network connection is blocking Cynix. Streaming over the Internet may not work while connected to this network.</string>
- 
-     <!-- Pair messages -->
-     <string name="pairing">Pairing…</string>
-@@ -87,7 +87,7 @@
- 	    Using remote desktop software can also cause this error. Try rebooting your machine or reinstalling GFE.
-     </string>
-     <string name="title_decoding_error">Video Decoder Crashed</string>
--    <string name="message_decoding_error">Artemis has crashed due to an incompatibility with this device\'s video decoder. Try adjusting the streaming settings if the crashes continue.</string>
-+    <string name="message_decoding_error">Cynix has crashed due to an incompatibility with this device\'s video decoder. Try adjusting the streaming settings if the crashes continue.</string>
-     <string name="title_decoding_reset">Video Settings Reset</string>
-     <string name="message_decoding_reset">Your device\'s video decoder continues to crash at your selected streaming settings. Your streaming settings have been reset to default.</string>
-     <string name="error_usb_prohibited">USB access is prohibited by your device administrator. Check your Knox or MDM settings.</string>
-@@ -137,13 +137,13 @@
- 
-     <!-- Performance Report Sharing -->
-     <string name="email_prefix_message">
--        Please send this email as-is to artemistics.logs@gmail.com to support the community.\n
-+        Please send this email as-is to Cynixtics.logs@gmail.com to support the community.\n
-         Your shared performance data will help improve and expand the dataset available at:\n
--        https://tinyurl.com/artemis-performance\n\n
-+        https://tinyurl.com/Cynix-performance\n\n
-     </string>
- 
--    <string name="email_recipient">artemistics.logs@gmail.com</string>
--    <string name="email_subject">Artemistics - Performance Log</string>
-+    <string name="email_recipient">Cynixtics.logs@gmail.com</string>
-+    <string name="email_subject">Cynixtics - Performance Log</string>
-     <string name="email_chooser_title">Send performance log...</string>
-     <string name="toast_no_email_clients">No email clients installed.</string>
-     <string name="toast_no_logs">There is no performance data stored yet.</string>
-@@ -233,7 +233,7 @@
-     <string name="title_checkbox_xb1_driver">Xbox 360/One/NintendoPro USB gamepad driver</string>
-     <string name="summary_checkbox_xb1_driver">Enables a built-in USB driver for devices without native Xbox/Nintendo Pro controller support</string>
-     <string name="title_checkbox_usb_bind_all">Override native Xbox gamepad support</string>
--    <string name="summary_checkbox_usb_bind_all">Use Artemis\'s USB driver for all supported gamepads, even if native Xbox/Nintendo Pro controller support is present</string>
-+    <string name="summary_checkbox_usb_bind_all">Use Cynix\'s USB driver for all supported gamepads, even if native Xbox/Nintendo Pro controller support is present</string>
-     <string name="title_checkbox_mouse_emulation">Mouse emulation via gamepad</string>
-     <string name="summary_checkbox_mouse_emulation">Long-press the Start button to toggle between gamepad and mouse mode</string>
-     <string name="title_checkbox_remember_mouse_mode">Remember mouse mode</string>
-@@ -283,7 +283,7 @@
-     <string name="title_checkbox_enable_pip">Enable Picture-in-Picture observer mode</string>
-     <string name="summary_checkbox_enable_pip">Allows the stream to be viewed (but not controlled) while multitasking</string>
-     <string name="title_language_list">Language</string>
--    <string name="summary_language_list">Language to use for Artemis</string>
-+    <string name="summary_language_list">Language to use for Cynix</string>
-     <string name="title_checkbox_small_icon_mode">Use small box art</string>
-     <string name="summary_checkbox_small_icon_mode">Smaller box art in the app grid allows more apps to be visible on screen</string>
- 
-@@ -321,10 +321,10 @@
-     <string name="title_troubleshooting">Troubleshooting guide</string>
-     <string name="summary_troubleshooting">View tips for diagnosing and fixing common streaming issues</string>
-     <string name="title_privacy_policy">Privacy policy</string>
--    <string name="summary_privacy_policy">View Artemis\'s privacy policy</string>
-+    <string name="summary_privacy_policy">View Cynix\'s privacy policy</string>
-     <string name="title_special_key_help">Custom Keys help</string>
-     <string name="summary_special_key_help">Instructions about how to setup custom special keys</string>
--    <string name="summary_performance_link">See performance of other devices.\nPlease note, these data are managed by the community, it is not managed by Artemis and does not represent Artemis officially.</string>
-+    <string name="summary_performance_link">See performance of other devices.\nPlease note, these data are managed by the community, it is not managed by Cynix and does not represent Cynix officially.</string>
-     <string name="title_performance_link">Performance Dashboard</string>
- 
-     <!-- Toasts -->
-@@ -362,8 +362,8 @@
-     <string name="pacing_smoothness">Prefer smoothest video (may significantly increase latency)</string>
- 
- 
--    <string name="keyboard_service_label">Artemis Physical keyboard</string>
--    <string name="accessibility_description_text">Only used when physical keyboard shortcut were intercepted by system. In some systems, several keyboard shortcut are defind and used by the Android system, causing them not being able to be passed through to the host PC. Artemis will not look through your input, nor collecting your password, credit card number or any other private information.</string>
-+    <string name="keyboard_service_label">Cynix Physical keyboard</string>
-+    <string name="accessibility_description_text">Only used when physical keyboard shortcut were intercepted by system. In some systems, several keyboard shortcut are defind and used by the Android system, causing them not being able to be passed through to the host PC. Cynix will not look through your input, nor collecting your password, credit card number or any other private information.</string>
- 
- 
-     <!-- In Game menu -->
-@@ -471,9 +471,9 @@
-     <string name="summary_share_performance_logs">Share your performance with friends or the community</string>
-     <string name="title_share_performance_logs_button">Share Performance Logs</string>
-     <string name="title_software_update">Software Update</string>
--    <string name="summary_software_update">Artemis Nior Version by ClassicOldSong - Visit GitHub Releases to get latest version</string>
-+    <string name="summary_software_update">Cynix Nior Version by ClassicOldSong - Visit GitHub Releases to get latest version</string>
-     <string name="title_follow_update">Follow Update</string>
--    <string name="summary_follow_update">Follow updates of Artemis with Obtainium</string>
-+    <string name="summary_follow_update">Follow updates of Cynix with Obtainium</string>
-     <string name="title_special_key_layout">Special Key Layout</string>
-     <string name="title_show_virtual_key">Display virtual keys on screen</string>
-     <string name="summary_show_virtual_key">Display a layer of virtual special keys on the touchscreen.\nKey opacity is shared with the virtual gamepad above.</string>
-@@ -522,7 +522,7 @@
-     <string name="title_touchpad_sensitivity_y">Touchpad Sensitivity Y Axis</string>
-     <string name="summary_touchpad_sensitivity_y">For mouse touchpad mode and virtual special button touchpad control;\nBoth share a sensitivity value, but the sensitivity performance may be different.\nDoes anyone use both together?</string>
-     <string name="title_device_rumble">Force vibration on device</string>
--    <string name="summary_device_rumble">If you are not satisfied with the vibration of the connected gamepad, you can enable this option.\nInvalid for forced use of Artemis\'s built-in USB driver</string>
-+    <string name="summary_device_rumble">If you are not satisfied with the vibration of the connected gamepad, you can enable this option.\nInvalid for forced use of Cynix\'s built-in USB driver</string>
-     <string name="title_clear_default_special_button">Disable default Special Keys</string>
-     <string name="summary_clear_default_special_button">If you feel the built-in commands in the Back Menu are useless, you can disable them and use your imported ones.</string>
-     <string name="title_trackpad_sensitivity_x">Trackpad Sensitivity X</string>
-@@ -729,4 +729,31 @@
+@@ -729,4 +729,35 @@
  
      <string name="title_checkbox_full_screen">Enable Full Screen</string>
      <string name="summary_checkbox_full_screen">Hide system bars with immersive mode</string>
 -</resources>
 +
++    <!-- Layout Management -->
++
++    <string name="title_pending_audio_duration">Pending audio duration</string>
++    <string name="summary_pending_audio_duration">Adjust the size of the audio buffer. Lower values reduce latency but increase the chance of crackling.</string>
 +    
 +    <string name="game_menu_gamepad_layouts">Gamepad Layouts</string>
 +    <string name="game_menu_keyboard_layouts">Keyboard Layouts</string>
@@ -1374,10 +1080,27 @@ index 95f64c92..156b4b90 100755
 +</resources>
 \ No newline at end of file
 diff --git a/app/src/main/res/xml/preferences.xml b/app/src/main/res/xml/preferences.xml
-index 5b009c89..d03bd91a 100755
+index 5b009c89..59488ca4 100755
 --- a/app/src/main/res/xml/preferences.xml
 +++ b/app/src/main/res/xml/preferences.xml
-@@ -1015,12 +1015,5 @@
+@@ -230,6 +230,16 @@
+             android:summary="@string/summary_audio_config_list"
+             android:title="@string/title_audio_config_list"
+             app:iconSpaceReserved="false" />
++        <com.limelight.preferences.SeekBarPreference
++            android:defaultValue="65"
++            android:key="seekbar_pending_audio_duration"
++            android:max="200"
++            android:summary="@string/summary_pending_audio_duration"
++            android:text="ms"
++            android:title="@string/title_pending_audio_duration"
++            app:iconSpaceReserved="false"
++            seekbar:min="20"
++            seekbar:step="1" />
+         <CheckBoxPreference
+             android:defaultValue="false"
+             android:key="checkbox_enable_audiofx"
+@@ -1015,12 +1025,5 @@
              android:summary="@string/summary_software_update"
              android:title="@string/title_software_update"
              app:iconSpaceReserved="false" />
@@ -1390,38 +1113,3 @@ index 5b009c89..d03bd91a 100755
 -            app:iconSpaceReserved="false" />
      </PreferenceCategory>
  </PreferenceScreen>
-diff --git a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
-index 53cbf68..a34d52c 100644
---- a/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
-+++ b/app/src/main/java/com/limelight/binding/audio/AndroidAudioRenderer.java
-@@ -128,12 +128,10 @@ public class AndroidAudioRenderer implements AudioRenderer {
-             switch (i) {
-                 case 0:
-                 case 2:
--                    bufferSize = bytesPerFrame * 2;
--                    break;
--
-                 case 1:
-                 case 3:
--                    // Try the larger buffer size
-+                    // Always use safe larger buffer size based on Android API recommendations
-+                    // Avoids extreme 10ms buffers causing CPU scheduler underruns (crackling)
-                     bufferSize = Math.max(AudioTrack.getMinBufferSize(sampleRate,
-                             channelConfig,
-                             AudioFormat.ENCODING_PCM_16BIT),
-@@ -187,11 +187,12 @@ public class AndroidAudioRenderer implements AudioRenderer {
- 
-     @Override
-     public void playDecodedAudio(short[] audioData) {
--        // Only queue up to 40 ms of pending audio data in addition to what AudioTrack is buffering for us.
--        if (MoonBridge.getPendingAudioDuration() < 40) {
-+        // Queue up to 65 ms of pending audio data in addition to what AudioTrack is buffering for us.
-+        // 40ms is too aggressive and causes audio dropouts (crackling) with variable network pacing.
-+        if (MoonBridge.getPendingAudioDuration() < 65) {
-             // This will block until the write is completed. That can cause a backlog
-             // of pending audio data, so we do the above check to be able to bound
--            // latency at 40 ms in that situation.
-+            // latency at 65 ms in that situation.
-             track.write(audioData, 0, audioData.length);
-         }
-         else {
