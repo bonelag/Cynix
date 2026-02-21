@@ -185,12 +185,13 @@ public class AndroidAudioRenderer implements AudioRenderer {
 
     @Override
     public void playDecodedAudio(short[] audioData) {
-        // Queue up to 100 ms of pending audio data in addition to what AudioTrack is buffering for us.
+        // Queue up to 60 ms of pending audio data in addition to what AudioTrack is buffering for us.
         // 40ms is too aggressive and causes audio dropouts (crackling) with variable network pacing.
-        if (MoonBridge.getPendingAudioDuration() < 100) {
+        // 60ms provides a good balance between low latency and preventing buffer underruns.
+        if (MoonBridge.getPendingAudioDuration() < 60) {
             // This will block until the write is completed. That can cause a backlog
             // of pending audio data, so we do the above check to be able to bound
-            // latency at 100 ms in that situation.
+            // latency at 60 ms in that situation.
             track.write(audioData, 0, audioData.length);
         }
         else {
