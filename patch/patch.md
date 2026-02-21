@@ -66,9 +66,9 @@ Các class này đảm nhận toàn bộ các thao tác: Create, Rename, Duplica
 - Trong sub-menu sẽ render Dynamic List các layout đang có (đọc từ Manager). Bên cạnh là nút để toggle hiển thị on-screen, thêm nút (+) để Tạo mới, và các Options Copy/Rename/Trashing cho mỗi layout đã chọn.
 
 ### Bước 6: String Resources (Đa Ngôn Ngữ)
-- Trong `change.patch`, có hỗ trợ các string resource cho English, Vietnamese, Chinese, French, v.v.
-- Các String dùng cho Label/Alerts/Toast như "Create New Layout", "Rename Layout", v.v... cần được bổ sung vào `app/src/main/res/values/strings.xml` và các locale tương ứng.
-
+- Trong `change.patch`, có hỗ trợ các string resource cho English, Vietnamese
+- Các String dùng cho Label/Alerts/Toast như "Create New Layout", "Rename Layout", v.v... cần được bổ sung vào `app/src/main/res/values/strings.xml` và cho Vietnamese
+- Chỉ cần áp dụng string cho English và Vietnamese
 ---
 
 > **Làm thế nào để áp dụng nếu gặp lỗi? (Conflict Resolution)**
