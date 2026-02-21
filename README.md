@@ -46,7 +46,7 @@ If you switch back to the main stream version, you'll be missing the following a
 29. Server Command integration with [Apollo](https://github.com/ClassicOldSong/Apollo)
 30. Clipboard sync (requires Apollo)
 31. SBS 3D for external Displays (Using AI MiDaS v2 Lite)
-
+32. Multi layout for Virtual Gamepad and Virtual Keyboard
 # Disclaimer
 
 This is the `go away` version of Moonlight Android.
