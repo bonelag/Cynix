@@ -31,6 +31,7 @@ import com.limelight.R;
 import com.limelight.binding.input.ControllerHandler;
 import com.limelight.nvstream.NvConnection;
 import com.limelight.preferences.PreferenceConfiguration;
+import com.limelight.binding.input.virtual_controller.VirtualControllerElement;
 import com.limelight.utils.KeyConfigHelper;
 import com.limelight.utils.KeyMapper;
 
@@ -302,7 +303,23 @@ public class KeyBoardController {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
         layoutParams.setMargins(x, y, 0, 0);
 
-        frame_layout.addView(element, layoutParams);
+        if (element instanceof KeyBoardFreeLookArea) {
+            // Đẩy Free Look Area xuống dưới cùng CỦA STACK BUTTONS, nhưng phải TRÊN hình ảnh game.
+            // Android FrameLayout dispatch touch từ index CAO → THẤP (cuối → đầu).
+            // Vì vậy chèn FreeLookArea TRƯỚC nút keyboard đầu tiên (index thấp hơn)
+            // → các nút keyboard luôn nhận touch TRƯỚC FreeLookArea.
+            int insertIndex = frame_layout.getChildCount();
+            for (int i = 0; i < frame_layout.getChildCount(); i++) {
+                if (frame_layout.getChildAt(i) instanceof keyBoardVirtualControllerElement
+                        && !(frame_layout.getChildAt(i) instanceof KeyBoardFreeLookArea)) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            frame_layout.addView(element, insertIndex, layoutParams);
+        } else {
+            frame_layout.addView(element, layoutParams);
+        }
     }
 
     public List<keyBoardVirtualControllerElement> getElements() {
@@ -649,17 +666,25 @@ public class KeyBoardController {
                                 String name = obj.getString("name");
                                 int code = obj.getInt("code");
 
-                                if (elementId.equals("m_9") || elementId.equals("m_10") || elementId.equals("m_11")) {
+                                if (code == 12) {
+                                    // Code 12 is designated for Free Look Area
+                                    elementSize = (int)(w * 4.0); // Make it large by default
+                                    position = findNonOverlappingPosition(existingPositions, elementSize);
+                                    newElement = KeyBoardControllerConfigurationLoader.createFreeLookArea(
+                                        elementId, this, context);
+                                    addElement(newElement, position.x, position.y, elementSize, elementSize);
+                                } else if (elementId.equals("m_9") || elementId.equals("m_10") || elementId.equals("m_11")) {
                                     newElement = KeyBoardControllerConfigurationLoader.createDigitalTouchButton(
                                         elementId, code, type, 1, name, -1, this, context);
+                                    addElement(newElement, position.x, position.y, w, w);
                                 } else {
                                     newElement = KeyBoardControllerConfigurationLoader.createDigitalButton(
                                         elementId, code, type, 1, name, -1, 
                                         PreferenceConfiguration.readPreferences(context).stickyModifierKey && 
                                         KeyBoardControllerConfigurationLoader.isModifierKey(code), 
                                         this, context);
+                                    addElement(newElement, position.x, position.y, w, w);
                                 }
-                                addElement(newElement, position.x, position.y, w, w);
                             }
                             
                             // Add the new element's position to the existing positions list

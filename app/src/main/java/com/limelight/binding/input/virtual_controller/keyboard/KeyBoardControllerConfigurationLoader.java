@@ -348,6 +348,20 @@ public class KeyBoardControllerConfigurationLoader {
         return button;
     }
 
+    public static KeyBoardFreeLookArea createFreeLookArea(
+            final String elementId,
+            final KeyBoardController controller,
+            final Context context) {
+        KeyBoardFreeLookArea area = new KeyBoardFreeLookArea(controller, elementId, context);
+        area.setListener(new KeyBoardFreeLookArea.FreeLookListener() {
+            @Override
+            public void onMove(int deltaX, int deltaY) {
+                controller.sendMouseMove(deltaX, deltaY);
+            }
+        });
+        return area;
+    }
+
     public static void createDefaultLayout(final KeyBoardController controller, final Context context, final NvConnection conn) {
 
         DisplayMetrics screen = context.getResources().getDisplayMetrics();
@@ -466,7 +480,12 @@ public class KeyBoardControllerConfigurationLoader {
 
                 int y = screenScale(BUTTON_SIZE + lastIndex * BUTTON_SIZE, height);
 
-                if (TextUtils.equals("m_9", elementId) || TextUtils.equals("m_10", elementId) || TextUtils.equals("m_11", elementId)) {
+                if (code == 12) {
+                    controller.addElement(createFreeLookArea(elementId, controller, context),
+                            x, y,
+                            w * 3, w * 3 // Make it larger
+                    );
+                } else if (TextUtils.equals("m_9", elementId) || TextUtils.equals("m_10", elementId) || TextUtils.equals("m_11", elementId)) {
                     controller.addElement(createDigitalTouchButton(elementId, code, type, 1, name, -1, controller, context),
                             x, y,
                             w, w

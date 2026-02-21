@@ -57,8 +57,12 @@
         "name": "TP(L)",
         "code": 11,
         "desc": "一直按着左键不放~"
+      },
+      {
+        "name": "Free Look Area",
+        "code": 12,
+        "desc": "Vùng vuốt tàng hình cho Camera FPS"
       }
-
     ],
     "keystroke": [
       {
