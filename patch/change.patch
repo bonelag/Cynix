@@ -1,5 +1,5 @@
 diff --git a/app/build.gradle b/app/build.gradle
-index 3a3494f0..63d5ad1f 100644
+index 3a3494f0..ca7e70c2 100644
 --- a/app/build.gradle
 +++ b/app/build.gradle
 @@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
@@ -18,7 +18,7 @@ index 3a3494f0..63d5ad1f 100644
 -        versionName "20.2.6"
 -        versionCode = 57
 +        versionName "20.3.0"
-+        versionCode = 50
++        versionCode = 51
  
          // Generate native debug symbols to allow Google Play to symbolicate our native crashes
          ndk.debugSymbolLevel = 'FULL'
@@ -177,6 +177,24 @@ index 3a3494f0..63d5ad1f 100644
 -}
 +}
 \ No newline at end of file
+diff --git a/app/src/main/assets/config/keyboard.json b/app/src/main/assets/config/keyboard.json
+index eebfe171..e201c6f5 100755
+--- a/app/src/main/assets/config/keyboard.json
++++ b/app/src/main/assets/config/keyboard.json
+@@ -57,8 +57,12 @@
+         "name": "TP(L)",
+         "code": 11,
+         "desc": "一直按着左键不放~"
++      },
++      {
++        "name": "Free Look Area",
++        "code": 12,
++        "desc": "Vùng vuốt tàng hình cho Camera FPS"
+       }
+-
+     ],
+     "keystroke": [
+       {
 diff --git a/app/src/main/java/com/limelight/Game.java b/app/src/main/java/com/limelight/Game.java
 index 992fc00a..c320554f 100755
 --- a/app/src/main/java/com/limelight/Game.java
@@ -759,10 +777,18 @@ index e543ed1f..9fb48d3e 100755
          for (VirtualControllerElement element : controller.getElements()) {
              String prefKey = ""+element.elementId;
 diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
-index 37726a27..e713ce62 100755
+index 37726a27..b5f16319 100755
 --- a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
 +++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardController.java
-@@ -68,6 +68,8 @@ public class KeyBoardController {
+@@ -31,6 +31,7 @@ import com.limelight.R;
+ import com.limelight.binding.input.ControllerHandler;
+ import com.limelight.nvstream.NvConnection;
+ import com.limelight.preferences.PreferenceConfiguration;
++import com.limelight.binding.input.virtual_controller.VirtualControllerElement;
+ import com.limelight.utils.KeyConfigHelper;
+ import com.limelight.utils.KeyMapper;
+ 
+@@ -68,6 +69,8 @@ public class KeyBoardController {
  
      ControllerMode currentMode = ControllerMode.Active;
  
@@ -771,7 +797,7 @@ index 37726a27..e713ce62 100755
      private Map<Integer, Runnable> keyEventRunnableMap = new HashMap<>();
  
      private Button buttonConfigure = null;
-@@ -174,7 +176,7 @@ public class KeyBoardController {
+@@ -174,7 +177,7 @@ public class KeyBoardController {
                      message = context.getString(R.string.configuration_mode_resize_buttons);
                  } else {
                      currentMode = ControllerMode.Active;
@@ -780,7 +806,7 @@ index 37726a27..e713ce62 100755
                      message = context.getString(R.string.configuration_mode_exiting);
                  }
  
-@@ -205,7 +207,7 @@ public class KeyBoardController {
+@@ -205,7 +208,7 @@ public class KeyBoardController {
                      element.setVisibility(View.GONE);
                  }
                  // Save the new state
@@ -789,7 +815,32 @@ index 37726a27..e713ce62 100755
                  vibrate(KeyEvent.ACTION_DOWN);
              });
              builder.setNegativeButton(context.getString(R.string.no), null);
-@@ -313,6 +315,14 @@ public class KeyBoardController {
+@@ -300,7 +303,23 @@ public class KeyBoardController {
+         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
+         layoutParams.setMargins(x, y, 0, 0);
+ 
+-        frame_layout.addView(element, layoutParams);
++        if (element instanceof KeyBoardFreeLookArea) {
++            // Đẩy Free Look Area xuống dưới cùng CỦA STACK BUTTONS, nhưng phải TRÊN hình ảnh game.
++            // Android FrameLayout dispatch touch từ index CAO → THẤP (cuối → đầu).
++            // Vì vậy chèn FreeLookArea TRƯỚC nút keyboard đầu tiên (index thấp hơn)
++            // → các nút keyboard luôn nhận touch TRƯỚC FreeLookArea.
++            int insertIndex = frame_layout.getChildCount();
++            for (int i = 0; i < frame_layout.getChildCount(); i++) {
++                if (frame_layout.getChildAt(i) instanceof keyBoardVirtualControllerElement
++                        && !(frame_layout.getChildAt(i) instanceof KeyBoardFreeLookArea)) {
++                    insertIndex = i;
++                    break;
++                }
++            }
++            frame_layout.addView(element, insertIndex, layoutParams);
++        } else {
++            frame_layout.addView(element, layoutParams);
++        }
+     }
+ 
+     public List<keyBoardVirtualControllerElement> getElements() {
+@@ -313,6 +332,14 @@ public class KeyBoardController {
          }
      }
  
@@ -804,7 +855,7 @@ index 37726a27..e713ce62 100755
      public void refreshLayout() {
          removeElements();
  
-@@ -356,7 +366,7 @@ public class KeyBoardController {
+@@ -356,7 +383,7 @@ public class KeyBoardController {
  
          // Apply default layout
          KeyBoardControllerConfigurationLoader.createDefaultLayout(this, context, conn);
@@ -813,7 +864,35 @@ index 37726a27..e713ce62 100755
      }
  
      public ControllerMode getControllerMode() {
-@@ -675,7 +685,7 @@ public class KeyBoardController {
+@@ -639,17 +666,25 @@ public class KeyBoardController {
+                                 String name = obj.getString("name");
+                                 int code = obj.getInt("code");
+ 
+-                                if (elementId.equals("m_9") || elementId.equals("m_10") || elementId.equals("m_11")) {
++                                if (code == 12) {
++                                    // Code 12 is designated for Free Look Area
++                                    elementSize = (int)(w * 4.0); // Make it large by default
++                                    position = findNonOverlappingPosition(existingPositions, elementSize);
++                                    newElement = KeyBoardControllerConfigurationLoader.createFreeLookArea(
++                                        elementId, this, context);
++                                    addElement(newElement, position.x, position.y, elementSize, elementSize);
++                                } else if (elementId.equals("m_9") || elementId.equals("m_10") || elementId.equals("m_11")) {
+                                     newElement = KeyBoardControllerConfigurationLoader.createDigitalTouchButton(
+                                         elementId, code, type, 1, name, -1, this, context);
++                                    addElement(newElement, position.x, position.y, w, w);
+                                 } else {
+                                     newElement = KeyBoardControllerConfigurationLoader.createDigitalButton(
+                                         elementId, code, type, 1, name, -1, 
+                                         PreferenceConfiguration.readPreferences(context).stickyModifierKey && 
+                                         KeyBoardControllerConfigurationLoader.isModifierKey(code), 
+                                         this, context);
++                                    addElement(newElement, position.x, position.y, w, w);
+                                 }
+-                                addElement(newElement, position.x, position.y, w, w);
+                             }
+                             
+                             // Add the new element's position to the existing positions list
+@@ -675,7 +710,7 @@ public class KeyBoardController {
                  // Build feedback message
                  StringBuilder feedback = new StringBuilder();
                  if (elementsAdded > 0) {
@@ -823,7 +902,7 @@ index 37726a27..e713ce62 100755
                  }
                  if (duplicatesFound > 0) {
 diff --git a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
-index 760352d7..c9e1bd42 100755
+index 760352d7..f166cbeb 100755
 --- a/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
 +++ b/app/src/main/java/com/limelight/binding/input/virtual_controller/keyboard/KeyBoardControllerConfigurationLoader.java
 @@ -315,7 +315,7 @@ public class KeyBoardControllerConfigurationLoader {
@@ -835,7 +914,42 @@ index 760352d7..c9e1bd42 100755
          button.setIcon(icon);
          button.addDigitalButtonListener(new KeyBoardTouchPadButton.DigitalButtonListener() {
              @Override
-@@ -550,10 +550,9 @@ public class KeyBoardControllerConfigurationLoader {
+@@ -348,6 +348,20 @@ public class KeyBoardControllerConfigurationLoader {
+         return button;
+     }
+ 
++    public static KeyBoardFreeLookArea createFreeLookArea(
++            final String elementId,
++            final KeyBoardController controller,
++            final Context context) {
++        KeyBoardFreeLookArea area = new KeyBoardFreeLookArea(controller, elementId, context);
++        area.setListener(new KeyBoardFreeLookArea.FreeLookListener() {
++            @Override
++            public void onMove(int deltaX, int deltaY) {
++                controller.sendMouseMove(deltaX, deltaY);
++            }
++        });
++        return area;
++    }
++
+     public static void createDefaultLayout(final KeyBoardController controller, final Context context, final NvConnection conn) {
+ 
+         DisplayMetrics screen = context.getResources().getDisplayMetrics();
+@@ -466,7 +480,12 @@ public class KeyBoardControllerConfigurationLoader {
+ 
+                 int y = screenScale(BUTTON_SIZE + lastIndex * BUTTON_SIZE, height);
+ 
+-                if (TextUtils.equals("m_9", elementId) || TextUtils.equals("m_10", elementId) || TextUtils.equals("m_11", elementId)) {
++                if (code == 12) {
++                    controller.addElement(createFreeLookArea(elementId, controller, context),
++                            x, y,
++                            w * 3, w * 3 // Make it larger
++                    );
++                } else if (TextUtils.equals("m_9", elementId) || TextUtils.equals("m_10", elementId) || TextUtils.equals("m_11", elementId)) {
+                     controller.addElement(createDigitalTouchButton(elementId, code, type, 1, name, -1, controller, context),
+                             x, y,
+                             w, w
+@@ -550,10 +569,9 @@ public class KeyBoardControllerConfigurationLoader {
      }
  
      public static void saveProfile(final KeyBoardController controller,
@@ -849,7 +963,7 @@ index 760352d7..c9e1bd42 100755
  
          for (keyBoardVirtualControllerElement element : controller.getElements()) {
              String prefKey = "" + element.elementId;
-@@ -566,10 +565,9 @@ public class KeyBoardControllerConfigurationLoader {
+@@ -566,10 +584,9 @@ public class KeyBoardControllerConfigurationLoader {
          prefEditor.apply();
      }
  
