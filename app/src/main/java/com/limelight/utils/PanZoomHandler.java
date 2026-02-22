@@ -5,6 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.limelight.Game;
 import com.limelight.LimeLog;
@@ -20,6 +21,7 @@ public class PanZoomHandler {
     private final ScaleGestureDetector scaleGestureDetector;
     private final GestureDetector gestureDetector;
     private View parent;
+    private View screenParent; // parent-of-parent, represents the full screen area
     private float scaleFactor = 1.0f;
     private float childX, childY = 0;
     private float parentWidth, parentHeight = 0;
@@ -37,6 +39,26 @@ public class PanZoomHandler {
         // Everything gets easier with 0,0 as the pivot point
         streamView.setPivotX(0);
         streamView.setPivotY(0);
+
+        // Allow zoomed content to overflow container bounds and fill black bars
+        disableClipOnParentChain(parent);
+    }
+
+    /**
+     * Disables clipping on the parent and grandparent so the zoomed stream
+     * can render beyond the container bounds into the black bar areas.
+     */
+    private void disableClipOnParentChain(View view) {
+        if (view instanceof ViewGroup) {
+            ((ViewGroup) view).setClipChildren(false);
+            ((ViewGroup) view).setClipToPadding(false);
+        }
+        if (view.getParent() instanceof ViewGroup) {
+            ViewGroup grandParent = (ViewGroup) view.getParent();
+            grandParent.setClipChildren(false);
+            grandParent.setClipToPadding(false);
+            this.screenParent = grandParent;
+        }
     }
 
     public void handleTouchEvent(MotionEvent motionEvent) {
@@ -51,25 +73,52 @@ public class PanZoomHandler {
         parentHeight = parent.getHeight();
     }
 
+    /**
+     * Returns the screen-level width for overflow bounds.
+     * When zoomed, the stream can expand into the black bar area.
+     */
+    private float getScreenWidth() {
+        return (screenParent != null && screenParent.getWidth() > 0)
+                ? screenParent.getWidth() : parentWidth;
+    }
+
+    private float getScreenHeight() {
+        return (screenParent != null && screenParent.getHeight() > 0)
+                ? screenParent.getHeight() : parentHeight;
+    }
+
     private void constrainToBounds() {
         updateDimensions();
 
-        if (parentWidth >= childWidth) {
+        float screenW = getScreenWidth();
+        float screenH = getScreenHeight();
+
+        // Offset of the stream container within the screen
+        float offsetX = (screenW - parentWidth) / 2f;
+        float offsetY = isTopMode ? 0 : (screenH - parentHeight) / 2f;
+
+        // X axis: use screen bounds so zoomed content can fill black bars
+        if (screenW >= childWidth) {
+            // Child smaller than screen → center within parent (original behavior)
             childX = (parentWidth - childWidth) / 2;
         } else {
-            float boundaryX = parentWidth - childWidth;
-            childX = Math.max(boundaryX, Math.min(childX, 0));
+            // Child larger than screen → keep edges within screen bounds
+            float maxX = offsetX;
+            float minX = screenW - offsetX - childWidth;
+            childX = Math.max(minX, Math.min(childX, maxX));
         }
 
-        if (parentHeight >= childHeight) {
+        // Y axis
+        if (screenH >= childHeight) {
             if (isTopMode) {
                 childY = 0;
             } else {
                 childY = (parentHeight - childHeight) / 2;
             }
         } else {
-            float boundaryY = parentHeight - childHeight;
-            childY = Math.max(boundaryY, Math.min(childY, 0));
+            float maxY = offsetY;
+            float minY = screenH - offsetY - childHeight;
+            childY = Math.max(minY, Math.min(childY, maxY));
         }
 
         streamView.setX(childX);
@@ -80,6 +129,7 @@ public class PanZoomHandler {
         if (childWidth == 0 || parent == null) {
             // Retrieve parent, should handle both built-in display and external display
             parent = (View)streamView.getParent();
+            disableClipOnParentChain(parent);
             return;
         }
 
