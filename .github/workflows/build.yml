@@ -22,7 +22,7 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        distribution: 'zulu'
+        distribution: zulu
         java-version: '17'
 
     - name: Set up Android SDK
@@ -44,22 +44,26 @@ jobs:
 
     - name: Get versionName and rename APK
       id: get_version
+      shell: bash
       run: |
         VERSION=$(grep 'versionName' app/build.gradle | head -1 | sed 's/.*versionName "\(.*\)"/\1/')
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
-        echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
         APK_DIR="app/build/outputs/apk/nonRoot_game/release"
-        
+        echo "apk_dir=$APK_DIR" >> "$GITHUB_OUTPUT"
+
         for apk in "$APK_DIR"/app-nonRoot_game-*-release.apk; do
           if [ -f "$apk" ]; then
             ABI=$(basename "$apk" | sed 's/app-nonRoot_game-\(.*\)-release.apk/\1/')
             NEW_NAME="Cynix_${VERSION}_${ABI}.apk"
             cp "$apk" "$APK_DIR/$NEW_NAME"
-            echo "Renamed $(basename "$apk") to $NEW_NAME"
+            echo "Renamed $(basename "$apk") -> $NEW_NAME"
           fi
         done
-        
-        echo "apk_dir=$APK_DIR" >> $GITHUB_OUTPUT
+
+        echo "Final APKs:"
+        ls -lh "$APK_DIR"/Cynix_*.apk || true
 
     - name: Upload APK (GitHub Release)
       if: github.event_name == 'release'
@@ -69,12 +73,37 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload APK to GitHub Actions Artifacts (backup)
+    - name: Upload arm64-v8a APK artifact (backup)
       if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
       uses: actions/upload-artifact@v4
       with:
-        name: APK-Build-${{ steps.get_version.outputs.version }}
-        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_*.apk
+        name: Cynix_${{ steps.get_version.outputs.version }}_arm64-v8a.apk
+        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_${{ steps.get_version.outputs.version }}_arm64-v8a.apk
+        if-no-files-found: ignore
+
+    - name: Upload armeabi-v7a APK artifact (backup)
+      if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Cynix_${{ steps.get_version.outputs.version }}_armeabi-v7a.apk
+        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_${{ steps.get_version.outputs.version }}_armeabi-v7a.apk
+        if-no-files-found: ignore
+
+    - name: Upload x86 APK artifact (backup)
+      if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Cynix_${{ steps.get_version.outputs.version }}_x86.apk
+        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_${{ steps.get_version.outputs.version }}_x86.apk
+        if-no-files-found: ignore
+
+    - name: Upload x86_64 APK artifact (backup)
+      if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Cynix_${{ steps.get_version.outputs.version }}_x86_64.apk
+        path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_${{ steps.get_version.outputs.version }}_x86_64.apk
+        if-no-files-found: ignore
 
     - name: Check and update existing release
       if: github.event_name == 'workflow_dispatch'
@@ -83,13 +112,14 @@ jobs:
         TAG: ${{ steps.get_version.outputs.tag }}
         VERSION: ${{ steps.get_version.outputs.version }}
         APK_DIR: ${{ steps.get_version.outputs.apk_dir }}
+      shell: bash
       run: |
-        # Check if release with this tag exists
         RELEASE_ID=$(gh release view "$TAG" --json id --jq '.id' 2>/dev/null || echo "")
 
         if [ -n "$RELEASE_ID" ]; then
           echo "Release $TAG already exists. Replacing APK assets..."
           for apk in "$APK_DIR"/Cynix_*.apk; do
+            [ -f "$apk" ] || continue
             APK_NAME=$(basename "$apk")
             gh release delete-asset "$TAG" "$APK_NAME" --yes 2>/dev/null || true
             gh release upload "$TAG" "$apk" --clobber
