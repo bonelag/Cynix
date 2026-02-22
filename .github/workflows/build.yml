@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       run_name:
-        description: 'Run name (leave empty = use workflow name)'
+        description: 'Run name (can be empty)'
         required: false
         default: ''
         type: string
