@@ -78,6 +78,7 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
 
         Context context = getContext();
         LayoutParams childParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        childParams.gravity = android.view.Gravity.CENTER;
 
         // Always craete a surface view as a Workaround for the sizing issue of GLSurfaceView
         mSurfaceView = new SurfaceView(context);
@@ -143,7 +144,7 @@ public class StreamContainer extends FrameLayout implements SurfaceHolder.Callba
             }
         }
 
-        setMeasuredDimension(measuredWidth, measuredHeight);
+        setMeasuredDimension(widthSize, heightSize);
         int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY);
         int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY);
         measureChildren(childWidthMeasureSpec, childHeightMeasureSpec);
