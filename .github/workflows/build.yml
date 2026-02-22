@@ -1,4 +1,5 @@
 name: Build & Upload APK
+run-name: ${{ github.event_name == 'workflow_dispatch' && (inputs.run_name != '' && inputs.run_name || github.workflow) || github.workflow }}
 
 on:
   push:
@@ -7,6 +8,12 @@ on:
   release:
     types: [created]
   workflow_dispatch:
+    inputs:
+      run_name:
+        description: 'Run name (leave empty = use workflow name)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   build:
