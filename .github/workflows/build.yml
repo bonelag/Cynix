@@ -61,7 +61,7 @@ jobs:
         
         echo "apk_dir=$APK_DIR" >> $GITHUB_OUTPUT
 
-    - name: Upload APK (Artifact or GitHub Release)
+    - name: Upload APK (GitHub Release)
       if: github.event_name == 'release'
       uses: softprops/action-gh-release@v2
       with:
@@ -69,11 +69,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload APK to GitHub Actions Artifacts
-      if: github.event_name == 'push'
+    - name: Upload APK to GitHub Actions Artifacts (backup)
+      if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
       uses: actions/upload-artifact@v4
       with:
-        name: APK-Build
+        name: APK-Build-${{ steps.get_version.outputs.version }}
         path: ${{ steps.get_version.outputs.apk_dir }}/Cynix_*.apk
 
     - name: Check and update existing release
