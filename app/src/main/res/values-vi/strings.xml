@@ -669,4 +669,11 @@
     <string name="keyboard_layout_created">Đã tạo `"%s`"</string>
     <string name="keyboard_layout_renamed">Đã đổi tên thành `"%s`"</string>
     <string name="keyboard_layout_deleted">Đã xóa `"%s`"</string>
+
+    <!-- Quick Actions -->
+    <string name="title_floating_quick_actions">Ấn giữ để dùng nhanh tính năng</string>
+    <string name="summary_floating_quick_actions">Nhấn giữ nút nổi để nhanh chóng bật/tắt gamepad, bàn phím đặc biệt hoặc bàn phím đầy đủ</string>
+    <string name="quick_action_gamepad">Bật/Tắt Gamepad</string>
+    <string name="quick_action_special_keyboard">Bật/Tắt Bàn phím đặc biệt</string>
+    <string name="quick_action_full_keyboard">Bật/Tắt Bàn phím đầy đủ</string>
 </resources>

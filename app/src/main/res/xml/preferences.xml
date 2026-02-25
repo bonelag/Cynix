@@ -559,6 +559,13 @@
             android:title="@string/title_floating_button"
             app:iconSpaceReserved="false" />
         <CheckBoxPreference
+            android:dependency="checkbox_enable_floating_button"
+            android:defaultValue="true"
+            android:key="checkbox_enable_floating_quick_actions"
+            android:summary="@string/summary_floating_quick_actions"
+            android:title="@string/title_floating_quick_actions"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
             android:key="checkbox_full_screen"
             android:title="@string/title_checkbox_full_screen"
             android:summary="@string/summary_checkbox_full_screen"

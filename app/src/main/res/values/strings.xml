@@ -461,6 +461,11 @@
     <string name="summary_quit_dialog">When enabled, clicking the physical back button on the streaming interface will show related options!\nSoft keyboard, performance information, touch mode switching, send special keys</string>
     <string name="title_floating_button">Floating Button</string>
     <string name="summary_floating_button">Enable floating button</string>
+    <string name="title_floating_quick_actions">Press and hold for quick actions</string>
+    <string name="summary_floating_quick_actions">Long-press the floating button to quickly toggle gamepad, special keyboard, or full keyboard</string>
+    <string name="quick_action_gamepad">Toggle Gamepad</string>
+    <string name="quick_action_special_keyboard">Toggle Special Keyboard</string>
+    <string name="quick_action_full_keyboard">Toggle Full Keyboard</string>
     <string name="dialog_custom_resolution">Set the resolution and exit the settings page to take effect!</string>
     <string name="summary_custom_resolution">Add a custom resolution, separated by x, strange resolutions may not work.\nFor example: 1920x1080\nIf it is a non-native resolution, it may not fill the notch area by default. If the aspect ratio is the same, you can manually set to stretch the screen to fill the full screen</string>
     <string name="title_custom_resolution">Custom Resolution</string>

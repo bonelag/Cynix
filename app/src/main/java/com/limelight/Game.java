@@ -308,6 +308,12 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private static final float CLICK_ACTION_THRESHOLD = 5;
     private float floatingButtonStartX, floatingButtonStartY;
 
+    // Quick Action Panel
+    private View quickActionPanel;
+    private boolean isLongPressTriggered = false;
+    private static final long LONG_PRESS_THRESHOLD = 500;
+    private Runnable longPressRunnable;
+
     // Zoom button drag state
     private float zoomButtonDX, zoomButtonDY;
     private boolean isZoomButtonMoving = false;
@@ -886,6 +892,8 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
         floatingMenuButton = findViewById(R.id.floatingMenuButton);
         updateFloatingButtonVisibility(prefConfig.enableBackMenu && prefConfig.enableFloatingButton);
+        quickActionPanel = findViewById(R.id.quickActionPanel);
+        initQuickActionButtons();
         initFloatingButton();
 
         overlayToggleButton = findViewById(R.id.overlayToggleZoomButton);
@@ -1040,7 +1048,7 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     @SuppressLint("ClickableViewAccessibility")
     private void initFloatingButton() {
-        // Touch listener for drag and click
+        // Touch listener for drag, click, and long-press
         if (floatingMenuButton != null) {
             floatingMenuButton.setOnTouchListener((view, event) -> {
                 switch (event.getAction()) {
@@ -1050,6 +1058,18 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                         floatingButtonDX = view.getX() - event.getRawX();
                         floatingButtonDY = view.getY() - event.getRawY();
                         isButtonMoving = false;
+                        isLongPressTriggered = false;
+
+                        // Start long-press detection if quick actions enabled
+                        if (prefConfig.enableFloatingQuickActions && !isQuickActionPanelVisible()) {
+                            longPressRunnable = () -> {
+                                if (!isButtonMoving) {
+                                    isLongPressTriggered = true;
+                                    showQuickActionPanel();
+                                }
+                            };
+                            view.postDelayed(longPressRunnable, LONG_PRESS_THRESHOLD);
+                        }
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         float newX = event.getRawX() + floatingButtonDX;
@@ -1059,6 +1079,10 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                         if (Math.abs(event.getRawX() - floatingButtonStartX) > CLICK_ACTION_THRESHOLD ||
                                 Math.abs(event.getRawY() - floatingButtonStartY) > CLICK_ACTION_THRESHOLD) {
                             isButtonMoving = true;
+                            // Cancel long-press only if panel is NOT yet visible
+                            if (!isQuickActionPanelVisible() && longPressRunnable != null) {
+                                view.removeCallbacks(longPressRunnable);
+                            }
                         }
 
                         // Ensure the button stays within screen bounds
@@ -1077,19 +1101,134 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
                         view.setX(newX);
                         view.setY(newY);
+
+                        // Move quick action panel together with the button (sticky)
+                        updateQuickActionPanelPosition(newX, newY, view.getWidth());
                         return true;
                     case MotionEvent.ACTION_UP:
-                        if (!isButtonMoving) {
-                            // It's a click event, show menu
-                            showGameMenu(null);
+                        // Cancel pending long-press
+                        if (longPressRunnable != null) {
+                            view.removeCallbacks(longPressRunnable);
+                        }
+
+                        if (isLongPressTriggered && !isButtonMoving) {
+                            // Long-press triggered but not dragged, do nothing (panel just appeared)
+                        } else if (!isButtonMoving) {
+                            if (isQuickActionPanelVisible()) {
+                                // Panel is open, tap to close it
+                                hideQuickActionPanel();
+                            } else if (gameMenuCallbacks != null && gameMenuCallbacks.isMenuOpen()) {
+                                // Game menu is open, tap to close it
+                                gameMenuCallbacks.hideMenu();
+                            } else {
+                                // Normal click, show menu
+                                showGameMenu(null);
+                            }
                         }
                         isButtonMoving = false;
+                        isLongPressTriggered = false;
                         return true;
                     default:
                         return false;
                 }
             });
         }
+    }
+
+    private void initQuickActionButtons() {
+        if (quickActionPanel == null) return;
+
+        View btnGamepad = findViewById(R.id.quickActionGamepad);
+        View btnSpecialKeyboard = findViewById(R.id.quickActionSpecialKeyboard);
+        View btnFullKeyboard = findViewById(R.id.quickActionFullKeyboard);
+
+        if (btnGamepad != null) {
+            btnGamepad.setOnClickListener(v -> {
+                toggleVirtualController();
+                hideQuickActionPanel();
+            });
+        }
+        if (btnSpecialKeyboard != null) {
+            btnSpecialKeyboard.setOnClickListener(v -> {
+                toggleKeyboardController();
+                hideQuickActionPanel();
+            });
+        }
+        if (btnFullKeyboard != null) {
+            btnFullKeyboard.setOnClickListener(v -> {
+                toggleFullKeyboard();
+                hideQuickActionPanel();
+            });
+        }
+    }
+
+    private boolean quickActionPanelOnRight = true;
+
+    private boolean isQuickActionPanelVisible() {
+        return quickActionPanel != null && quickActionPanel.getVisibility() == View.VISIBLE;
+    }
+
+    private void showQuickActionPanel() {
+        if (quickActionPanel == null || floatingMenuButton == null) return;
+
+        // Position the panel next to the floating button
+        float btnX = floatingMenuButton.getX();
+        float btnY = floatingMenuButton.getY();
+        int btnWidth = floatingMenuButton.getWidth();
+
+        // Show panel to the right of the button
+        quickActionPanel.setVisibility(View.VISIBLE);
+        quickActionPanel.post(() -> {
+            float panelX = btnX + btnWidth + 8;
+            float panelY = btnY;
+
+            // If panel would go off-screen right, show it to the left
+            int screenWidth = getWindow().getDecorView().getWidth();
+            if (panelX + quickActionPanel.getWidth() > screenWidth) {
+                panelX = btnX - quickActionPanel.getWidth() - 8;
+                quickActionPanelOnRight = false;
+            } else {
+                quickActionPanelOnRight = true;
+            }
+            // Ensure panel stays on-screen
+            if (panelX < 0) panelX = 0;
+
+            quickActionPanel.setX(panelX);
+            quickActionPanel.setY(panelY);
+        });
+    }
+
+    private void updateQuickActionPanelPosition(float btnX, float btnY, int btnWidth) {
+        if (!isQuickActionPanelVisible()) return;
+
+        float panelX;
+        if (quickActionPanelOnRight) {
+            panelX = btnX + btnWidth + 8;
+            // Flip to left if would go off-screen
+            int screenWidth = getWindow().getDecorView().getWidth();
+            if (panelX + quickActionPanel.getWidth() > screenWidth) {
+                panelX = btnX - quickActionPanel.getWidth() - 8;
+                quickActionPanelOnRight = false;
+            }
+        } else {
+            panelX = btnX - quickActionPanel.getWidth() - 8;
+            // Flip to right if would go off-screen left
+            if (panelX < 0) {
+                panelX = btnX + btnWidth + 8;
+                quickActionPanelOnRight = true;
+            }
+        }
+        if (panelX < 0) panelX = 0;
+
+        quickActionPanel.setX(panelX);
+        quickActionPanel.setY(btnY);
+    }
+
+    private void hideQuickActionPanel() {
+        if (quickActionPanel != null) {
+            quickActionPanel.setVisibility(View.GONE);
+        }
+        isLongPressTriggered = false;
     }
 
     private void initKeyboardController(){
@@ -4321,6 +4460,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
     private void updateFloatingButtonVisibility(boolean show) {
         floatingMenuButton.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (!show) {
+            hideQuickActionPanel();
+        }
     }
 
     public void toggleFloatingButtonVisibility() {
