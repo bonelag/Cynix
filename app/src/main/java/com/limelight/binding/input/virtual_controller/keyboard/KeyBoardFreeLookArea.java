@@ -37,6 +37,7 @@ public class KeyBoardFreeLookArea extends keyBoardVirtualControllerElement {
     private float remainderY = 0f;
 
     private boolean isActionClick = true;
+    private int activePointerId = MotionEvent.INVALID_POINTER_ID;
 
     private PreferenceConfiguration preferenceConfiguration;
 
@@ -111,9 +112,16 @@ public class KeyBoardFreeLookArea extends keyBoardVirtualControllerElement {
     public boolean onTouchEvent(MotionEvent event) {
         // Chỉ ở chế độ Active mới kiểm tra passthrough cho các nút khác
         if (virtualController.getControllerMode() == KeyBoardController.ControllerMode.Active) {
-            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            int action = event.getActionMasked();
+            if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
+                int pointerIndex = event.getActionIndex();
+                int[] loc = new int[2];
+                getLocationOnScreen(loc);
+                float screenX = event.getX(pointerIndex) + loc[0];
+                float screenY = event.getY(pointerIndex) + loc[1];
+
                 // Kiểm tra: nếu điểm chạm nằm trên một nút keyboard khác → nhường touch
-                if (isTouchOnSiblingButton(event.getRawX(), event.getRawY())) {
+                if (isTouchOnSiblingButton(screenX, screenY)) {
                     return false; // Không consume → FrameLayout sẽ dispatch cho nút đó
                 }
             }
@@ -126,21 +134,32 @@ public class KeyBoardFreeLookArea extends keyBoardVirtualControllerElement {
     @Override
     public boolean onElementTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
+        int actionIndex = event.getActionIndex();
+
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
-                lastTouchX = event.getRawX();
-                lastTouchY = event.getRawY();
+                activePointerId = event.getPointerId(0);
+                lastTouchX = event.getX();
+                lastTouchY = event.getY();
                 remainderX = 0f;
                 remainderY = 0f;
                 originalTouchTime = event.getEventTime();
                 isActionClick = true;
                 return true; 
             }
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                return true; 
+            }
             case MotionEvent.ACTION_MOVE: {
                 if (listener == null) return true;
 
-                float currentX = event.getRawX();
-                float currentY = event.getRawY();
+                int pointerIndex = event.findPointerIndex(activePointerId);
+                if (pointerIndex == -1) {
+                    return true;
+                }
+
+                float currentX = event.getX(pointerIndex);
+                float currentY = event.getY(pointerIndex);
 
                 float deltaX = currentX - lastTouchX;
                 float deltaY = currentY - lastTouchY;
@@ -174,8 +193,17 @@ public class KeyBoardFreeLookArea extends keyBoardVirtualControllerElement {
                 }
                 return true;
             }
+            case MotionEvent.ACTION_POINTER_UP: {
+                int pointerId = event.getPointerId(actionIndex);
+                if (pointerId == activePointerId) {
+                    activePointerId = MotionEvent.INVALID_POINTER_ID;
+                    isActionClick = true;
+                }
+                return true;
+            }
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
+                activePointerId = MotionEvent.INVALID_POINTER_ID;
                 isActionClick = true;
                 return true; 
             }

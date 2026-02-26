@@ -72,4 +72,12 @@ Các class này đảm nhận toàn bộ các thao tác: Create, Rename, Duplica
 ---
 
 > **Làm thế nào để áp dụng nếu gặp lỗi? (Conflict Resolution)**
-> Nếu bạn chạy `git apply patch/change.patch` mà báo lỗi `hunk failed`, điều đó tức là source upstream/cũ của Cynix đã có những dòng thay thế không khớp so với thời điểm lập patch. Hãy mở file `.patch` bằng trình editor (Notepad/Vscode), sau đó do-dò các khối `@@ ... @@` và copy/paste thêm dấu `+` vào code một cách thủ công đối với các file có lỗi.
+
+## 4. Fix Lỗi Multi-Touch Camera Jumping (Free Look Area)
+**Mô tả lỗi:** Khi đang giữ vùng Free Look bằng một ngón tay, dùng ngón tay khác kéo Joystick thì camera game lập tức bị xoay lên trời hoặc loạn tọa độ.
+**Nguyên nhân gốc rễ (Root Cause):** Việc sử dụng getRawX() và getRawY() trong Android Multi-Touch sẽ luôn trả về tọa độ tuyệt đối của pointer đầu tiên (có thể là joystick). Khi người chơi chạm ngón thứ hai, tọa độ báo về Free Look đột ngột nhảy sang joystick gây ra sự thay đổi (Delta) khổng lồ.
+**Giải pháp:** Thay đổi getRawX() thành getX(pointerIndex) và sử dụng activePointerId trong KeyBoardFreeLookArea.java để khắc phục triệt để. Các thay đổi đã được nối vào change.patch.
+
+## 5. Fix Lỗi Out-Of-Bounds Touch (Chạm ngoài viền đen Letterboxing)
+**Mô tả lỗi:** Khi người dùng chơi game ở chế độ Absolute Mouse Mode hoặc màn hình cảm ứng đa chạm, nếu màn hình có viền đen (Letterboxing) do chênh lệch khung hình, việc chạm vào viền đen này sẽ bị ứng dụng ép tọa độ (clamp) tương đương với mét của màn hình game. Điều này khiến máy chủ nhận diện sai lệch thành các thao tác click chuột ở cực biên của màn hình, bấm nhầm các nút hoặc sát mép Windows.
+**Giải pháp:** Bổ sung biến theo dõi mảng bool `outOfBoundsPointers` trong class `Game.java`. Tại phương thức xử lý `handleMotionEvent`, chương trình sẽ phát hiện nếu tọa độ ngón tay (Pointer) rơi ra ngoài bounding box của biểu đồ Video (Stream Container) ngay từ thao tác `ACTION_DOWN` hoặc `ACTION_POINTER_DOWN`. Nếu toàn bộ các điểm chạm của sự kiện này đều là Out Of Bounds, app sẽ chặn (consume) hoàn toàn, không truyền lệnh Click/Move xuống máy chủ. Fix này không ảnh hưởng đến chế độ Touchpad thông thường (Relavtive Touch) vốn cho phép vuốt trên cả vùng viền đen. Tín hiệu Patch đã được thêm vào cuối file `change.patch`.
