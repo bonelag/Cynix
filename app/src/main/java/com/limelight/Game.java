@@ -2739,6 +2739,58 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         return new float[] { normalizedX, normalizedY };
     }
 
+    /**
+     * Kiểm tra xem tọa độ (rawX, rawY) từ event có nằm ngoài viewport video thực tế hay không.
+     * Viewport thực tế được tính từ stream resolution (displayWidth x displayHeight) fit-to-view
+     * bên trong streamContainer, tính cả vùng đen letterbox/pillarbox do decoder tạo ra.
+     */
+    private boolean isOutsideStreamBounds(View view, float rawX, float rawY) {
+        float localX, localY;
+        if (view == streamContainer) {
+            localX = rawX;
+            localY = rawY;
+        } else {
+            localX = rawX - streamContainer.getX();
+            localY = rawY - streamContainer.getY();
+        }
+
+        int viewW = streamContainer.getWidth();
+        int viewH = streamContainer.getHeight();
+
+        if (viewW <= 0 || viewH <= 0 || displayWidth <= 0 || displayHeight <= 0) {
+            return false; // Chưa sẵn sàng, không chặn
+        }
+
+        // Tính viewport thực tế (video fit-to-view giữ tỷ lệ)
+        float streamAspect = (float) displayWidth / displayHeight;
+        float viewAspect = (float) viewW / viewH;
+
+        float vpLeft, vpTop, vpRight, vpBottom;
+
+        if (streamAspect > viewAspect) {
+            // Stream rộng hơn view → pillarbox KHÔNG có, letterbox (thanh đen trên/dưới)
+            // Video chiều ngang = viewW, chiều cao co lại
+            float vpW = viewW;
+            float vpH = viewW / streamAspect;
+            vpLeft = 0;
+            vpTop = (viewH - vpH) / 2f;
+            vpRight = vpW;
+            vpBottom = vpTop + vpH;
+        } else {
+            // Stream hẹp hơn view → pillarbox (thanh đen trái/phải)
+            // Video chiều cao = viewH, chiều rộng co lại
+            float vpH = viewH;
+            float vpW = viewH * streamAspect;
+            vpLeft = (viewW - vpW) / 2f;
+            vpTop = 0;
+            vpRight = vpLeft + vpW;
+            vpBottom = vpH;
+        }
+
+        return localX < vpLeft || localY < vpTop
+                || localX > vpRight || localY > vpBottom;
+    }
+
     private static float normalizeValueInRange(float value, InputDevice.MotionRange range) {
         return (value - range.getMin()) / range.getRange();
     }
@@ -3265,6 +3317,17 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 if (eventSource == InputDevice.SOURCE_TOUCHPAD) {
                     return handleTouchInput(event, trackpadContextMap, false);
                 } else {
+                    // Reject touch bắt đầu ngoài viewport (vùng đen letterbox/pillarbox)
+                    if (view != null) {
+                        int actionMasked = event.getActionMasked();
+                        if (actionMasked == MotionEvent.ACTION_DOWN
+                                || actionMasked == MotionEvent.ACTION_POINTER_DOWN) {
+                            int actionIdx = event.getActionIndex();
+                            if (isOutsideStreamBounds(view, event.getX(actionIdx), event.getY(actionIdx))) {
+                                return true; // Consume nhưng không xử lý
+                            }
+                        }
+                    }
                     if (virtualController != null &&
                             (virtualController.getControllerMode() == VirtualController.ControllerMode.MoveButtons ||
                                     virtualController.getControllerMode() == VirtualController.ControllerMode.ResizeButtons)) {
