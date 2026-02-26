@@ -222,6 +222,9 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     private float lastAbsTouchUpX, lastAbsTouchUpY;
     private float lastAbsTouchDownX, lastAbsTouchDownY;
 
+    // Track the pointer IDs that originated outside the stream bounds
+    private int ignoredPointerMask = 0;
+
     private boolean quitOnStop = false;
     private boolean isHidingOverlays;
     private boolean floatingButtonShown;
@@ -2967,6 +2970,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     }
 
     private boolean sendTouchEventForPointer(View view, MotionEvent event, byte eventType, int pointerIndex) {
+        int pointerId = event.getPointerId(pointerIndex);
+        if ((ignoredPointerMask & (1 << pointerId)) != 0) {
+            return true; // Bỏ qua pointer này, coi như "gửi thành công"
+        }
+
         float[] normalizedCoords = getStreamViewRelativeNormalizedXY(view, event, pointerIndex);
         float[] normalizedContactArea = getStreamViewNormalizedContactArea(event, pointerIndex);
         return conn.sendTouchEvent(eventType, event.getPointerId(pointerIndex),
@@ -3317,17 +3325,36 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                 if (eventSource == InputDevice.SOURCE_TOUCHPAD) {
                     return handleTouchInput(event, trackpadContextMap, false);
                 } else {
-                    // Reject touch bắt đầu ngoài viewport (vùng đen letterbox/pillarbox)
+                    int actionMasked = event.getActionMasked();
+                    int actionIdx = event.getActionIndex();
+                    int pointerId = event.getPointerId(actionIdx);
+
+                    // Track con trỏ chuột bắt đầu ngoài viewport
                     if (view != null) {
-                        int actionMasked = event.getActionMasked();
                         if (actionMasked == MotionEvent.ACTION_DOWN
                                 || actionMasked == MotionEvent.ACTION_POINTER_DOWN) {
-                            int actionIdx = event.getActionIndex();
                             if (isOutsideStreamBounds(view, event.getX(actionIdx), event.getY(actionIdx))) {
-                                return true; // Consume nhưng không xử lý
+                                ignoredPointerMask |= (1 << pointerId); // Bắt đầu ở vùng đen -> Ignore
+                            } else {
+                                ignoredPointerMask &= ~(1 << pointerId); // Hợp lệ -> Track
+                            }
+                        } else if (actionMasked == MotionEvent.ACTION_UP
+                                || actionMasked == MotionEvent.ACTION_POINTER_UP
+                                || actionMasked == MotionEvent.ACTION_CANCEL) {
+                            if ((ignoredPointerMask & (1 << pointerId)) != 0) {
+                                ignoredPointerMask &= ~(1 << pointerId);
+                                return true; // Consume event kết thúc của con trỏ bị ignore
                             }
                         }
                     }
+
+                    // Nếu pointer bị ignore (ở các ACTION riêng không phải MOVE hoặc CANCEL) -> Chặn tại đây
+                    if (actionMasked != MotionEvent.ACTION_MOVE && actionMasked != MotionEvent.ACTION_CANCEL) {
+                        if ((ignoredPointerMask & (1 << pointerId)) != 0) {
+                            return true;
+                        }
+                    }
+
                     if (virtualController != null &&
                             (virtualController.getControllerMode() == VirtualController.ControllerMode.MoveButtons ||
                                     virtualController.getControllerMode() == VirtualController.ControllerMode.ResizeButtons)) {
@@ -3404,9 +3431,13 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             // First process the historical events
             for (int i = 0; i < event.getHistorySize(); i++) {
                 for (TouchContext aTouchContextMap : inputContextMap) {
-                    if (aTouchContextMap.getActionIndex() < pointerCount)
+                    if (aTouchContextMap != null && aTouchContextMap.getActionIndex() < pointerCount)
                     {
                         int aActionIndex = shouldDuplicateMovement ? 0 : aTouchContextMap.getActionIndex();
+                        if (isTouchScreen && (ignoredPointerMask & (1 << event.getPointerId(aActionIndex))) != 0) {
+                            continue;
+                        }
+
                         int historicalX = (int)event.getHistoricalX(aActionIndex, i);
                         int historicalY = (int)event.getHistoricalY(aActionIndex, i);
                         if (isTouchScreen) {
@@ -3439,9 +3470,13 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
             // Now process the current values
             for (TouchContext aTouchContextMap : inputContextMap) {
-                if (aTouchContextMap.getActionIndex() < pointerCount)
+                if (aTouchContextMap != null && aTouchContextMap.getActionIndex() < pointerCount)
                 {
                     int aActionIndex = shouldDuplicateMovement ? 0 : aTouchContextMap.getActionIndex();
+                    if (isTouchScreen && (ignoredPointerMask & (1 << event.getPointerId(aActionIndex))) != 0) {
+                        continue;
+                    }
+
                     int currentX = (int)event.getX(aActionIndex);
                     int currentY = (int)event.getY(aActionIndex);
                     if (isTouchScreen) {
