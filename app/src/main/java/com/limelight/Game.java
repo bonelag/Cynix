@@ -2739,6 +2739,11 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
         float normalizedX = (rawX - streamView.getX()) / scaleX;
         float normalizedY = (rawY - streamView.getY()) / scaleY;
 
+        if (panZoomHandler != null && panZoomHandler.getScaleFactor() != 1.0f) {
+            normalizedX = (normalizedX - panZoomHandler.getChildX()) / panZoomHandler.getScaleFactor();
+            normalizedY = (normalizedY - panZoomHandler.getChildY()) / panZoomHandler.getScaleFactor();
+        }
+
         return new float[] { normalizedX, normalizedY };
     }
 
@@ -3364,7 +3369,16 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
 
                     if (isPanZoomMode) {
                         // panning the streamView
+                        boolean needsOffset = (view != null && view != streamContainer);
+                        if (needsOffset) {
+                            event.offsetLocation(-streamContainer.getX(), -streamContainer.getY());
+                        }
+                        
                         panZoomHandler.handleTouchEvent(event);
+                        
+                        if (needsOffset) {
+                            event.offsetLocation(streamContainer.getX(), streamContainer.getY());
+                        }
                         return true;
                     }
 
