@@ -998,6 +998,18 @@
         app:initialExpandedChildrenCount="1"
         app:iconSpaceReserved="false">
 
+        <Preference
+            android:key="export_config"
+            android:summary="@string/summary_export_config"
+            android:title="@string/title_export_config"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="import_config"
+            android:summary="@string/summary_import_config"
+            android:title="@string/title_import_config"
+            app:iconSpaceReserved="false" />
+
         <com.limelight.preferences.LanguagePreference
             android:defaultValue="default"
             android:entries="@array/language_names"

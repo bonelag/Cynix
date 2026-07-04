@@ -34,12 +34,12 @@
 
     <!-- Network test strings -->
     <string name="nettest_title_waiting">Đang kiểm tra kết nối mạng</string>
-    <string name="nettest_text_waiting">Artemis đang kiểm tra kết nối mạng của bạn để xác định xem có bất kỳ cổng nào bị chặn hay không.\n\nĐiều này có thể mất vài giây…</string>
+    <string name="nettest_text_waiting">Cynix đang kiểm tra kết nối mạng của bạn để xác định xem có bất kỳ cổng nào bị chặn hay không.\n\nĐiều này có thể mất vài giây…</string>
     <string name="nettest_title_done">Kiểm tra mạng hoàn tất</string>
-    <string name="nettest_text_success">Mạng của bạn dường như không chặn Artemis. Nếu bạn vẫn gặp khó khăn khi kết nối, hãy kiểm tra cài đặt tường lửa của PC.\n\nNếu bạn đang cố gắng phát trực tuyến qua Internet, hãy cài đặt Công cụ Lưu trữ Internet Artemis trên PC của bạn và chạy Trình kiểm tra Phát trực tuyến Internet đi kèm để kiểm tra kết nối Internet của PC.</string>
-    <string name="nettest_text_inconclusive">Không thể thực hiện kiểm tra mạng vì không có máy chủ kiểm tra kết nối của Artemis nào có thể truy cập được. Kiểm tra kết nối Internet của bạn hoặc thử lại sau.</string>
-    <string name="nettest_text_failure">Kết nối mạng hiện tại của thiết bị của bạn dường như đang chặn Artemis. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.\n\nCác cổng mạng sau đã bị chặn:\n</string>
-    <string name="nettest_text_blocked">Kết nối mạng hiện tại của thiết bị của bạn đang chặn Artemis. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.</string>
+    <string name="nettest_text_success">Mạng của bạn dường như không chặn Cynix. Nếu bạn vẫn gặp khó khăn khi kết nối, hãy kiểm tra cài đặt tường lửa của PC.\n\nNếu bạn đang cố gắng phát trực tuyến qua Internet, hãy cài đặt Công cụ Lưu trữ Internet Cynix trên PC của bạn và chạy Trình kiểm tra Phát trực tuyến Internet đi kèm để kiểm tra kết nối Internet của PC.</string>
+    <string name="nettest_text_inconclusive">Không thể thực hiện kiểm tra mạng vì không có máy chủ kiểm tra kết nối của Cynix nào có thể truy cập được. Kiểm tra kết nối Internet của bạn hoặc thử lại sau.</string>
+    <string name="nettest_text_failure">Kết nối mạng hiện tại của thiết bị của bạn dường như đang chặn Cynix. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.\n\nCác cổng mạng sau đã bị chặn:\n</string>
+    <string name="nettest_text_blocked">Kết nối mạng hiện tại của thiết bị của bạn đang chặn Cynix. Phát trực tuyến qua Internet có thể không hoạt động khi kết nối với mạng này.</string>
 
     <!-- Pair messages -->
     <string name="pairing">Đang ghép nối…</string>
@@ -82,7 +82,7 @@
 	    Sử dụng phần mềm điều khiển từ xa cũng có thể gây ra lỗi này. Thử khởi động lại máy của bạn hoặc cài đặt lại GFE.
     </string>
     <string name="title_decoding_error">Bộ giải mã video bị lỗi</string>
-    <string name="message_decoding_error">Artemis đã gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Thử điều chỉnh cài đặt phát trực tuyến nếu sự cố tiếp tục xảy ra.</string>
+    <string name="message_decoding_error">Cynix đã gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Thử điều chỉnh cài đặt phát trực tuyến nếu sự cố tiếp tục xảy ra.</string>
     <string name="title_decoding_reset">Cài đặt video đã được đặt lại</string>
     <string name="message_decoding_reset">Bộ giải mã video của thiết bị của bạn tiếp tục gặp sự cố ở cài đặt phát trực tuyến đã chọn. Cài đặt phát trực tuyến của bạn đã được đặt lại về mặc định.</string>
     <string name="error_usb_prohibited">Truy cập USB bị cấm bởi quản trị viên thiết bị của bạn. Kiểm tra cài đặt Knox hoặc MDM của bạn.</string>
@@ -213,7 +213,7 @@
     <string name="title_checkbox_xb1_driver">Trình điều khiển gamepad USB Xbox 360/One/NintendoPro</string>
     <string name="summary_checkbox_xb1_driver">Bật trình điều khiển USB tích hợp cho các thiết bị không có hỗ trợ gamepad Xbox/Nintendo Pro gốc</string>
     <string name="title_checkbox_usb_bind_all">Ghi đè hỗ trợ gamepad Xbox gốc</string>
-    <string name="summary_checkbox_usb_bind_all">Sử dụng trình điều khiển USB của Artemis cho tất cả các gamepad được hỗ trợ, ngay cả khi hỗ trợ gamepad Xbox/Nintendo Pro gốc có mặt</string>
+    <string name="summary_checkbox_usb_bind_all">Sử dụng trình điều khiển USB của Cynix cho tất cả các gamepad được hỗ trợ, ngay cả khi hỗ trợ gamepad Xbox/Nintendo Pro gốc có mặt</string>
     <string name="title_checkbox_mouse_emulation">Mô phỏng chuột qua gamepad</string>
     <string name="summary_checkbox_mouse_emulation">Nhấn giữ nút Start sẽ chuyển gamepad sang chế độ chuột</string>
     <string name="title_checkbox_flip_face_buttons">Đảo nút mặt</string>
@@ -260,7 +260,7 @@
     <string name="title_checkbox_enable_pip">Bật chế độ Picture-in-Picture</string>
     <string name="summary_checkbox_enable_pip">Cho phép xem luồng trong khi thực hiện đa nhiệm</string>
     <string name="title_language_list">Ngôn ngữ</string>
-    <string name="summary_language_list">Ngôn ngữ sử dụng cho Artemis</string>
+    <string name="summary_language_list">Ngôn ngữ sử dụng cho Cynix</string>
     <string name="title_checkbox_small_icon_mode">Chế độ biểu tượng nhỏ</string>
     <string name="summary_checkbox_small_icon_mode">Hiển thị biểu tượng nhỏ hơn trong lưới ứng dụng để hiển thị nhiều ứng dụng hơn</string>
 
@@ -296,7 +296,7 @@
     <string name="title_troubleshooting">Hướng dẫn khắc phục sự cố</string>
     <string name="summary_troubleshooting">Xem các mẹo để chẩn đoán và khắc phục các sự cố phát trực tuyến phổ biến</string>
     <string name="title_privacy_policy">Chính sách quyền riêng tư</string>
-    <string name="summary_privacy_policy">Xem chính sách quyền riêng tư của Artemis</string>
+    <string name="summary_privacy_policy">Xem chính sách quyền riêng tư của Cynix</string>
     <string name="title_special_key_help">Trợ giúp phím đặc biệt</string>
     <string name="summary_special_key_help">Hướng dẫn về cách thiết lập các phím đặc biệt tùy chỉnh</string>
 
@@ -335,8 +335,8 @@
     <string name="pacing_smoothness">Ưu tiên video mượt nhất (có thể tăng đáng kể độ trễ)</string>
 
 
-    <string name="keyboard_service_label">Bàn phím vật lý Artemis</string>
-    <string name="accessibility_description_text">Chỉ được sử dụng khi phím tắt bàn phím vật lý bị hệ thống chặn. Trong một số hệ thống, một số phím tắt bàn phím được định nghĩa và sử dụng bởi hệ thống Android, khiến chúng không thể được chuyển qua PC máy chủ. Artemis sẽ không xem qua đầu vào của bạn, cũng không thu thập mật khẩu, số thẻ tín dụng hoặc bất kỳ thông tin cá nhân nào khác của bạn.</string>
+    <string name="keyboard_service_label">Bàn phím vật lý Cynix</string>
+    <string name="accessibility_description_text">Chỉ được sử dụng khi phím tắt bàn phím vật lý bị hệ thống chặn. Trong một số hệ thống, một số phím tắt bàn phím được định nghĩa và sử dụng bởi hệ thống Android, khiến chúng không thể được chuyển qua PC máy chủ. Cynix sẽ không xem qua đầu vào của bạn, cũng không thu thập mật khẩu, số thẻ tín dụng hoặc bất kỳ thông tin cá nhân nào khác của bạn.</string>
 
 
     <!-- In Game menu -->
@@ -391,6 +391,19 @@
     <string name="title_export_keyboard_layout">Xuất bố cục bàn phím</string>
     <string name="summary_import_keyboard_layout">Thao tác này sẽ ghi đè bố cục hiện tại.</string>
     <string name="summary_export_keyboard_layout">Xuất bố cục bàn phím hiện tại</string>
+    <string name="title_export_config">Xuất cấu hình</string>
+    <string name="summary_export_config">Sao lưu các cài đặt &amp; bố cục đã chọn ra tệp .json</string>
+    <string name="title_import_config">Nhập cấu hình</string>
+    <string name="summary_import_config">Khôi phục các phần đã chọn từ tệp .json (ghi đè dữ liệu hiện tại)</string>
+    <string name="config_backup_section_basic">Cài đặt cơ bản (streaming, giao diện, đầu vào)</string>
+    <string name="config_backup_section_gamepad">Bố cục gamepad ảo</string>
+    <string name="config_backup_section_keyboard">Bố cục bàn phím ảo</string>
+    <string name="config_backup_section_special">Phím đặc biệt tùy chỉnh</string>
+    <string name="config_backup_export_success">Đã xuất cấu hình</string>
+    <string name="config_backup_import_success">Đã nhập cấu hình. Khởi động lại ứng dụng để áp dụng đầy đủ các thay đổi.</string>
+    <string name="config_backup_error">Sao lưu cấu hình thất bại: %1$s</string>
+    <string name="config_backup_empty_file">Tệp đã chọn trống hoặc không hợp lệ</string>
+    <string name="config_backup_no_sections_selected">Không có gì để xuất</string>
 
     <string name="title_manual_enter_bitrate">Tùy chỉnh bitrate</string>
     <string name="summary_manual_enter_bitrate">Tự nhập tốc độ truyền tải.\nCó thể vượt quá giới hạn tối đa của thanh trượt.</string>
@@ -433,7 +446,7 @@
     <string name="summary_import_special_button">Sử dụng được trong Menu Quay lại và phím đặc biệt.\nLưu ý: Nhập sẽ ghi đè cấu hình hiện tại, vui lòng sao lưu trước.</string>
 
     <string name="title_software_update">Cập nhật phần mềm</string>
-    <string name="summary_software_update">Phiên bản Artemis Việt Hóa bởi ZeronX - Truy cập GitHub Release để nhận phiên bản mới nhất</string>
+    <string name="summary_software_update">Việt Hóa bởi BoneLag - Truy cập GitHub Release để nhận phiên bản mới nhất</string>
 
     <string name="title_special_key_layout">Bố cục phím đặc biệt</string>
 
@@ -496,7 +509,7 @@
     <string name="title_touchpad_sensitivity_y">Độ nhạy touchpad - Trục Y</string>
     <string name="summary_touchpad_sensitivity_y">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng nút đặc biệt ảo;\nCả hai dùng chung giá trị độ nhạy, nhưng hiệu suất có thể khác nhau.\nKhông biết có ai dùng cả hai cùng lúc không?</string>
     <string name="title_device_rumble">Bắt buộc rung trên thiết bị</string>
-    <string name="summary_device_rumble">Nếu bạn không hài lòng với rung của tay cầm chơi game đã kết nối, bạn có thể bật tùy chọn này.\nKhông có tác dụng nếu buộc sử dụng driver USB tích hợp của Artemis</string>
+    <string name="summary_device_rumble">Nếu bạn không hài lòng với rung của tay cầm chơi game đã kết nối, bạn có thể bật tùy chọn này.\nKhông có tác dụng nếu buộc sử dụng driver USB tích hợp của Cynix</string>
     <string name="title_clear_default_special_button">Tắt các phím đặc biệt mặc định</string>
     <string name="summary_clear_default_special_button">Nếu bạn thấy các lệnh tích hợp trong menu quay lại không hữu ích, bạn có thể tắt chúng và dùng các phím tự nhập.</string>
     <string name="title_trackpad_sensitivity_x">Độ nhạy trackpad trục X</string>
@@ -676,4 +689,144 @@
     <string name="quick_action_gamepad">Bật/Tắt Gamepad</string>
     <string name="quick_action_special_keyboard">Bật/Tắt Bàn phím đặc biệt</string>
     <string name="quick_action_full_keyboard">Bật/Tắt Bàn phím đầy đủ</string>
+
+    <!-- Performance monitor / overlays / streaming -->
+    <string name="category_perf_monitor_settings">Giám sát hiệu suất</string>
+    <string name="title_checkbox_enable_perf_logging">Bật ghi nhật ký hiệu suất</string>
+    <string name="summary_checkbox_enable_perf_logging">Lưu dữ liệu hiệu suất theo từng cấu hình. (Chỉ ngoại tuyến)</string>
+    <string name="title_share_performance_logs_button">Chia sẻ nhật ký hiệu suất</string>
+    <string name="summary_share_performance_logs">Chia sẻ hiệu suất với bạn bè hoặc cộng đồng</string>
+    <string name="toast_no_logs">Chưa có dữ liệu hiệu suất nào được lưu.</string>
+    <string name="title_performance_link">Bảng điều khiển hiệu suất</string>
+    <string name="summary_performance_link">Xem hiệu suất của các thiết bị khác.\nLưu ý: dữ liệu này do cộng đồng quản lý, không do Cynix quản lý và không đại diện chính thức cho Cynix.</string>
+    <string name="toast_no_email_clients">Không có ứng dụng email nào được cài đặt.</string>
+    <string name="email_chooser_title">Gửi nhật ký hiệu suất…</string>
+    <string name="email_prefix_message"></string>
+    <string name="email_recipient">artemistics.logs@gmail.com</string>
+    <string name="email_subject">Cynix - Nhật ký hiệu suất</string>
+    <string name="title_checkbox_enable_perf_overlay_bottom">Di chuyển lớp phủ xuống dưới</string>
+    <string name="summary_checkbox_enable_perf_overlay_bottom">Hữu ích khi chế độ Hiển thị ở giữa trên cùng và chế độ Lite được bật khi phát trực tiếp ở độ phân giải không gốc.</string>
+    <string name="perf_overlay_ai_delegate">Bộ ủy quyền:</string>
+    <string name="perf_overlay_ai_fps">3DFPS:</string>
+    <string name="perf_overlay_drawdelay">Độ trễ: %1$.2f ms</string>
+    <string name="perf_overlay_drawn_fps">GpuFPS:</string>
+    <string name="permission_denied">Quyền thông báo bị từ chối</string>
+    <string name="notification_channel_name">Điều khiển màn hình ngoài</string>
+    <string name="notification_text">Chạm để mở bộ điều khiển bàn di chuột</string>
+    <string name="notification_title">Màn hình ngoài đang hoạt động</string>
+
+    <!-- Floating button / pan-zoom -->
+    <string name="game_menu_toggle_floating_button">Bật/Tắt nút nổi</string>
+    <string name="title_floating_button">Nút nổi</string>
+    <string name="summary_floating_button">Bật nút nổi</string>
+    <string name="title_show_overlay_zoom_toggle_button">Hiển thị nút bật/tắt thu phóng lớp phủ</string>
+    <string name="summary_show_overlay_zoom_toggle_button">Hiển thị một nút có thể kéo ở đầu màn hình để bật/tắt chế độ pan/thu phóng.</string>
+    <string name="toggle_pan_zoom_mode">Bật/Tắt chế độ Pan/Zoom</string>
+    <string name="pan_zoom_mode_disabled">Đã tắt chế độ Pan/Zoom</string>
+    <string name="pan_zoom_mode_enabled">Đã bật chế độ Pan/Zoom</string>
+    <string name="title_checkbox_remember_zoom_pan">Nhớ Zoom&amp;Pan</string>
+    <string name="summary_checkbox_remember_zoom_pan">Lưu thay đổi về vị trí thu phóng và pan giữa các phiên</string>
+
+    <!-- Video / display -->
+    <string name="title_checkbox_full_screen">Bật toàn màn hình</string>
+    <string name="summary_checkbox_full_screen">Ẩn thanh hệ thống bằng chế độ chìm</string>
+    <string name="title_checkbox_ultra_low_latency">Độ trễ cực thấp (thử nghiệm)</string>
+    <string name="summary_checkbox_ultra_low_latency">Chỉ có hiệu quả với các thiết bị SD8Gen2/8(s)Gen3/8Elite và MTK.</string>
+    <string name="title_low_latency_frame_balance">LFR (Thử nghiệm)</string>
+    <string name="summary_low_latency_frame_balance">Giảm thiểu độ trễ bằng cách bỏ các khung hình đã xếp hàng.</string>
+    <string name="title_checkbox_forceTightThresholds">VSYNC chặt (Thử nghiệm)</string>
+    <string name="summary_checkbox_forceTightThresholds">Ngưỡng VSYNC chặt hơn để độ trễ thấp hơn; có thể làm tăng số khung bị bỏ.</string>
+    <string name="title_prevent_packet_loss">Ngăn mất gói tin</string>
+    <string name="summary_prevent_packet_loss">Đối với các thiết bị bị mất gói tin vì lý do không rõ, bạn có thể thử bật tùy chọn này.</string>
+    <string name="title_fullexdisplay_mode">Chế độ màn hình ngoài toàn phần (Beta)</string>
+    <string name="summary_fullexdisplay_mode">Cho phép chế độ màn hình phụ chìm hoàn toàn với tần số quét và độ phân giải tự động khớp. Cài đặt thủ công sẽ không áp dụng trong chế độ này.</string>
+    <string name="title_onscreen_keyboard_autofit">Tắt tự động căn chỉnh Bàn phím đầy đủ ảo</string>
+    <string name="summary_onscreen_keyboard_autofit">Không tự động điều chỉnh kích thước và vị trí của bàn phím, cho phép kích thước tùy chỉnh</string>
+    <string name="title_follow_update">Theo dõi cập nhật</string>
+    <string name="summary_follow_update">Theo dõi cập nhật của Cynix qua Obtainium</string>
+
+    <!-- Render / 3D mode -->
+    <string name="title_render_mode">Chế độ kết xuất</string>
+    <string name="summary_render_mode">Mặc định 2D hoặc SBS 3D. 3D sẽ đơn giản nhân đôi chiều rộng và tự động thêm hiệu ứng, không cần thiết lập. Chuyển đổi AI 2D sang 3D</string>
+    <string name="render_mode_2d">Mặc định 2D</string>
+    <string name="render_mode_3d_sbs">AI SBS 3D</string>
+    <string name="render_mode_3d_sbs_movie">Phim AI SBS 3D (Đồng bộ)</string>
+    <string name="title_render_mode_strength_title">Cường độ hiệu ứng 3D</string>
+    <string name="title_render_mode_strength_description">Tham chiếu: 50 - Cao hơn thì hiệu ứng mạnh hơn, nhưng có thể gây mỏi mắt và không tự nhiên. Thấp hơn thì dễ chịu hơn và trải nghiệm mượt mà hơn.</string>
+    <string name="title_render_mode_convergence_title">Hội tụ 3D</string>
+    <string name="title_render_mode_convergence_description">Tham chiếu: 50 - Cân bằng / 0: TrướcMànHình / 100: SauMànHình</string>
+    <string name="title_render_mode_balance_shift_title">Cân bằng mắt 3D</string>
+    <string name="title_render_mode_balance_shift_description">Tham chiếu: 50 - Cả hai mắt chia sẻ 50% hiệu ứng sâu/nổi / 0: Trái (100% Nổi) - Phải (100% Sâu) / 100 - Trái Sâu - Phải Nổi // 100 hoặc 0 cho độ sắc nét tốt nhất vì một pixel luôn tồn tại không bị dịch chuyển ở mắt kia</string>
+
+    <!-- Input / mouse / gestures -->
+    <string name="title_checkbox_multi_touch_gestures">Bật cử chỉ đa chạm</string>
+    <string name="summary_checkbox_multi_touch_gestures">Bật chạm 3 ngón cho bàn phím, chạm 4 ngón cho bàn phím đầy đủ, chạm 5 ngón cho menu nhanh khi dùng chế độ đa chạm.</string>
+    <string name="title_checkbox_remember_mouse_mode">Nhớ chế độ chuột</string>
+    <string name="summary_checkbox_remember_mouse_mode">Nhớ chế độ chuột đã chọn trong lúc phát trực tiếp. Khi tắt, chế độ chuột thay đổi trong lúc phát trực tiếp sẽ chỉ là tạm thời.</string>
+    <string name="title_enable_rumble">Bật rung</string>
+    <string name="summary_enable_rumble">Bật phản hồi rung trên các gamepad được hỗ trợ.</string>
+
+    <!-- External display / game instance -->
+    <string name="external_display_info">Đã kết nối màn hình ngoài: %1$dx%2$d ở %3$.1fHz</string>
+    <string name="no_external_display">Không phát hiện màn hình ngoài</string>
+    <string name="no_game_instance">Không có phiên trò chơi nào</string>
+
+    <!-- Launcher file export -->
+    <string name="applist_menu_export_launcher">Xuất tệp Launcher</string>
+    <string name="title_export_sunshine_launcher_file">Xuất tệp Launcher cho Sunshine</string>
+    <string name="message_export_sunshine_launcher_file">Việc xuất tệp launcher cho Sunshine không ổn định và có thể hỏng bất cứ lúc nào. Bạn sẽ cần xuất lại mỗi lần nếu thay đổi tên hoặc hình ảnh ứng dụng.\nHãy dùng Apollo để có trải nghiệm ổn định hơn.</string>
+    <string name="export_launcher_app_details_incomplete">Không thể xuất: Chi tiết ứng dụng không đầy đủ.</string>
+    <string name="export_launcher_computer_details_incomplete">Không thể xuất: Chi tiết máy tính không đầy đủ.</string>
+    <string name="file_exported_successfully">Đã xuất tệp thành công.</string>
+    <string name="failed_to_initiate_file_export">Không thể bắt đầu xuất tệp: %s</string>
+    <string name="failed_to_open_file_for_writing">Không thể mở tệp để ghi.</string>
+    <string name="file_export_cancelled">Đã hủy xuất tệp.</string>
+    <string name="file_export_failed_no_content_to_write">Xuất tệp thất bại: Không có nội dung để ghi.</string>
+    <string name="file_export_failed_no_location_selected">Xuất tệp thất bại: Chưa chọn vị trí.</string>
+    <string name="unexpected_error_during_file_export">Đã xảy ra lỗi không mong muốn trong lúc xuất tệp.</string>
+    <string name="error_writing_file">Lỗi khi ghi tệp: %s</string>
+
+    <!-- Misc -->
+    <string name="app_removed_from_pc">Ứng dụng đã bị xóa khỏi PC</string>
+    <string name="save">Lưu</string>
+    <string name="rename">Đổi tên</string>
+    <string name="game_menu_select_steam_mode">Chọn chế độ Stream</string>
+
+    <!-- Profiles manager -->
+    <string name="title_edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="profile_manager_activated_profile">Đã kích hoạt hồ sơ \'%s\'</string>
+    <string name="profile_manager_active_profile">Hồ sơ đang dùng: %s</string>
+    <string name="profile_manager_deactivated_profile">Đã hủy kích hoạt hồ sơ</string>
+    <string name="profile_manager_choose_profile">Chọn hồ sơ</string>
+    <string name="profile_manager_confirm_profile_deleteion">Bạn có chắc muốn xóa \'%s\'?</string>
+    <string name="profile_manager_delete">Xóa</string>
+    <string name="profile_manager_delete_profile">Xóa hồ sơ</string>
+    <string name="profile_manager_edit_profile">"Chỉnh sửa hồ sơ: "</string>
+    <string name="profile_manager_edit_profile_name">Đổi tên hồ sơ</string>
+    <string name="profile_manager_edit_profile_with">Chỉnh sửa hồ sơ: %s</string>
+    <string name="profile_manager_failed_to_load">Không thể tải hồ sơ. Vui lòng kiểm tra logcat để biết chi tiết.</string>
+    <string name="profile_manager_failed_to_save">Không thể lưu hồ sơ. Vui lòng kiểm tra logcat để biết chi tiết.</string>
+    <string name="profile_manager_name_cannot_be_blank">Tên không được để trống</string>
+    <string name="profile_manager_new_profile">Hồ sơ mới</string>
+    <string name="profile_manager_new_profile_with">Hồ sơ mới: %s</string>
+    <string name="profile_manager_no_profiles_yet">Chưa có hồ sơ nào</string>
+    <string name="profile_manager_profile">"Hồ sơ "</string>
+    <string name="profile_manager_profile_deleted">Đã xóa hồ sơ \'%s\'</string>
+    <string name="profile_manager_profile_not_found">Không tìm thấy hồ sơ</string>
+    <string name="profile_manager_profile_saved">Đã lưu hồ sơ \'%s\'.</string>
+    <string name="profile_manager_profiles_description">Hồ sơ cho phép bạn tạo và lưu các cấu hình phát trực tiếp khác nhau. Mỗi hồ sơ lưu các cài đặt riêng có thể được chuyển đổi nhanh chóng.</string>
+    <string name="profile_manager_tap_create_profile">Chạm vào + để tạo hồ sơ đầu tiên của bạn</string>
+
+    <!-- Virtual keyboard layout editor -->
+    <string name="keyboard_add">Thêm</string>
+    <string name="keyboard_add_keys">Thêm phím</string>
+    <string name="keyboard_clear_all">Xóa tất cả</string>
+    <string name="keyboard_clear_all_confirm_message">Bạn có chắc muốn ẩn tất cả điều khiển trên màn hình? Bạn có thể thêm lại sau trong chế độ cấu hình.</string>
+    <string name="keyboard_clear_all_confirm_title">Xóa tất cả phím</string>
+    <string name="keyboard_configure_movable">Giờ bạn có thể di chuyển nút cài đặt.</string>
+    <string name="keyboard_duplicates_skipped">Đã bỏ qua %d mục trùng lặp</string>
+    <string name="keyboard_key_custom">%s (Tùy chỉnh)</string>
+    <string name="keyboard_keys_added">Đã thêm %d phím thành công</string>
+    <string name="keyboard_load_error">Lỗi khi tải cấu hình bàn phím: %s</string>
+    <string name="keyboard_select_keys">Chọn phím để thêm</string>
 </resources>

@@ -3,6 +3,7 @@ package com.limelight.preferences;
 import static com.limelight.utils.ServerHelper.getActiveDisplay;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Handler;
 import android.os.Vibrator;
 
@@ -40,7 +42,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -55,6 +59,7 @@ import com.limelight.binding.video.MediaCodecHelper;
 import com.limelight.utils.Dialog;
 import com.limelight.utils.FileUriUtils;
 import com.limelight.utils.PerformanceDataTracker;
+import com.limelight.utils.SettingsBackup;
 import com.limelight.utils.UiHelper;
 import org.json.JSONObject;
 import java.io.File;
@@ -768,6 +773,25 @@ public class StreamSettings extends AppCompatActivity {
                 });
             }
 
+            _pref = findPreference("export_config");
+            if (_pref != null) {
+                _pref.setOnPreferenceClickListener(preference -> {
+                    showExportSectionDialog();
+                    return false;
+                });
+            }
+
+            _pref = findPreference("import_config");
+            if (_pref != null) {
+                _pref.setOnPreferenceClickListener(preference -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("application/json");
+                    startActivityForResult(intent, IMPORT_CONFIG_REQUEST_CODE);
+                    return false;
+                });
+            }
+
             _pref = findPreference("share_performance_logs");
             if (_pref != null) {
                 _pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -994,6 +1018,15 @@ public class StreamSettings extends AppCompatActivity {
 
         int READ_REQUEST_CODE = 1001;
         int READ_REQUEST_SPECIAL_CODE = 1002;
+        int EXPORT_CONFIG_REQUEST_CODE = 1003;
+        int IMPORT_CONFIG_REQUEST_CODE = 1004;
+
+        // Chosen section flags for the pending export/import (set by the selection dialog).
+        boolean pendingExportBasic = true;
+        boolean pendingExportGamepad = true;
+        boolean pendingExportKeyboard = true;
+        boolean pendingExportSpecial = true;
+        String pendingImportJson = null;
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1041,7 +1074,152 @@ public class StreamSettings extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), getString(R.string.pref_error_occurred) + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+                return;
             }
+
+            if (requestCode == EXPORT_CONFIG_REQUEST_CODE && resultCode == Activity.RESULT_OK && data.getData() != null) {
+                try {
+                    Context ctx = requireContext();
+                    String json = SettingsBackup.exportToString(ctx,
+                            pendingExportBasic, pendingExportGamepad,
+                            pendingExportKeyboard, pendingExportSpecial);
+                    boolean ok = FileUriUtils.openUriForWrite(ctx, data.getData(), json);
+                    Toast.makeText(ctx, ok ? getString(R.string.config_backup_export_success)
+                                    : getString(R.string.config_backup_error, ""),
+                            Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(),
+                            getString(R.string.config_backup_error, e.getMessage()), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            if (requestCode == IMPORT_CONFIG_REQUEST_CODE && resultCode == Activity.RESULT_OK && data.getData() != null) {
+                try {
+                    Context ctx = requireContext();
+                    String json = FileUriUtils.openUriForRead(ctx, data.getData());
+                    if (TextUtils.isEmpty(json)) {
+                        Toast.makeText(ctx, getString(R.string.config_backup_empty_file), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    pendingImportJson = json;
+                    showImportSectionDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(),
+                            getString(R.string.config_backup_error, e.getMessage()), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+
+        /**
+         * Multi-select dialog of the four sections to export. All start checked.
+         * On OK, launches ACTION_CREATE_DOCUMENT so the user picks where to save
+         * the .json; the selected flags are read back in onActivityResult.
+         */
+        private void showExportSectionDialog() {
+            Context ctx = requireContext();
+            String[] labels = {
+                    getString(R.string.config_backup_section_basic),
+                    getString(R.string.config_backup_section_gamepad),
+                    getString(R.string.config_backup_section_keyboard),
+                    getString(R.string.config_backup_section_special)
+            };
+            boolean[] checked = {true, true, true, true};
+
+            new AlertDialog.Builder(ctx)
+                    .setTitle(R.string.title_export_config)
+                    .setMultiChoiceItems(labels, checked, (DialogInterface dialog, int which, boolean isChecked) -> {
+                        switch (which) {
+                            case 0: pendingExportBasic = isChecked; break;
+                            case 1: pendingExportGamepad = isChecked; break;
+                            case 2: pendingExportKeyboard = isChecked; break;
+                            case 3: pendingExportSpecial = isChecked; break;
+                        }
+                    })
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        if (!pendingExportBasic && !pendingExportGamepad
+                                && !pendingExportKeyboard && !pendingExportSpecial) {
+                            Toast.makeText(ctx, R.string.config_backup_no_sections_selected, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("application/json");
+                        intent.putExtra(Intent.EXTRA_TITLE, "cynix_backup_" + System.currentTimeMillis() + ".json");
+                        startActivityForResult(intent, EXPORT_CONFIG_REQUEST_CODE);
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        }
+
+        /**
+         * Multi-select dialog of the sections actually present in the pending
+         * import file (via {@link SettingsBackup#detectSections}). The user can
+         * uncheck a section to keep existing data for it. Importing runs on a
+         * background thread (Replace edits several SharedPreferences files).
+         */
+        private void showImportSectionDialog() {
+            Context ctx = requireContext();
+            boolean[] present = SettingsBackup.detectSections(pendingImportJson);
+            // Keep only sections that exist in the file.
+            String[] allLabels = {
+                    getString(R.string.config_backup_section_basic),
+                    getString(R.string.config_backup_section_gamepad),
+                    getString(R.string.config_backup_section_keyboard),
+                    getString(R.string.config_backup_section_special)
+            };
+            java.util.List<String> labels = new java.util.ArrayList<>();
+            java.util.List<Integer> indices = new java.util.ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                if (present[i]) {
+                    labels.add(allLabels[i]);
+                    indices.add(i);
+                }
+            }
+            if (labels.isEmpty()) {
+                Toast.makeText(ctx, R.string.config_backup_empty_file, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            boolean[] checked = new boolean[labels.size()];
+            java.util.Arrays.fill(checked, true);
+
+            new AlertDialog.Builder(ctx)
+                    .setTitle(R.string.title_import_config)
+                    .setMultiChoiceItems(labels.toArray(new String[0]), checked,
+                            (DialogInterface dialog, int which, boolean isChecked) -> checked[which] = isChecked)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        boolean basic = false, gamepad = false, keyboard = false, special = false;
+                        for (int i = 0; i < labels.size(); i++) {
+                            if (!checked[i]) continue;
+                            int idx = indices.get(i);
+                            switch (idx) {
+                                case 0: basic = true; break;
+                                case 1: gamepad = true; break;
+                                case 2: keyboard = true; break;
+                                case 3: special = true; break;
+                            }
+                        }
+                        final boolean fBasic = basic, fGamepad = gamepad, fKeyboard = keyboard, fSpecial = special;
+                        final String json = pendingImportJson;
+                        new Thread(() -> {
+                            try {
+                                SettingsBackup.applyImport(ctx, json,
+                                        fBasic, fGamepad, fKeyboard, fSpecial);
+                                requireActivity().runOnUiThread(() ->
+                                        Toast.makeText(ctx, R.string.config_backup_import_success, Toast.LENGTH_LONG).show());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                requireActivity().runOnUiThread(() ->
+                                        Toast.makeText(ctx, getString(R.string.config_backup_error, e.getMessage()),
+                                                Toast.LENGTH_LONG).show());
+                            }
+                        }).start();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
         }
 
         @Override

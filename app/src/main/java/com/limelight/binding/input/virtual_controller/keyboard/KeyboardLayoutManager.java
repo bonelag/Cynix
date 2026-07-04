@@ -205,6 +205,19 @@ public class KeyboardLayoutManager {
     }
 
     /**
+     * Wipes <b>all</b> keyboard layout metadata (and resets the migrate flag),
+     * leaving zero layouts registered. The next {@link KeyboardLayoutManager}
+     * construction will re-create the {@link #DEFAULT_LAYOUT_ID} entry.
+     *
+     * <p>Callers are responsible for clearing the per-layout data
+     * ({@link #getLayoutPreferenceName(String)}) beforehand &mdash;
+     * {@code SettingsBackup} does this as part of a Replace-import.
+     */
+    public void clearAll() {
+        getMetaPreferences().edit().clear().apply();
+    }
+
+    /**
      * Migrates legacy layout data from SharedPreferences("OSC_Keyboard") to the default layout.
      * This is a one-time operation.
      */
