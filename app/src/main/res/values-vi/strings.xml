@@ -28,7 +28,7 @@
     <string name="pcview_menu_delete_pc">Xóa PC</string>
     <string name="pcview_menu_test_network">Kiểm tra kết nối mạng</string>
     <string name="pcview_menu_details">Xem chi tiết</string>
-    <string name="pcview_menu_eol">NVIDIA GameStream Kết thúc dịch vụ</string>
+    <string name="pcview_menu_eol">NVIDIA GameStream đã ngừng dịch vụ</string>
     <string name="pcview_menu_open_management_page">Đi đến cấu hình máy chủ</string>
     <string name="pcview_error_no_management_url">Không thể mở trang cấu hình máy chủ, không thể tìm thấy địa chỉ máy chủ.</string>
 
@@ -77,12 +77,12 @@
     <!-- Errors -->
     <string name="error_pc_offline">Máy tính đang ngoại tuyến</string>
     <string name="error_manager_not_running">Dịch vụ ComputerManager không hoạt động. Vui lòng đợi vài giây hoặc khởi động lại ứng dụng.</string>
-    <string name="error_unknown_host">Không thể giải quyết máy chủ</string>
+    <string name="error_unknown_host">Không thể phân giải máy chủ</string>
     <string name="error_404">GFE trả về lỗi HTTP 404. Đảm bảo PC của bạn đang chạy GPU được hỗ trợ.
 	    Sử dụng phần mềm điều khiển từ xa cũng có thể gây ra lỗi này. Thử khởi động lại máy của bạn hoặc cài đặt lại GFE.
     </string>
     <string name="title_decoding_error">Bộ giải mã video bị lỗi</string>
-    <string name="message_decoding_error">Cynix đã gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Thử điều chỉnh cài đặt phát trực tuyến nếu sự cố tiếp tục xảy ra.</string>
+    <string name="message_decoding_error">Cynix gặp sự cố do không tương thích với bộ giải mã video của thiết bị này. Hãy thử điều chỉnh cài đặt truyền phát nếu sự cố tiếp diễn.</string>
     <string name="title_decoding_reset">Cài đặt video đã được đặt lại</string>
     <string name="message_decoding_reset">Bộ giải mã video của thiết bị của bạn tiếp tục gặp sự cố ở cài đặt phát trực tuyến đã chọn. Cài đặt phát trực tuyến của bạn đã được đặt lại về mặc định.</string>
     <string name="error_usb_prohibited">Truy cập USB bị cấm bởi quản trị viên thiết bị của bạn. Kiểm tra cài đặt Knox hoặc MDM của bạn.</string>
@@ -97,7 +97,7 @@
     <!-- Start application messages -->
     <string name="conn_establishing_title">Đang thiết lập kết nối</string>
     <string name="conn_establishing_msg">Đang bắt đầu kết nối</string>
-    <string name="conn_metered">Cảnh báo: Kết nối mạng hiện tại của bạn bị đo lường!</string>
+    <string name="conn_metered">Cảnh báo: Mạng hiện tại có giới hạn dữ liệu</string>
     <string name="conn_client_latency">Độ trễ giải mã khung hình trung bình:</string>
     <string name="conn_client_latency_hw">độ trễ bộ giải mã phần cứng:</string>
     <string name="conn_hardware_latency">Độ trễ giải mã phần cứng trung bình:</string>
@@ -158,7 +158,7 @@
     <string name="msg_add_pc">Đang kết nối với PC…</string>
     <string name="addpc_fail">Không thể kết nối với máy tính được chỉ định. Đảm bảo rằng các cổng cần thiết được phép thông qua tường lửa.</string>
     <string name="addpc_success">Thêm máy tính thành công</string>
-    <string name="addpc_unknown_host">Không thể giải quyết địa chỉ PC. Đảm bảo rằng bạn không mắc lỗi chính tả trong địa chỉ.</string>
+    <string name="addpc_unknown_host">Không thể phân giải địa chỉ PC. Hãy kiểm tra lại địa chỉ đã nhập.</string>
     <string name="addpc_enter_ip">Bạn phải nhập địa chỉ IP</string>
     <string name="addpc_wrong_sitelocal">Địa chỉ đó không đúng. Bạn phải sử dụng địa chỉ IP công cộng của bộ định tuyến của mình để phát trực tuyến qua Internet.</string>
 
@@ -168,7 +168,7 @@
     <string name="title_resolution_list">Độ phân giải video</string>
     <string name="summary_resolution_list">Tăng để cải thiện độ rõ nét của hình ảnh. Giảm để có hiệu suất tốt hơn trên các thiết bị cấp thấp và mạng chậm hơn.</string>
     <string name="title_native_res_dialog">Cảnh báo độ phân giải gốc</string>
-    <string name="text_native_res_dialog">Độ phân giải gốc và/hoặc FPS có thể không được máy chủ phát trực tuyến hỗ trợ. Bạn có thể cần cấu hình chế độ hiển thị tùy chỉnh phù hợp cho PC máy chủ theo cách thủ công.\n\nNếu bạn chọn tạo độ phân giải tùy chỉnh trong Bảng điều khiển NVIDIA để phù hợp với cài đặt màn hình của mình, vui lòng đảm bảo rằng bạn đã đọc và hiểu cảnh báo của NVIDIA về khả năng hỏng màn hình, sự không ổn định của PC và các vấn đề tiềm ẩn khác.\n\nChúng tôi không chịu trách nhiệm cho bất kỳ vấn đề nào phát sinh từ việc tạo độ phân giải tùy chỉnh trên PC của bạn.\n\nCó thể màn hình của bạn không hỗ trợ cấu hình hiển thị cần thiết. Nếu vậy, bạn có thể thử thiết lập màn hình ảo. Cuối cùng, nếu thiết bị hoặc PC máy chủ của bạn không hỗ trợ phát trực tuyến ở độ phân giải hoặc tốc độ làm mới cụ thể, bạn không may mắn.</string>
+    <string name="text_native_res_dialog">Độ phân giải gốc và/hoặc FPS có thể không được máy chủ truyền phát hỗ trợ. Bạn có thể cần tự cấu hình chế độ hiển thị tùy chỉnh phù hợp trên PC máy chủ.\n\nNếu tạo độ phân giải tùy chỉnh trong Bảng điều khiển NVIDIA để khớp với màn hình, hãy đọc kỹ cảnh báo của NVIDIA về nguy cơ hỏng màn hình, hệ thống không ổn định và các vấn đề liên quan.\n\nChúng tôi không chịu trách nhiệm cho bất kỳ sự cố nào phát sinh từ việc tạo độ phân giải tùy chỉnh trên PC của bạn.\n\nMàn hình, thiết bị hoặc PC máy chủ có thể không hỗ trợ cấu hình hiển thị, độ phân giải hoặc tần số quét đã chọn. Nếu vậy, hãy thử dùng màn hình ảo hoặc chọn cấu hình khác.</string>
     <string name="title_fps_list">Tốc độ khung hình video</string>
     <string name="summary_fps_list">Tăng để có luồng video mượt mà hơn. Giảm để có hiệu suất tốt hơn trên các thiết bị cấp thấp.</string>
     <string name="title_seekbar_bitrate">Tốc độ bit video</string>
@@ -199,33 +199,33 @@
     <string name="title_checkbox_enable_audiofx">Bật hiệu ứng âm thanh</string>
     <string name="summary_checkbox_enable_audiofx">Cho phép các hiệu ứng âm thanh hoạt động trong khi phát trực tuyến, nhưng có thể tăng độ trễ âm thanh</string>
 
-    <string name="category_gamepad_settings">Cài đặt gamepad</string>
-    <string name="title_checkbox_multi_controller">Phát hiện tự động sự hiện diện của gamepad</string>
-    <string name="summary_checkbox_multi_controller">Bỏ chọn tùy chọn này buộc một gamepad luôn có mặt</string>
+    <string name="category_gamepad_settings">Cài đặt tay cầm</string>
+    <string name="title_checkbox_multi_controller">Tự phát hiện tay cầm</string>
+    <string name="summary_checkbox_multi_controller">Tắt tùy chọn này để luôn giả lập một tay cầm</string>
     <string name="title_checkbox_vibrate_fallback">Mô phỏng hỗ trợ rung</string>
-    <string name="summary_checkbox_vibrate_fallback">Rung thiết bị của bạn để mô phỏng rung nếu gamepad của bạn không hỗ trợ</string>
+    <string name="summary_checkbox_vibrate_fallback">Dùng rung của thiết bị khi tay cầm không hỗ trợ rung</string>
     <string name="title_seekbar_vibrate_fallback_strength">Điều chỉnh cường độ rung mô phỏng</string>
     <string name="summary_seekbar_vibrate_fallback_strength">Khuếch đại hoặc giảm cường độ rung trên thiết bị của bạn</string>
     <string name="suffix_seekbar_vibrate_fallback_strength">%</string>
     <string name="title_seekbar_deadzone">Điều chỉnh vùng chết của cần analog</string>
     <string name="summary_seekbar_deadzone">Giá trị dương đặt vùng chết bình thường, giá trị âm áp dụng bù vùng chết. Đảm bảo bộ điều khiển của bạn có thể điều chỉnh vùng chết khi sử dụng bù vùng chết, nếu không việc căn giữa có thể khó khăn.</string>
     <string name="suffix_seekbar_deadzone">%</string>
-    <string name="title_checkbox_xb1_driver">Trình điều khiển gamepad USB Xbox 360/One/NintendoPro</string>
-    <string name="summary_checkbox_xb1_driver">Bật trình điều khiển USB tích hợp cho các thiết bị không có hỗ trợ gamepad Xbox/Nintendo Pro gốc</string>
-    <string name="title_checkbox_usb_bind_all">Ghi đè hỗ trợ gamepad Xbox gốc</string>
-    <string name="summary_checkbox_usb_bind_all">Sử dụng trình điều khiển USB của Cynix cho tất cả các gamepad được hỗ trợ, ngay cả khi hỗ trợ gamepad Xbox/Nintendo Pro gốc có mặt</string>
-    <string name="title_checkbox_mouse_emulation">Mô phỏng chuột qua gamepad</string>
-    <string name="summary_checkbox_mouse_emulation">Nhấn giữ nút Start sẽ chuyển gamepad sang chế độ chuột</string>
+    <string name="title_checkbox_xb1_driver">Driver tay cầm USB Xbox 360/One/Nintendo Pro</string>
+    <string name="summary_checkbox_xb1_driver">Bật driver USB tích hợp cho thiết bị không hỗ trợ sẵn tay cầm Xbox/Nintendo Pro</string>
+    <string name="title_checkbox_usb_bind_all">Ghi đè hỗ trợ tay cầm Xbox gốc</string>
+    <string name="summary_checkbox_usb_bind_all">Dùng driver USB của Cynix cho mọi tay cầm được hỗ trợ, kể cả khi hệ thống đã hỗ trợ sẵn</string>
+    <string name="title_checkbox_mouse_emulation">Mô phỏng chuột bằng tay cầm</string>
+    <string name="summary_checkbox_mouse_emulation">Nhấn giữ nút Start để chuyển giữa chế độ tay cầm và chuột</string>
     <string name="title_checkbox_flip_face_buttons">Đảo nút mặt</string>
-    <string name="summary_checkbox_flip_face_buttons">Chuyển đổi các nút mặt A/B và X/Y cho gamepad và các điều khiển trên màn hình</string>
-    <string name="title_checkbox_gamepad_touchpad_as_mouse">Luôn điều khiển chuột bằng bàn di chuột</string>
-    <string name="summary_checkbox_gamepad_touchpad_as_mouse">Buộc đầu vào bàn di chuột của gamepad để điều khiển chuột máy chủ, ngay cả khi mô phỏng gamepad với bàn di chuột.</string>
-    <string name="title_checkbox_gamepad_motion_sensors">Cho phép sử dụng cảm biến chuyển động của gamepad</string>
-    <string name="summary_checkbox_gamepad_motion_sensors">Cho phép các máy chủ được hỗ trợ yêu cầu dữ liệu cảm biến chuyển động khi mô phỏng gamepad với cảm biến chuyển động. Tắt có thể giảm nhẹ việc sử dụng năng lượng và mạng nếu cảm biến chuyển động không được sử dụng trong trò chơi.</string>
-    <string name="title_checkbox_gamepad_motion_fallback">Mô phỏng hỗ trợ cảm biến chuyển động của gamepad</string>
-    <string name="summary_checkbox_gamepad_motion_fallback">Sử dụng cảm biến chuyển động tích hợp của thiết bị của bạn nếu cảm biến chuyển động của gamepad không được hỗ trợ bởi gamepad được kết nối hoặc phiên bản Android của bạn.\nLưu ý: Bật tùy chọn này có thể khiến gamepad của bạn xuất hiện dưới dạng bộ điều khiển PlayStation trên máy chủ.</string>
+    <string name="summary_checkbox_flip_face_buttons">Đảo các nút A/B và X/Y trên tay cầm và điều khiển ảo</string>
+    <string name="title_checkbox_gamepad_touchpad_as_mouse">Luôn dùng touchpad làm chuột</string>
+    <string name="summary_checkbox_gamepad_touchpad_as_mouse">Dùng touchpad của tay cầm để điều khiển chuột trên máy chủ, kể cả khi đang giả lập tay cầm có touchpad.</string>
+    <string name="title_checkbox_gamepad_motion_sensors">Cho phép cảm biến chuyển động tay cầm</string>
+    <string name="summary_checkbox_gamepad_motion_sensors">Cho phép máy chủ được hỗ trợ lấy dữ liệu cảm biến chuyển động khi giả lập tay cầm. Tắt nếu trò chơi không dùng tính năng này để giảm nhẹ pin và mạng.</string>
+    <string name="title_checkbox_gamepad_motion_fallback">Giả lập cảm biến chuyển động tay cầm</string>
+    <string name="summary_checkbox_gamepad_motion_fallback">Dùng cảm biến chuyển động tích hợp của thiết bị khi tay cầm hoặc phiên bản Android không hỗ trợ.\nLưu ý: Bật tùy chọn này có thể khiến tay cầm hiển thị như tay cầm PlayStation trên máy chủ.</string>
     <string name="title_checkbox_force_device_motion">Luôn sử dụng cảm biến chuyển động của thiết bị</string>
-    <string name="summary_checkbox_force_device_motion">Buộc sử dụng cảm biến chuyển động tích hợp của thiết bị ngay cả khi gamepad báo cáo cảm biến chuyển động được hỗ trợ.</string>
+    <string name="summary_checkbox_force_device_motion">Luôn dùng cảm biến chuyển động của thiết bị, kể cả khi tay cầm báo có hỗ trợ.</string>
 
     <string name="category_input_settings">Cài đặt đầu vào</string>
     <string name="title_checkbox_touchscreen_trackpad">Sử dụng màn hình cảm ứng như bàn di chuột</string>
@@ -233,13 +233,13 @@
     <string name="title_checkbox_absolute_mouse_mode">Chế độ chuột máy tính từ xa</string>
     <string name="summary_checkbox_absolute_mouse_mode">Điều này có thể làm cho gia tốc chuột hoạt động tự nhiên hơn cho việc sử dụng máy tính từ xa, nhưng không tương thích với nhiều trò chơi.</string>
     <string name="title_checkbox_mouse_nav_buttons">Bật nút chuột quay lại và tiến</string>
-    <string name="summary_checkbox_mouse_nav_buttons">Bật tùy chọn này có thể làm hỏng việc nhấp chuột phải trên một số thiết bị bị lỗi</string>
+    <string name="summary_checkbox_mouse_nav_buttons">Bật tùy chọn này có thể làm lỗi thao tác chuột phải trên một số thiết bị</string>
 
     <string name="category_on_screen_controls_settings">Cài đặt điều khiển trên màn hình</string>
     <string name="title_checkbox_show_onscreen_controls">Hiển thị điều khiển trên màn hình</string>
     <string name="summary_checkbox_show_onscreen_controls">Hiển thị lớp phủ bộ điều khiển ảo trên màn hình cảm ứng</string>
-    <string name="title_hide_osc_when_has_gamepad">Ẩn OSC khi sử dụng Bộ điều khiển</string>
-    <string name="summary_hide_osc_when_has_gamepad">Ẩn gamepad ảo khi gamepad vật lý được kết nối</string>
+    <string name="title_hide_osc_when_has_gamepad">Ẩn điều khiển ảo khi dùng tay cầm</string>
+    <string name="summary_hide_osc_when_has_gamepad">Ẩn tay cầm ảo khi có tay cầm vật lý được kết nối</string>
     <string name="title_checkbox_vibrate_osc">Bật rung</string>
     <string name="summary_checkbox_vibrate_osc">Rung thiết bị của bạn để mô phỏng rung cho các điều khiển trên màn hình</string>
     <string name="title_only_l3r3">Chỉ hiển thị L3 và R3</string>
@@ -282,26 +282,26 @@
     <string name="title_video_format">Thay đổi cài đặt codec</string>
     <string name="summary_video_format">Các codec mới hơn có thể giảm yêu cầu băng thông video nếu thiết bị của bạn hỗ trợ chúng. Các lựa chọn codec có thể bị bỏ qua nếu không được phần mềm máy chủ hoặc GPU hỗ trợ.</string>
     <string name="title_enable_hdr">Bật HDR (Thử nghiệm)</string>
-    <string name="summary_enable_hdr">Phát trực tuyến HDR khi trò chơi và GPU PC hỗ trợ nó. HDR yêu cầu GPU có hỗ trợ mã hóa HEVC Main 10.</string>
+    <string name="summary_enable_hdr">Truyền phát HDR khi trò chơi và GPU PC hỗ trợ. HDR yêu cầu GPU hỗ trợ mã hóa HEVC Main 10.</string>
     <string name="title_full_range">Buộc video toàn dải (Thử nghiệm)</string>
     <string name="summary_full_range">Điều này sẽ gây mất chi tiết trong các vùng sáng và tối nếu thiết bị của bạn không hiển thị đúng nội dung video toàn dải.</string>
     <string name="title_enable_perf_overlay">Hiển thị thống kê hiệu suất trong khi phát trực tuyến</string>
     <string name="summary_enable_perf_overlay">Hiển thị thông tin hiệu suất luồng thời gian thực trong khi phát trực tuyến</string>
-    <string name="title_enable_post_stream_toast">Hiển thị thông báo độ trễ sau khi phát trực tuyến</string>
-    <string name="summary_enable_post_stream_toast">Hiển thị thông báo thông tin độ trễ sau khi luồng kết thúc</string>
+    <string name="title_enable_post_stream_toast">Hiển thị độ trễ sau phiên truyền phát</string>
+    <string name="summary_enable_post_stream_toast">Hiển thị thông tin độ trễ khi phiên truyền phát kết thúc</string>
 
     <string name="category_help">Trợ giúp</string>
     <string name="title_setup_guide">Hướng dẫn thiết lập</string>
-    <string name="summary_setup_guide">Xem hướng dẫn về cách thiết lập PC chơi game của bạn để phát trực tuyến</string>
+    <string name="summary_setup_guide">Xem hướng dẫn thiết lập PC chơi game để truyền phát</string>
     <string name="title_troubleshooting">Hướng dẫn khắc phục sự cố</string>
-    <string name="summary_troubleshooting">Xem các mẹo để chẩn đoán và khắc phục các sự cố phát trực tuyến phổ biến</string>
+    <string name="summary_troubleshooting">Xem mẹo chẩn đoán và khắc phục sự cố truyền phát phổ biến</string>
     <string name="title_privacy_policy">Chính sách quyền riêng tư</string>
     <string name="summary_privacy_policy">Xem chính sách quyền riêng tư của Cynix</string>
     <string name="title_special_key_help">Trợ giúp phím đặc biệt</string>
     <string name="summary_special_key_help">Hướng dẫn về cách thiết lập các phím đặc biệt tùy chỉnh</string>
 
     <!-- Toasts -->
-    <string name="toast_controller_type_changed">Loại gamepad có thể đã thay đổi do mô phỏng cảm biến chuyển động</string>
+    <string name="toast_controller_type_changed">Loại tay cầm có thể đã thay đổi do mô phỏng cảm biến chuyển động</string>
 
     <!-- Array strings -->
     <string name="resolution_360p">360p</string>
@@ -346,8 +346,8 @@
     <string name="game_menu_enable_zoom_mode">Bật Pan/Zoom</string>
     <string name="game_menu_disable_zoom_mode">Tắt Pan/Zoom</string>
     <string name="game_menu_rotate_screen">Xoay màn hình</string>
-    <string name="game_menu_toggle_keyboard_model">Hiển thị phím đặc biệt</string>s
-    <string name="game_menu_toggle_virtual_model">Hiển thị gamepad</string>
+    <string name="game_menu_toggle_keyboard_model">Hiển thị phím đặc biệt</string>
+    <string name="game_menu_toggle_virtual_model">Hiển thị tay cầm ảo</string>
     <string name="game_menu_toggle_virtual_keyboard_model">Hiển thị bàn phím đầy đủ</string>
     <string name="game_menu_switch_touch_sensitivity_model">Thay đổi độ nhạy cảm ứng</string>
 
@@ -395,8 +395,8 @@
     <string name="summary_export_config">Sao lưu các cài đặt &amp; bố cục đã chọn ra tệp .json</string>
     <string name="title_import_config">Nhập cấu hình</string>
     <string name="summary_import_config">Khôi phục các phần đã chọn từ tệp .json (ghi đè dữ liệu hiện tại)</string>
-    <string name="config_backup_section_basic">Cài đặt cơ bản (streaming, giao diện, đầu vào)</string>
-    <string name="config_backup_section_gamepad">Bố cục gamepad ảo</string>
+    <string name="config_backup_section_basic">Cài đặt cơ bản (truyền phát, giao diện, đầu vào)</string>
+    <string name="config_backup_section_gamepad">Bố cục tay cầm ảo</string>
     <string name="config_backup_section_keyboard">Bố cục bàn phím ảo</string>
     <string name="config_backup_section_special">Phím đặc biệt tùy chỉnh</string>
     <string name="config_backup_export_success">Đã xuất cấu hình</string>
@@ -406,8 +406,8 @@
     <string name="config_backup_no_sections_selected">Không có gì để xuất</string>
 
     <string name="title_manual_enter_bitrate">Tùy chỉnh bitrate</string>
-    <string name="summary_manual_enter_bitrate">Tự nhập tốc độ truyền tải.\nCó thể vượt quá giới hạn tối đa của thanh trượt.</string>
-    <string name="dialog_manual_enter_bitrate">Nhập bitrate tính bằng Mbps. Làm tròn đến 0.5.</string>
+    <string name="summary_manual_enter_bitrate">Tự nhập bitrate.\nCó thể vượt quá giới hạn tối đa của thanh trượt.</string>
+    <string name="dialog_manual_enter_bitrate">Nhập bitrate theo Mbps. Làm tròn đến 0,5.</string>
 
     <string name="title_custom_refresh_rate">Tùy chỉnh tần số quét</string>
     <string name="summary_custom_refresh_rate">Nhập tần số quét thủ công. Chỉ hỗ trợ Apollo.</string>
@@ -418,54 +418,54 @@
 
 
     <!-- New Strings -->
-    <string name="title_checkbox_mouse_local_cursor">Sử dụng con trỏ chuột nội bộ</string>
-    <string name="summary_checkbox_mouse_local_cursor">Con trỏ chuột vật lý ngoài sẽ bị bắt, tùy chọn này sẽ hiển thị con trỏ chuột của hệ thống Android</string>
+    <string name="title_checkbox_mouse_local_cursor">Dùng con trỏ chuột cục bộ</string>
+    <string name="summary_checkbox_mouse_local_cursor">Hiển thị con trỏ hệ thống Android khi chuột vật lý bị ứng dụng chiếm quyền</string>
 
     <string name="title_checkbox_onscreen_style_official">Giao diện tay cầm ảo chính thức</string>
-    <string name="summary_checkbox_onscreen_style_official">Nếu bạn vẫn thích kiểu giao diện tay cầm ảo cũ, bạn có thể chọn tùy chọn này.\nNút có thể là hình vuông nếu bạn chọn nút ảo phía dưới [Nút bình thường là nút vuông]</string>
+    <string name="summary_checkbox_onscreen_style_official">Dùng kiểu nút tay cầm ảo cũ.\nNút có thể hiển thị dạng vuông tùy theo bố cục đã chọn.</string>
 
     <string name="title_checkbox_enable_perf_overlay_lite">Bật chế độ đơn giản</string>
     <string name="summary_checkbox_enable_perf_overlay_lite">Hiển thị thông tin hiệu suất đơn giản: Tốc độ mạng / Độ trễ / Giải mã / Tỷ lệ mất gói / FPS</string>
 
-    <string name="title_checkbox_enable_perf_overlay_lite_dialog">Nhấp chế độ đơn giản để hiển thị tùy chọn nhanh</string>
-    <string name="summary_checkbox_enable_perf_overlay_lite_dialog">Thay đổi chức năng nút quay lại, hiển thị menu nhanh trong game.</string>
+    <string name="title_checkbox_enable_perf_overlay_lite_dialog">Chạm chế độ Lite để mở tùy chọn nhanh</string>
+    <string name="summary_checkbox_enable_perf_overlay_lite_dialog">Đổi nút quay lại thành menu nhanh trong trò chơi.</string>
 
     <string name="title_virtual_trackpad_settings">Cài đặt bàn di chuột ảo</string>
 
     <string name="title_quit_dialog">Menu Quay lại</string>
-    <string name="summary_quit_dialog">Khi bật, nhấn nút quay lại vật lý khi đang stream sẽ hiển thị các tùy chọn liên quan!\nBàn phím ảo, thông tin hiệu suất, chuyển đổi chế độ cảm ứng, gửi phím đặc biệt</string>
+    <string name="summary_quit_dialog">Khi bật, nhấn nút Back vật lý trong lúc truyền phát sẽ mở các tùy chọn nhanh.\nGồm bàn phím ảo, hiệu suất, chế độ cảm ứng và phím đặc biệt.</string>
 
-    <string name="dialog_custom_resolution">Đặt độ phân giải và thoát khỏi trang cài đặt để áp dụng!</string>
-    <string name="summary_custom_resolution">Thêm độ phân giải tùy chỉnh, phân tách bằng dấu x, độ phân giải lạ có thể không hoạt động.\nVí dụ: 1920x1080\nNếu là độ phân giải không gốc, có thể sẽ không hiển thị toàn màn hình. Nếu tỷ lệ khung hình giống nhau, bạn có thể chọn kéo giãn để hiển thị toàn màn hình</string>
+    <string name="dialog_custom_resolution">Đặt độ phân giải rồi thoát cài đặt để áp dụng.</string>
+    <string name="summary_custom_resolution">Thêm độ phân giải tùy chỉnh, phân tách bằng dấu x. Một số độ phân giải có thể không hoạt động.\nVí dụ: 1920x1080\nVới độ phân giải không gốc, hình ảnh có thể không phủ toàn màn hình. Nếu cùng tỷ lệ khung hình, hãy chọn kéo giãn.</string>
     <string name="title_custom_resolution">Độ phân giải tùy chỉnh</string>
 
     <string name="title_auto_orientation">Tự động xoay màn hình</string>
-    <string name="summary_auto_orientation">Màn hình stream sẽ hiển thị theo hướng của thiết bị khi bắt đầu stream.</string>
+    <string name="summary_auto_orientation">Màn hình truyền phát sẽ theo hướng thiết bị khi bắt đầu phiên.</string>
 
     <string name="title_import_special_button">Nhập phím tùy chỉnh</string>
-    <string name="summary_import_special_button">Sử dụng được trong Menu Quay lại và phím đặc biệt.\nLưu ý: Nhập sẽ ghi đè cấu hình hiện tại, vui lòng sao lưu trước.</string>
+    <string name="summary_import_special_button">Dùng trong Menu Quay lại và phím đặc biệt.\nLưu ý: Nhập sẽ ghi đè cấu hình hiện tại. Hãy sao lưu trước.</string>
 
     <string name="title_software_update">Cập nhật phần mềm</string>
-    <string name="summary_software_update">Việt Hóa bởi BoneLag - Truy cập GitHub Release để nhận phiên bản mới nhất</string>
+    <string name="summary_software_update">Truy cập GitHub Releases để tải phiên bản mới nhất</string>
 
     <string name="title_special_key_layout">Bố cục phím đặc biệt</string>
 
-    <string name="title_show_virtual_key">Hiển thị phím ảo trên màn hình</string>
-    <string name="summary_show_virtual_key">Hiển thị một lớp phím đặc biệt ảo trên màn hình cảm ứng.\nĐộ mờ của phím chia sẻ với tay cầm ảo phía trên.</string>
+    <string name="title_show_virtual_key">Hiển thị phím đặc biệt ảo</string>
+    <string name="summary_show_virtual_key">Hiển thị lớp phím đặc biệt trên màn hình cảm ứng.\nĐộ mờ dùng chung với tay cầm ảo.</string>
 
-    <string name="title_default_layout_scheme">Cấu hình bố cục mặc định</string>
-    <string name="summary_default_layout_scheme">Mỗi bố cục ban đầu giống nhau (được tạo từ file keyboards.json), bạn có thể xóa và chỉnh sửa theo ý</string>
+    <string name="title_default_layout_scheme">Hồ sơ bố cục mặc định</string>
+    <string name="summary_default_layout_scheme">Các bố cục ban đầu được tạo từ keyboards.json. Bạn có thể xóa hoặc chỉnh sửa khi cần.</string>
 
-    <string name="summary_vibrate_keyboard">Khi bạn nhấn nút trên màn hình, thiết bị sẽ rung. Áp dụng cả với nút tay cầm ảo.</string>
+    <string name="summary_vibrate_keyboard">Rung khi nhấn nút trên màn hình. Áp dụng cả cho tay cầm ảo.</string>
 
-    <string name="title_square_buttons">Nút hình vuông bình thường</string>
-    <string name="summary_square_buttons">Hình dạng nút ảo là nút vuông, mặc định là tròn.</string>
+    <string name="title_square_buttons">Dùng nút vuông</string>
+    <string name="summary_square_buttons">Hiển thị nút ảo dạng vuông thay vì dạng tròn mặc định.</string>
 
     <string name="title_reset_keyboard_layout">Đặt lại bố cục bàn phím ảo</string>
     <string name="summary_reset_keyboard_layout">Khởi tạo lại bố cục phím đặc biệt (đặt lại bố cục được chọn mặc định)</string>
 
-    <string name="title_joyconfix">Tương thích JoyCon của Switch</string>
-    <string name="summary_joyconfix">Nếu JoyCon của bạn không hoạt động hoặc nhận phím sai, bạn có thể bật tính năng này. Hỗ trợ Android 10 trở lên</string>
+    <string name="title_joyconfix">Tương thích Joy-Con của Switch</string>
+    <string name="summary_joyconfix">Bật nếu Joy-Con không hoạt động hoặc nhận nút sai. Hỗ trợ Android 10 trở lên.</string>
 
     <string name="title_keyboard_opacity">Độ mờ bàn phím đầy đủ ảo</string>
     <string name="title_onscreen_keyboard_height">Chiều cao bàn phím đầy đủ ảo</string>
@@ -475,25 +475,25 @@
     <string name="summary_onscreen_keyboard_width">Điều chỉnh chiều rộng bàn phím đầy đủ ảo</string>
     <string name="summary_onscreen_keyboard_align_mode">Cách căn bàn phím đầy đủ ảo với màn hình</string>
 
-    <string name="title_free_analog_stick">Joystick tự do</string>
-    <string name="summary_free_analog_stick">Vị trí tâm của joystick trái và phải không cố định, có thể điều chỉnh tự do trong phạm vi nhất định.</string>
+    <string name="title_free_analog_stick">Cần analog tự do</string>
+    <string name="summary_free_analog_stick">Tâm cần analog trái/phải không cố định và có thể di chuyển trong phạm vi nhất định.</string>
     <string name="summary_free_analog_stick_opacity">Mặc định chỉ hiển thị nền khi di chuyển cần gạt. Nếu bạn không thích, có thể điều chỉnh độ mờ.</string>
-    <string name="title_free_analog_stick_opacity">Độ mờ nền của joystick tự do</string>
+    <string name="title_free_analog_stick_opacity">Độ mờ nền cần analog tự do</string>
 
     <string name="title_exdisplay_mode">Chế độ màn hình ngoài (Beta)</string>
-    <string name="summary_exdisplay_mode">Hiển thị hình ảnh stream trên màn hình ngoài, nút ảo và các điều khiển khác trên điện thoại.</string>
+    <string name="summary_exdisplay_mode">Hiển thị luồng trên màn hình ngoài, còn nút ảo và điều khiển khác trên điện thoại.</string>
 
     <string name="title_top_center_display">Hiển thị ở giữa trên</string>
-    <string name="summary_top_center_display">Khi độ phân giải không phải gốc, hình ảnh stream sẽ căn lên trên thay vì ở giữa.</string>
+    <string name="summary_top_center_display">Khi dùng độ phân giải không gốc, hình ảnh truyền phát sẽ căn lên trên thay vì ở giữa.</string>
 
     <string name="title_touch_sensitivity">Độ nhạy cảm ứng</string>
     <string name="summary_touch_sensitivity">Khi bật, bạn có thể điều chỉnh độ nhạy cảm ứng thủ công.</string>
 
-    <string name="title_global_touch_sensitivity">Hiệu lực toàn màn hình cho độ nhạy cảm ứng</string>
-    <string name="summary_global_touch_sensitivity">Mặc định không bật, chỉ áp dụng bên phải màn hình (hợp với Genshin Impact), bật sẽ có hiệu lực toàn màn hình.</string>
+    <string name="title_global_touch_sensitivity">Áp dụng độ nhạy cảm ứng toàn màn hình</string>
+    <string name="summary_global_touch_sensitivity">Mặc định chỉ áp dụng nửa phải màn hình. Bật để áp dụng trên toàn màn hình.</string>
 
-    <string name="title_auto_touch_sensitivity">Tự động trở về trung tâm khi vượt ranh giới cảm ứng</string>
-    <string name="summary_auto_touch_sensitivity">Ở độ nhạy cao, trượt nhẹ có thể vượt ranh giới, gây không thể di chuyển. Bật tùy chọn này để khắc phục.</string>
+    <string name="title_auto_touch_sensitivity">Tự đưa cảm ứng về giữa khi vượt biên</string>
+    <string name="summary_auto_touch_sensitivity">Ở độ nhạy cao, thao tác trượt ngắn có thể vượt biên và làm mất điều khiển. Bật để tự khắc phục.</string>
 
     <string name="title_touch_sensitivity_x">Điều chỉnh độ nhạy trục X</string>
     <string name="summary_touch_sensitivity_x">Ở chế độ đa điểm, một số game không đáp ứng yêu cầu độ nhạy, bạn có thể chỉnh trục X ở đây.</string>
@@ -503,56 +503,56 @@
 
     <string name="title_debug_info">Thông tin gỡ lỗi</string>
 
-        <string name="summary_debug_info">Thử rung tay cầm chơi game và các chức năng khác.</string>
+    <string name="summary_debug_info">Kiểm tra rung tay cầm và các chức năng liên quan.</string>
     <string name="title_touchpad_sensitivity_x">Độ nhạy touchpad - Trục X</string>
-    <string name="summary_touchpad_sensitivity_x">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng nút đặc biệt ảo;\nCả hai dùng chung giá trị độ nhạy, nhưng hiệu suất có thể khác nhau.\nKhông biết có ai dùng cả hai cùng lúc không?</string>
+    <string name="summary_touchpad_sensitivity_x">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng phím đặc biệt ảo.\nCả hai dùng chung giá trị độ nhạy, nhưng phản hồi có thể khác nhau.</string>
     <string name="title_touchpad_sensitivity_y">Độ nhạy touchpad - Trục Y</string>
-    <string name="summary_touchpad_sensitivity_y">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng nút đặc biệt ảo;\nCả hai dùng chung giá trị độ nhạy, nhưng hiệu suất có thể khác nhau.\nKhông biết có ai dùng cả hai cùng lúc không?</string>
-    <string name="title_device_rumble">Bắt buộc rung trên thiết bị</string>
-    <string name="summary_device_rumble">Nếu bạn không hài lòng với rung của tay cầm chơi game đã kết nối, bạn có thể bật tùy chọn này.\nKhông có tác dụng nếu buộc sử dụng driver USB tích hợp của Cynix</string>
+    <string name="summary_touchpad_sensitivity_y">Áp dụng cho chế độ touchpad chuột và điều khiển touchpad bằng phím đặc biệt ảo.\nCả hai dùng chung giá trị độ nhạy, nhưng phản hồi có thể khác nhau.</string>
+    <string name="title_device_rumble">Buộc rung trên thiết bị</string>
+    <string name="summary_device_rumble">Bật nếu rung của tay cầm đã kết nối không phù hợp.\nKhông áp dụng khi buộc dùng driver USB tích hợp của Cynix.</string>
     <string name="title_clear_default_special_button">Tắt các phím đặc biệt mặc định</string>
     <string name="summary_clear_default_special_button">Nếu bạn thấy các lệnh tích hợp trong menu quay lại không hữu ích, bạn có thể tắt chúng và dùng các phím tự nhập.</string>
-    <string name="title_trackpad_sensitivity_x">Độ nhạy trackpad trục X</string>
-    <string name="summary_trackpad_sensitivity_x">Độ nhạy trục X của trackpad, nhập số âm để đảo chiều</string>
-    <string name="title_trackpad_sensitivity_y">Độ nhạy trackpad trục Y</string>
-    <string name="summary_trackpad_sensitivity_y">Độ nhạy trục Y của trackpad, nhập số âm để đảo chiều</string>
-    <string name="title_trackpad_drag_drop_vibration">Bật rung khi kéo-thả trên trackpad</string>
-    <string name="summary_trackpad_drag_drop_vibration">Bật phản hồi rung khi thao tác kéo-thả trên các thiết bị Samsung có trackpad.</string>
-    <string name="title_trackpad_drag_drop_threshold">Thời gian giữ để kích hoạt kéo-thả trên trackpad</string>
-    <string name="summary_trackpad_drag_drop_threshold">Thiết lập thời gian giữ trên trackpad trước khi kích hoạt hành động kéo-thả trên thiết bị Samsung.</string>
-    <string name="title_trackpad_swap_axis">Hoán đổi trục X và Y của trackpad</string>
-    <string name="summary_trackpad_swap_axis">Trên một số thiết bị, tín hiệu đầu vào từ trackpad có thể bị xoay trục. Bật tùy chọn này có thể giúp khắc phục.</string>
+    <string name="title_trackpad_sensitivity_x">Độ nhạy trackpad - Trục X</string>
+    <string name="summary_trackpad_sensitivity_x">Độ nhạy trục X của trackpad. Nhập số âm để đảo chiều.</string>
+    <string name="title_trackpad_sensitivity_y">Độ nhạy trackpad - Trục Y</string>
+    <string name="summary_trackpad_sensitivity_y">Độ nhạy trục Y của trackpad. Nhập số âm để đảo chiều.</string>
+    <string name="title_trackpad_drag_drop_vibration">Rung khi kéo thả trên trackpad</string>
+    <string name="summary_trackpad_drag_drop_vibration">Bật phản hồi rung khi kéo thả trên thiết bị Samsung có trackpad.</string>
+    <string name="title_trackpad_drag_drop_threshold">Thời gian giữ để kéo thả trên trackpad</string>
+    <string name="summary_trackpad_drag_drop_threshold">Đặt thời gian giữ trên trackpad trước khi kích hoạt kéo thả trên thiết bị Samsung.</string>
+    <string name="title_trackpad_swap_axis">Hoán đổi trục X/Y của trackpad</string>
+    <string name="summary_trackpad_swap_axis">Bật nếu tín hiệu trackpad bị xoay trục trên một số thiết bị.</string>
     <string name="title_checkbox_force_qwerty">Bắt buộc dùng bố cục QWERTY</string>
-    <string name="summary_checkbox_force_qwerty">Bắt buộc sử dụng bố cục bàn phím QWERTY.\nYêu cầu bởi GFE.\nTắt nếu bạn muốn dùng bố cục bàn phím khác.</string>
+    <string name="summary_checkbox_force_qwerty">Bắt buộc dùng bố cục bàn phím QWERTY.\nGFE yêu cầu tùy chọn này.\nTắt nếu bạn muốn dùng bố cục khác.</string>
     <string name="title_checkbox_back_as_meta">Nút quay lại thành Meta</string>
     <string name="summary_back_as_meta">Gửi phím Meta (Win) khi nhấn nút vật lý quay lại.</string>
     <string name="title_back_as_guide">Nút quay lại thành Guide</string>
     <string name="summary_back_as_guide">Gửi phím Guide (PS/HOME) khi nhấn nút Back trên tay cầm điều khiển.</string>
     <string name="title_checkbox_ignore_synth_events">Bỏ qua sự kiện tổng hợp</string>
     <string name="summary_ignore_synth_events">Bỏ qua các sự kiện tổng hợp do hệ thống Android gửi. Có thể giải quyết vấn đề nhấn chuột gây ra các phím không mong muốn trên một số thiết bị.\nBật tùy chọn này sẽ khiến bàn phím ảo hệ thống không hoạt động.</string>
-    <string name="title_smart_clipboard_sync">Đồng bộ clipboard thông minh (Thử nghiệm)</string>
-    <string name="summary_smart_clipboard_sync">Tự động tải nội dung clipboard lên server khi bắt đầu/tái tục truyền phát, và tải clipboard từ server khi mất tiêu điểm (cần Apollo)</string>
-    <string name="title_smart_clipboard_sync_toast">Thông báo đồng bộ clipboard</string>
-    <string name="summary_smart_clipboard_sync_toast">Hiển thị thông báo khi đồng bộ clipboard</string>
-    <string name="title_hide_clipboard_content">Ẩn nội dung clipboard</string>
-    <string name="summary_hide_clipboard_content">Đánh dấu clipboard từ xa là thông tin nhạy cảm</string>
-    <string name="title_settings_misc">KHÁC</string>
+    <string name="title_smart_clipboard_sync">Đồng bộ bảng tạm thông minh (Thử nghiệm)</string>
+    <string name="summary_smart_clipboard_sync">Tự động gửi bảng tạm lên máy chủ khi bắt đầu/tiếp tục truyền phát, và tải bảng tạm từ máy chủ khi mất tiêu điểm (cần Apollo).</string>
+    <string name="title_smart_clipboard_sync_toast">Thông báo đồng bộ bảng tạm</string>
+    <string name="summary_smart_clipboard_sync_toast">Hiển thị thông báo khi đồng bộ bảng tạm</string>
+    <string name="title_hide_clipboard_content">Ẩn nội dung bảng tạm</string>
+    <string name="summary_hide_clipboard_content">Đánh dấu bảng tạm từ xa là thông tin nhạy cảm</string>
+    <string name="title_settings_misc">Khác</string>
     <string name="perf_overlay_lite_bandwidth">Băng thông</string>
     <string name="perf_overlay_lite_network_decoding_delay">Độ trễ mạng/Giải mã</string>
     <string name="perf_overlay_lite_packet_loss">Tỷ lệ mất gói</string>
     <string name="quick_menu_title">Menu nhanh</string>
-    <string name="wrong_import_format">Định dạng nhập sai, vui lòng kiểm tra lại!</string>
-    <string name="title_checkbox_gamepad_enable_battery_report">Bật báo cáo pin tay cầm</string>
-    <string name="summary_checkbox_gamepad_enable_battery_report">Báo cáo trạng thái pin tay cầm nếu có thể.\nTắt tùy chọn này nếu bạn gặp hiện tượng giật lag với màn hình cảm ứng/touchpad/bút cảm ứng/chuột.</string>
+    <string name="wrong_import_format">Định dạng nhập không hợp lệ. Vui lòng kiểm tra lại.</string>
+    <string name="title_checkbox_gamepad_enable_battery_report">Báo pin tay cầm</string>
+    <string name="summary_checkbox_gamepad_enable_battery_report">Báo trạng thái pin tay cầm khi có thể.\nTắt nếu màn hình cảm ứng, touchpad, bút cảm ứng hoặc chuột bị giật.</string>
     <string name="title_checkbox_enforce_display_mode">Bắt buộc chế độ hiển thị</string>
     <string name="summary_checkbox_enforce_display_mode">Buộc surface sử dụng chế độ hiển thị tối ưu.\nCần thiết trên một số hệ thống (ví dụ như ColorOS) để thiết lập tốc độ làm tươi/độ phân giải chính xác.\nKhông bật trên ChromeCast 4K vì có thể gây lỗi.</string>
     <string name="title_checkbox_use_virtual_display">Sử dụng màn hình ảo</string>
-    <string name="summary_checkbox_use_virtual_display">Sử dụng màn hình ảo mặc định.\nMàn hình ảo có thể tự động khớp với độ phân giải và tốc độ khung hình của phía client, cho trải nghiệm truyền phát mượt mà.\nYêu cầu Apollo là phần mềm truyền phát trên máy chủ.</string>
+    <string name="summary_checkbox_use_virtual_display">Mặc định sử dụng màn hình ảo.\nMàn hình ảo có thể tự khớp độ phân giải và tốc độ khung hình của thiết bị khách để truyền phát mượt hơn.\nYêu cầu Apollo trên máy chủ.</string>
     <string name="title_checkbox_resume_without_confirm">Tiếp tục nhanh</string>
 
         <string name="summary_checkbox_resume_without_confirm">Bỏ qua menu tiếp tục, mở lại ứng dụng ngay khi bấm nút.</string>
-    <string name="title_checkbox_enable_sticky_modifier_key_virtual_keyboard">Giữ phím chức năng</string>
-    <string name="summary_checkbox_enable_sticky_modifier_key_virtual_keyboard">Tự động giữ phím Shift, Ctrl... trên bàn phím ảo và bàn phím tùy chỉnh.</string>
+    <string name="title_checkbox_enable_sticky_modifier_key_virtual_keyboard">Giữ phím bổ trợ</string>
+    <string name="summary_checkbox_enable_sticky_modifier_key_virtual_keyboard">Giữ các phím Shift, Ctrl... trên bàn phím ảo đầy đủ và bàn phím tùy chỉnh.</string>
     <string name="virtual_keyboard_hide">Ẩn\nBàn phím</string>
     <string name="mouse_mode_multi_touch">Chạm đa điểm</string>
     <string name="mouse_mode_absolute_touch">Chạm theo vị trí</string>
@@ -577,8 +577,8 @@
     <string name="debug_info_simple_vibration">Rung đơn giản trong 1 giây</string>
     <string name="debug_info_continuous_hd_vibration">Rung HD liên tục</string>
     <string name="debug_info_please_choose">Vui lòng chọn</string>
-    <string name="debug_info_no_gamepad_detected">Không tìm thấy tay cầm, hãy kết nối rồi bấm làm mới.</string>
-    <string name="debug_info_no_vibrator">Tay cầm không có bộ rung!</string>
+    <string name="debug_info_no_gamepad_detected">Không tìm thấy tay cầm. Hãy kết nối rồi làm mới.</string>
+    <string name="debug_info_no_vibrator">Tay cầm không có bộ rung.</string>
     <string name="debug_info_set_amplitude">Chọn độ rung (0–255, chỉ hỗ trợ rung HD)</string>
     <string name="debug_info_name">Tên: </string>
     <string name="debug_info_sensors">Cảm biến: </string>
@@ -597,9 +597,9 @@
     <string name="debug_info_refresh_gamepad_list">Làm mới danh sách tay cầm</string>
     <string name="debug_info_test_gamepad_rumble">Thử rung tay cầm</string>
     <string name="pref_enter_value_0_9999">Vui lòng nhập số từ 0 đến 9999.</string>
-    <string name="pref_set_success">Đã lưu cài đặt!</string>
-    <string name="pref_empty_file">Tệp rỗng!</string>
-    <string name="pref_import_success">Nhập thành công!</string>
+    <string name="pref_set_success">Đã lưu cài đặt</string>
+    <string name="pref_empty_file">Tệp trống</string>
+    <string name="pref_import_success">Đã nhập thành công</string>
     <string name="pref_error_occurred">Đã xảy ra lỗi: </string>
     <string name="pref_save_keyboard_profile">Lưu cấu hình bàn phím</string>
     <string name="game_menu_advanced">Tùy chọn nâng cao</string>
@@ -608,20 +608,20 @@
 
         <string name="game_menu_quit_session">Thoát phiên</string>
     <string name="game_menu_server_cmd">Lệnh máy chủ</string>
-    <string name="game_menu_fetch_clipboard">Lấy nội dung clipboard</string>
-    <string name="game_menu_upload_clipboard">Gửi nội dung clipboard</string>
+    <string name="game_menu_fetch_clipboard">Lấy bảng tạm</string>
+    <string name="game_menu_upload_clipboard">Gửi bảng tạm</string>
 
     <string name="game_dialog_title_server_cmd_empty">Không có lệnh máy chủ</string>
     <string name="game_dialog_message_server_cmd_empty">Hãy đảm bảo bạn đang dùng phần mềm máy chủ Apollo và ứng dụng này đã được cấp quyền "Lệnh máy chủ".</string>
 
     <string name="vdisplay_not_ready">Driver hiển thị ảo trên máy chủ chưa sẵn sàng. Hãy kiểm tra xem bạn đã cài và bật driver SudoVDA chưa.</string>
-    <string name="vdisplay_not_supported"><![CDATA[Máy chủ không hỗ trợ hiển thị ảo. Vui lòng dùng phần mềm Apollo: <a href="https://github.com/ClassicOldSong/Apollo">Apollo</a> để stream.]]></string>
+    <string name="vdisplay_not_supported"><![CDATA[Máy chủ không hỗ trợ hiển thị ảo. Vui lòng dùng <a href="https://github.com/ClassicOldSong/Apollo">Apollo</a> làm phần mềm truyền phát trên máy chủ.]]></string>
 
-    <string name="clipboard_sync_unsupported">Máy chủ không hỗ trợ đồng bộ clipboard. Vui lòng cài hoặc nâng cấp lên phiên bản mới nhất của Apollo.</string>
-    <string name="send_clipboard_failed">Gửi clipboard thất bại: </string>
-    <string name="get_clipboard_failed">Lấy clipboard thất bại: </string>
-    <string name="send_clipboard_success">Đã gửi clipboard thành công</string>
-    <string name="get_clipboard_success">Đã lấy clipboard thành công</string>
+    <string name="clipboard_sync_unsupported">Máy chủ không hỗ trợ đồng bộ bảng tạm. Vui lòng cài hoặc nâng cấp Apollo lên phiên bản mới nhất.</string>
+    <string name="send_clipboard_failed">Gửi bảng tạm thất bại: </string>
+    <string name="get_clipboard_failed">Lấy bảng tạm thất bại: </string>
+    <string name="send_clipboard_success">Đã gửi bảng tạm</string>
+    <string name="get_clipboard_success">Đã lấy bảng tạm</string>
 
     <string name="proceed">Tiếp tục</string>
     <string name="cancel">Hủy</string>
@@ -657,9 +657,9 @@
     <string name="title_pending_audio_duration">Cấu hình độ trễ âm thanh</string>
     <string name="summary_pending_audio_duration">Điều chỉnh kích thước bộ đệm âm thanh. Giá trị thấp giảm độ trễ nhưng dễ gây rè tiếng.</string>
     
-    <string name="game_menu_gamepad_layouts">Bố cục Virtual Gamepad</string>
-    <string name="game_menu_keyboard_layouts">Bố cục Virtual Keyboard</string>
-    <string name="gamepad_layout_toggle_gamepad">Bật/Tắt Gamepad</string>
+    <string name="game_menu_gamepad_layouts">Bố cục tay cầm ảo</string>
+    <string name="game_menu_keyboard_layouts">Bố cục bàn phím ảo</string>
+    <string name="gamepad_layout_toggle_gamepad">Bật/tắt tay cầm</string>
     <string name="gamepad_layout_create">Tạo bố cục</string>
     <string name="gamepad_layout_duplicate">Nhân bản bố cục</string>
     <string name="gamepad_layout_rename">Đổi tên bố cục</string>
@@ -672,7 +672,7 @@
     <string name="gamepad_layout_deleted">Đã xóa `"%s`"</string>
     <string name="gamepad_layout_name_empty">Tên bố cục không được để trống</string>
 
-    <string name="keyboard_layout_toggle_keyboard">Bật/Tắt bàn phím</string>
+    <string name="keyboard_layout_toggle_keyboard">Bật/tắt bàn phím</string>
     <string name="keyboard_layout_create">Tạo bố cục</string>
     <string name="keyboard_layout_duplicate">Nhân bản bố cục</string>
     <string name="keyboard_layout_rename">Đổi tên bố cục</string>
@@ -685,10 +685,10 @@
 
     <!-- Quick Actions -->
     <string name="title_floating_quick_actions">Ấn giữ để dùng nhanh tính năng</string>
-    <string name="summary_floating_quick_actions">Nhấn giữ nút nổi để nhanh chóng bật/tắt gamepad, bàn phím đặc biệt hoặc bàn phím đầy đủ</string>
-    <string name="quick_action_gamepad">Bật/Tắt Gamepad</string>
-    <string name="quick_action_special_keyboard">Bật/Tắt Bàn phím đặc biệt</string>
-    <string name="quick_action_full_keyboard">Bật/Tắt Bàn phím đầy đủ</string>
+    <string name="summary_floating_quick_actions">Nhấn giữ nút nổi để bật/tắt nhanh tay cầm, bàn phím đặc biệt hoặc bàn phím đầy đủ</string>
+    <string name="quick_action_gamepad">Bật/tắt tay cầm</string>
+    <string name="quick_action_special_keyboard">Bật/tắt bàn phím đặc biệt</string>
+    <string name="quick_action_full_keyboard">Bật/tắt bàn phím đầy đủ</string>
 
     <!-- Performance monitor / overlays / streaming -->
     <string name="category_perf_monitor_settings">Giám sát hiệu suất</string>
@@ -705,7 +705,7 @@
     <string name="email_recipient">artemistics.logs@gmail.com</string>
     <string name="email_subject">Cynix - Nhật ký hiệu suất</string>
     <string name="title_checkbox_enable_perf_overlay_bottom">Di chuyển lớp phủ xuống dưới</string>
-    <string name="summary_checkbox_enable_perf_overlay_bottom">Hữu ích khi chế độ Hiển thị ở giữa trên cùng và chế độ Lite được bật khi phát trực tiếp ở độ phân giải không gốc.</string>
+    <string name="summary_checkbox_enable_perf_overlay_bottom">Hữu ích khi bật căn trên giữa và chế độ Lite trong phiên truyền phát ở độ phân giải không gốc.</string>
     <string name="perf_overlay_ai_delegate">Bộ ủy quyền:</string>
     <string name="perf_overlay_ai_fps">3DFPS:</string>
     <string name="perf_overlay_drawdelay">Độ trễ: %1$.2f ms</string>
@@ -716,12 +716,12 @@
     <string name="notification_title">Màn hình ngoài đang hoạt động</string>
 
     <!-- Floating button / pan-zoom -->
-    <string name="game_menu_toggle_floating_button">Bật/Tắt nút nổi</string>
+    <string name="game_menu_toggle_floating_button">Bật/tắt nút nổi</string>
     <string name="title_floating_button">Nút nổi</string>
     <string name="summary_floating_button">Bật nút nổi</string>
     <string name="title_show_overlay_zoom_toggle_button">Hiển thị nút bật/tắt thu phóng lớp phủ</string>
-    <string name="summary_show_overlay_zoom_toggle_button">Hiển thị một nút có thể kéo ở đầu màn hình để bật/tắt chế độ pan/thu phóng.</string>
-    <string name="toggle_pan_zoom_mode">Bật/Tắt chế độ Pan/Zoom</string>
+    <string name="summary_show_overlay_zoom_toggle_button">Hiển thị nút kéo ở đầu màn hình để bật/tắt chế độ Pan/Zoom.</string>
+    <string name="toggle_pan_zoom_mode">Bật/tắt chế độ Pan/Zoom</string>
     <string name="pan_zoom_mode_disabled">Đã tắt chế độ Pan/Zoom</string>
     <string name="pan_zoom_mode_enabled">Đã bật chế độ Pan/Zoom</string>
     <string name="title_checkbox_remember_zoom_pan">Nhớ Zoom&amp;Pan</string>
@@ -729,7 +729,7 @@
 
     <!-- Video / display -->
     <string name="title_checkbox_full_screen">Bật toàn màn hình</string>
-    <string name="summary_checkbox_full_screen">Ẩn thanh hệ thống bằng chế độ chìm</string>
+    <string name="summary_checkbox_full_screen">Ẩn thanh hệ thống bằng chế độ immersive</string>
     <string name="title_checkbox_ultra_low_latency">Độ trễ cực thấp (thử nghiệm)</string>
     <string name="summary_checkbox_ultra_low_latency">Chỉ có hiệu quả với các thiết bị SD8Gen2/8(s)Gen3/8Elite và MTK.</string>
     <string name="title_low_latency_frame_balance">LFR (Thử nghiệm)</string>
@@ -738,33 +738,33 @@
     <string name="summary_checkbox_forceTightThresholds">Ngưỡng VSYNC chặt hơn để độ trễ thấp hơn; có thể làm tăng số khung bị bỏ.</string>
     <string name="title_prevent_packet_loss">Ngăn mất gói tin</string>
     <string name="summary_prevent_packet_loss">Đối với các thiết bị bị mất gói tin vì lý do không rõ, bạn có thể thử bật tùy chọn này.</string>
-    <string name="title_fullexdisplay_mode">Chế độ màn hình ngoài toàn phần (Beta)</string>
-    <string name="summary_fullexdisplay_mode">Cho phép chế độ màn hình phụ chìm hoàn toàn với tần số quét và độ phân giải tự động khớp. Cài đặt thủ công sẽ không áp dụng trong chế độ này.</string>
-    <string name="title_onscreen_keyboard_autofit">Tắt tự động căn chỉnh Bàn phím đầy đủ ảo</string>
-    <string name="summary_onscreen_keyboard_autofit">Không tự động điều chỉnh kích thước và vị trí của bàn phím, cho phép kích thước tùy chỉnh</string>
+    <string name="title_fullexdisplay_mode">Chế độ màn hình phụ (Beta)</string>
+    <string name="summary_fullexdisplay_mode">Bật chế độ màn hình phụ immersive với tần số quét và độ phân giải tự động khớp. Cài đặt thủ công không áp dụng trong chế độ này.</string>
+    <string name="title_onscreen_keyboard_autofit">Tắt tự căn bàn phím đầy đủ ảo</string>
+    <string name="summary_onscreen_keyboard_autofit">Không tự điều chỉnh kích thước và vị trí bàn phím, cho phép dùng kích thước tùy chỉnh</string>
     <string name="title_follow_update">Theo dõi cập nhật</string>
-    <string name="summary_follow_update">Theo dõi cập nhật của Cynix qua Obtainium</string>
+    <string name="summary_follow_update">Theo dõi cập nhật Cynix qua Obtainium</string>
 
     <!-- Render / 3D mode -->
     <string name="title_render_mode">Chế độ kết xuất</string>
-    <string name="summary_render_mode">Mặc định 2D hoặc SBS 3D. 3D sẽ đơn giản nhân đôi chiều rộng và tự động thêm hiệu ứng, không cần thiết lập. Chuyển đổi AI 2D sang 3D</string>
+    <string name="summary_render_mode">Chọn 2D mặc định hoặc SBS 3D. Chế độ 3D tự nhân đôi chiều rộng và thêm hiệu ứng, không cần thiết lập. Hỗ trợ chuyển đổi AI từ 2D sang 3D.</string>
     <string name="render_mode_2d">Mặc định 2D</string>
     <string name="render_mode_3d_sbs">AI SBS 3D</string>
     <string name="render_mode_3d_sbs_movie">Phim AI SBS 3D (Đồng bộ)</string>
     <string name="title_render_mode_strength_title">Cường độ hiệu ứng 3D</string>
     <string name="title_render_mode_strength_description">Tham chiếu: 50 - Cao hơn thì hiệu ứng mạnh hơn, nhưng có thể gây mỏi mắt và không tự nhiên. Thấp hơn thì dễ chịu hơn và trải nghiệm mượt mà hơn.</string>
     <string name="title_render_mode_convergence_title">Hội tụ 3D</string>
-    <string name="title_render_mode_convergence_description">Tham chiếu: 50 - Cân bằng / 0: TrướcMànHình / 100: SauMànHình</string>
+    <string name="title_render_mode_convergence_description">Tham chiếu: 50 - Cân bằng / 0: Trước màn hình / 100: Sau màn hình</string>
     <string name="title_render_mode_balance_shift_title">Cân bằng mắt 3D</string>
-    <string name="title_render_mode_balance_shift_description">Tham chiếu: 50 - Cả hai mắt chia sẻ 50% hiệu ứng sâu/nổi / 0: Trái (100% Nổi) - Phải (100% Sâu) / 100 - Trái Sâu - Phải Nổi // 100 hoặc 0 cho độ sắc nét tốt nhất vì một pixel luôn tồn tại không bị dịch chuyển ở mắt kia</string>
+    <string name="title_render_mode_balance_shift_description">Tham chiếu: 50 - Hai mắt chia đều hiệu ứng sâu/nổi / 0: Trái nổi, phải sâu / 100: Trái sâu, phải nổi. Giá trị 0 hoặc 100 cho độ sắc nét tốt nhất vì một mắt luôn giữ pixel gốc.</string>
 
     <!-- Input / mouse / gestures -->
     <string name="title_checkbox_multi_touch_gestures">Bật cử chỉ đa chạm</string>
     <string name="summary_checkbox_multi_touch_gestures">Bật chạm 3 ngón cho bàn phím, chạm 4 ngón cho bàn phím đầy đủ, chạm 5 ngón cho menu nhanh khi dùng chế độ đa chạm.</string>
     <string name="title_checkbox_remember_mouse_mode">Nhớ chế độ chuột</string>
-    <string name="summary_checkbox_remember_mouse_mode">Nhớ chế độ chuột đã chọn trong lúc phát trực tiếp. Khi tắt, chế độ chuột thay đổi trong lúc phát trực tiếp sẽ chỉ là tạm thời.</string>
+    <string name="summary_checkbox_remember_mouse_mode">Nhớ chế độ chuột đã chọn trong lúc truyền phát. Khi tắt, thay đổi chỉ áp dụng tạm thời.</string>
     <string name="title_enable_rumble">Bật rung</string>
-    <string name="summary_enable_rumble">Bật phản hồi rung trên các gamepad được hỗ trợ.</string>
+    <string name="summary_enable_rumble">Bật phản hồi rung trên tay cầm được hỗ trợ.</string>
 
     <!-- External display / game instance -->
     <string name="external_display_info">Đã kết nối màn hình ngoài: %1$dx%2$d ở %3$.1fHz</string>
@@ -772,8 +772,8 @@
     <string name="no_game_instance">Không có phiên trò chơi nào</string>
 
     <!-- Launcher file export -->
-    <string name="applist_menu_export_launcher">Xuất tệp Launcher</string>
-    <string name="title_export_sunshine_launcher_file">Xuất tệp Launcher cho Sunshine</string>
+    <string name="applist_menu_export_launcher">Xuất tệp launcher</string>
+    <string name="title_export_sunshine_launcher_file">Xuất tệp launcher cho Sunshine</string>
     <string name="message_export_sunshine_launcher_file">Việc xuất tệp launcher cho Sunshine không ổn định và có thể hỏng bất cứ lúc nào. Bạn sẽ cần xuất lại mỗi lần nếu thay đổi tên hoặc hình ảnh ứng dụng.\nHãy dùng Apollo để có trải nghiệm ổn định hơn.</string>
     <string name="export_launcher_app_details_incomplete">Không thể xuất: Chi tiết ứng dụng không đầy đủ.</string>
     <string name="export_launcher_computer_details_incomplete">Không thể xuất: Chi tiết máy tính không đầy đủ.</string>
@@ -790,7 +790,7 @@
     <string name="app_removed_from_pc">Ứng dụng đã bị xóa khỏi PC</string>
     <string name="save">Lưu</string>
     <string name="rename">Đổi tên</string>
-    <string name="game_menu_select_steam_mode">Chọn chế độ Stream</string>
+    <string name="game_menu_select_steam_mode">Chọn chế độ truyền phát</string>
 
     <!-- Profiles manager -->
     <string name="title_edit_profile">Chỉnh sửa hồ sơ</string>
@@ -804,8 +804,8 @@
     <string name="profile_manager_edit_profile">"Chỉnh sửa hồ sơ: "</string>
     <string name="profile_manager_edit_profile_name">Đổi tên hồ sơ</string>
     <string name="profile_manager_edit_profile_with">Chỉnh sửa hồ sơ: %s</string>
-    <string name="profile_manager_failed_to_load">Không thể tải hồ sơ. Vui lòng kiểm tra logcat để biết chi tiết.</string>
-    <string name="profile_manager_failed_to_save">Không thể lưu hồ sơ. Vui lòng kiểm tra logcat để biết chi tiết.</string>
+    <string name="profile_manager_failed_to_load">Không thể tải hồ sơ. Kiểm tra logcat để biết chi tiết.</string>
+    <string name="profile_manager_failed_to_save">Không thể lưu hồ sơ. Kiểm tra logcat để biết chi tiết.</string>
     <string name="profile_manager_name_cannot_be_blank">Tên không được để trống</string>
     <string name="profile_manager_new_profile">Hồ sơ mới</string>
     <string name="profile_manager_new_profile_with">Hồ sơ mới: %s</string>
@@ -814,7 +814,7 @@
     <string name="profile_manager_profile_deleted">Đã xóa hồ sơ \'%s\'</string>
     <string name="profile_manager_profile_not_found">Không tìm thấy hồ sơ</string>
     <string name="profile_manager_profile_saved">Đã lưu hồ sơ \'%s\'.</string>
-    <string name="profile_manager_profiles_description">Hồ sơ cho phép bạn tạo và lưu các cấu hình phát trực tiếp khác nhau. Mỗi hồ sơ lưu các cài đặt riêng có thể được chuyển đổi nhanh chóng.</string>
+    <string name="profile_manager_profiles_description">Hồ sơ cho phép tạo và lưu nhiều cấu hình truyền phát. Mỗi hồ sơ có cài đặt riêng và có thể chuyển đổi nhanh.</string>
     <string name="profile_manager_tap_create_profile">Chạm vào + để tạo hồ sơ đầu tiên của bạn</string>
 
     <!-- Virtual keyboard layout editor -->
