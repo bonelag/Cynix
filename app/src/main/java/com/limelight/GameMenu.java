@@ -155,7 +155,7 @@ public class GameMenu implements Game.GameMenuCallbacks {
         }
     }
 
-    private void showSpecialKeysMenu() {
+    public void showSpecialKeysMenu() {
         List<MenuOption> options = new ArrayList<>();
 
         if(!PreferenceConfiguration.readPreferences(game).disableDefaultExtraKeys){

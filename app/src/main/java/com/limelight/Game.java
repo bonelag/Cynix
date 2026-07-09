@@ -3545,16 +3545,13 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
                         // All fingers up
                         long currentEventTime = event.getEventTime();
                         if (currentEventTime - threeFingerDownTime < THREE_FINGER_TAP_THRESHOLD) {
-                            // This is a 3 finger tap to bring up the keyboard
-                            toggleKeyboard();
+                            prefConfig.finger3Action.run(Game.this);
                             return true;
                         } else if (currentEventTime - fourFingerDownTime < FOUR_FINGER_TAP_THRESHOLD) {
-                            toggleFullKeyboard();
+                            prefConfig.finger4Action.run(Game.this);
                             return true;
                         } else if (currentEventTime - fiveFingerDownTime < FIVE_FINGER_TAP_THRESHOLD) {
-                            if(prefConfig.enableBackMenu) {
-                                showGameMenu(null);
-                            }
+                            prefConfig.finger5Action.run(Game.this);
                             return true;
                         }
                     }
@@ -3617,17 +3614,15 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
             case MotionEvent.ACTION_UP:
                 long currentEventTime = event.getEventTime();
                 if (pointerCount >= 5 && fiveFingerDownTime > 0 && currentEventTime - fiveFingerDownTime < FIVE_FINGER_TAP_THRESHOLD) {
-                    if(prefConfig.enableBackMenu) {
-                        showGameMenu(null);
-                    }
+                    prefConfig.finger5Action.run(Game.this);
                     fiveFingerDownTime = 0;
                     break;
                 } else if (pointerCount == 4 && fourFingerDownTime > 0 && currentEventTime - fourFingerDownTime < FOUR_FINGER_TAP_THRESHOLD) {
-                    toggleFullKeyboard();
+                    prefConfig.finger4Action.run(Game.this);
                     fourFingerDownTime = 0;
                     break;
                 } else if (pointerCount == 3 && threeFingerDownTime > 0 && currentEventTime - threeFingerDownTime < THREE_FINGER_TAP_THRESHOLD) {
-                    toggleKeyboard();
+                    prefConfig.finger3Action.run(Game.this);
                     threeFingerDownTime = 0;
                     break;
                 }
@@ -4567,6 +4562,14 @@ public class Game extends AppCompatActivity implements SurfaceHolder.Callback,
     public void hideGameMenu() {
         if (gameMenuCallbacks != null) {
             gameMenuCallbacks.hideMenu();
+        }
+    }
+
+    // ponytail: bridge cho cử chỉ 3/4/5 ngón mở menu "Send keys". Mở vis showSpecialKeysMenu
+    // thành public trong GameMenu khi muốn bỏ method này.
+    public void showSpecialKeysMenu() {
+        if (gameMenuCallbacks instanceof GameMenu) {
+            ((GameMenu) gameMenuCallbacks).showSpecialKeysMenu();
         }
     }
 

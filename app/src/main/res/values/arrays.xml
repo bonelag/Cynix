@@ -200,4 +200,62 @@
         <item>right</item>
     </string-array>
 
+    <!-- Thứ tự phải khớp với FingerAction enum (id lowercase). -->
+    <string-array name="finger_action_names">
+        <item>@string/finger_action_none</item>
+        <item>@string/finger_action_show_game_menu</item>
+        <item>@string/finger_action_toggle_keyboard</item>
+        <item>@string/finger_action_toggle_full_keyboard</item>
+        <item>@string/finger_action_toggle_hud</item>
+        <item>@string/finger_action_toggle_floating_button</item>
+        <item>@string/finger_action_toggle_zoom_mode</item>
+        <item>@string/finger_action_toggle_virtual_controller</item>
+        <item>@string/finger_action_rotate_screen</item>
+        <item>@string/finger_action_send_clipboard</item>
+        <item>@string/finger_action_fetch_clipboard</item>
+        <item>@string/finger_action_task_manager</item>
+        <item>@string/finger_action_disconnect</item>
+        <item>@string/finger_action_quit</item>
+        <item>@string/finger_action_show_special_keys</item>
+        <item>@string/finger_action_key_esc</item>
+        <item>@string/finger_action_key_f11</item>
+        <item>@string/finger_action_key_alt_f4</item>
+        <item>@string/finger_action_key_alt_enter</item>
+        <item>@string/finger_action_key_ctrl_v</item>
+        <item>@string/finger_action_key_win</item>
+        <item>@string/finger_action_key_win_d</item>
+        <item>@string/finger_action_key_win_g</item>
+        <item>@string/finger_action_key_ctrl_alt_tab</item>
+        <item>@string/finger_action_key_shift_tab</item>
+        <item>@string/finger_action_key_win_shift_left</item>
+    </string-array>
+    <string-array name="finger_action_values" translatable="false">
+        <item>none</item>
+        <item>show_game_menu</item>
+        <item>toggle_keyboard</item>
+        <item>toggle_full_keyboard</item>
+        <item>toggle_hud</item>
+        <item>toggle_floating_button</item>
+        <item>toggle_zoom_mode</item>
+        <item>toggle_virtual_controller</item>
+        <item>rotate_screen</item>
+        <item>send_clipboard</item>
+        <item>fetch_clipboard</item>
+        <item>task_manager</item>
+        <item>disconnect</item>
+        <item>quit</item>
+        <item>show_special_keys</item>
+        <item>key_esc</item>
+        <item>key_f11</item>
+        <item>key_alt_f4</item>
+        <item>key_alt_enter</item>
+        <item>key_ctrl_v</item>
+        <item>key_win</item>
+        <item>key_win_d</item>
+        <item>key_win_g</item>
+        <item>key_ctrl_alt_tab</item>
+        <item>key_shift_tab</item>
+        <item>key_win_shift_left</item>
+    </string-array>
+
 </resources>

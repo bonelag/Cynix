@@ -829,4 +829,36 @@
     <string name="keyboard_keys_added">Đã thêm %d phím thành công</string>
     <string name="keyboard_load_error">Lỗi khi tải cấu hình bàn phím: %s</string>
     <string name="keyboard_select_keys">Chọn phím để thêm</string>
+
+    <!-- Hành động tuỳ chỉnh khi tap 3/4/5 ngón -->
+    <string name="title_finger_3_action">Chạm 3 ngón</string>
+    <string name="title_finger_4_action">Chạm 4 ngón</string>
+    <string name="title_finger_5_action">Chạm 5 ngón</string>
+    <string name="summary_finger_action">Hành động khi chạm nhanh trong khi stream</string>
+    <string name="finger_action_none">Không làm gì</string>
+    <string name="finger_action_show_game_menu">Mở menu game</string>
+    <string name="finger_action_toggle_keyboard">Bật/tắt bàn phím ảo</string>
+    <string name="finger_action_toggle_full_keyboard">Bàn phím đầy đủ</string>
+    <string name="finger_action_toggle_hud">Bật/tắt HUD</string>
+    <string name="finger_action_toggle_floating_button">Nút nổi</string>
+    <string name="finger_action_toggle_zoom_mode">Chế độ zoom</string>
+    <string name="finger_action_toggle_virtual_controller">Bật/tắt gamepad ảo</string>
+    <string name="finger_action_rotate_screen">Xoay màn hình</string>
+    <string name="finger_action_send_clipboard">Gửi clipboard</string>
+    <string name="finger_action_fetch_clipboard">Lấy clipboard</string>
+    <string name="finger_action_task_manager">Mở Task Manager (Ctrl+Shift+Esc)</string>
+    <string name="finger_action_disconnect">Ngắt kết nối</string>
+    <string name="finger_action_quit">Thoát phiên</string>
+    <string name="finger_action_show_special_keys">Mở menu \"Gửi phím\"</string>
+    <string name="finger_action_key_esc">Gửi ESC</string>
+    <string name="finger_action_key_f11">Gửi F11</string>
+    <string name="finger_action_key_alt_f4">Gửi Alt+F4</string>
+    <string name="finger_action_key_alt_enter">Gửi Alt+Enter</string>
+    <string name="finger_action_key_ctrl_v">Gửi Ctrl+V</string>
+    <string name="finger_action_key_win">Gửi phím Win</string>
+    <string name="finger_action_key_win_d">Gửi Win+D</string>
+    <string name="finger_action_key_win_g">Gửi Win+G</string>
+    <string name="finger_action_key_ctrl_alt_tab">Gửi Ctrl+Alt+Tab</string>
+    <string name="finger_action_key_shift_tab">Gửi Shift+Tab</string>
+    <string name="finger_action_key_win_shift_left">Gửi Win+Shift+Left</string>
 </resources>

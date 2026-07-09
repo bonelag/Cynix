@@ -8,6 +8,7 @@ import android.view.Display;
 
 import com.limelight.nvstream.jni.MoonBridge;
 import com.limelight.profiles.ProfilesManager;
+import com.limelight.utils.FingerAction;
 
 public class PreferenceConfiguration {
 
@@ -51,6 +52,12 @@ public class PreferenceConfiguration {
     private static final String RESOLUTION_SCALE_FACTOR_PREF_STRING = "seekbar_resolution_scale_factor";
     private static final String RESUME_WITHOUT_CONFIRM_PREF_STRING = "checkbox_resume_without_confirm";
     private static final String VIDEO_SCALE_MODE_PREF_STRING = "list_video_scale_mode";
+    private static final String FINGER3_ACTION_PREF = "finger_3_action";
+    private static final String FINGER4_ACTION_PREF = "finger_4_action";
+    private static final String FINGER5_ACTION_PREF = "finger_5_action";
+    private static final String DEFAULT_FINGER3 = "toggle_keyboard";
+    private static final String DEFAULT_FINGER4 = "toggle_full_keyboard";
+    private static final String DEFAULT_FINGER5 = "show_game_menu";
     private static final String SOPS_PREF_STRING = "checkbox_enable_sops";
     private static final String DISABLE_TOASTS_PREF_STRING = "checkbox_disable_warnings";
     private static final String HOST_AUDIO_PREF_STRING = "checkbox_host_audio";
@@ -331,6 +338,10 @@ public class PreferenceConfiguration {
     public boolean enableMouseLocalCursor;
 
     public boolean enableMultiTouchGestures;
+
+    public FingerAction finger3Action;
+    public FingerAction finger4Action;
+    public FingerAction finger5Action;
 
     //禁用内置的特殊指令
     public boolean disableDefaultExtraKeys;
@@ -989,6 +1000,13 @@ private static int getFramePacingValue(Context context) {
         config.enableMouseLocalCursor=prefs.getBoolean("checkbox_mouse_local_cursor",false);
 
         config.enableMultiTouchGestures = prefs.getBoolean("checkbox_multi_touch_gestures", false);
+
+        config.finger3Action = FingerAction.fromPref(
+                prefs.getString(FINGER3_ACTION_PREF, DEFAULT_FINGER3), FingerAction.TOGGLE_KEYBOARD);
+        config.finger4Action = FingerAction.fromPref(
+                prefs.getString(FINGER4_ACTION_PREF, DEFAULT_FINGER4), FingerAction.TOGGLE_FULL_KEYBOARD);
+        config.finger5Action = FingerAction.fromPref(
+                prefs.getString(FINGER5_ACTION_PREF, DEFAULT_FINGER5), FingerAction.SHOW_GAME_MENU);
 
 
         config.enablePerfOverlayLiteDialog=prefs.getBoolean("checkbox_enable_perf_overlay_lite_dialog",false);

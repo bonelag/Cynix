@@ -406,6 +406,37 @@
             android:title="@string/title_checkbox_multi_touch_gestures"
             app:iconSpaceReserved="false" />
 
+        <ListPreference
+            android:dependency="checkbox_multi_touch_gestures"
+            android:defaultValue="toggle_keyboard"
+            android:entries="@array/finger_action_names"
+            android:entryValues="@array/finger_action_values"
+            android:key="finger_3_action"
+            android:summary="@string/summary_finger_action"
+            android:title="@string/title_finger_3_action"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:dependency="checkbox_multi_touch_gestures"
+            android:defaultValue="toggle_full_keyboard"
+            android:entries="@array/finger_action_names"
+            android:entryValues="@array/finger_action_values"
+            android:key="finger_4_action"
+            android:summary="@string/summary_finger_action"
+            android:title="@string/title_finger_4_action"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:dependency="checkbox_multi_touch_gestures"
+            android:defaultValue="show_game_menu"
+            android:entries="@array/finger_action_names"
+            android:entryValues="@array/finger_action_values"
+            android:key="finger_5_action"
+            android:summary="@string/summary_finger_action"
+            android:title="@string/title_finger_5_action"
+            app:iconSpaceReserved="false" />
+
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="checkbox_mouse_nav_buttons"

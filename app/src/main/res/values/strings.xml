@@ -778,4 +778,36 @@
     <string name="keyboard_layout_created">Created `"%s`"</string>
     <string name="keyboard_layout_renamed">Renamed to `"%s`"</string>
     <string name="keyboard_layout_deleted">Deleted `"%s`"</string>
+
+    <!-- 3/4/5 finger tap custom actions -->
+    <string name="title_finger_3_action">3-finger tap</string>
+    <string name="title_finger_4_action">4-finger tap</string>
+    <string name="title_finger_5_action">5-finger tap</string>
+    <string name="summary_finger_action">Action performed on a quick tap during streaming</string>
+    <string name="finger_action_none">None</string>
+    <string name="finger_action_show_game_menu">Show game menu</string>
+    <string name="finger_action_toggle_keyboard">Toggle on-screen keyboard</string>
+    <string name="finger_action_toggle_full_keyboard">Toggle full keyboard</string>
+    <string name="finger_action_toggle_hud">Toggle HUD</string>
+    <string name="finger_action_toggle_floating_button">Toggle floating button</string>
+    <string name="finger_action_toggle_zoom_mode">Toggle zoom mode</string>
+    <string name="finger_action_toggle_virtual_controller">Toggle virtual gamepad</string>
+    <string name="finger_action_rotate_screen">Rotate screen</string>
+    <string name="finger_action_send_clipboard">Send clipboard</string>
+    <string name="finger_action_fetch_clipboard">Fetch clipboard</string>
+    <string name="finger_action_task_manager">Open Task Manager (Ctrl+Shift+Esc)</string>
+    <string name="finger_action_disconnect">Disconnect</string>
+    <string name="finger_action_quit">Quit session</string>
+    <string name="finger_action_show_special_keys">Open \"Send keys\" menu</string>
+    <string name="finger_action_key_esc">Send ESC</string>
+    <string name="finger_action_key_f11">Send F11</string>
+    <string name="finger_action_key_alt_f4">Send Alt+F4</string>
+    <string name="finger_action_key_alt_enter">Send Alt+Enter</string>
+    <string name="finger_action_key_ctrl_v">Send Ctrl+V</string>
+    <string name="finger_action_key_win">Send Win</string>
+    <string name="finger_action_key_win_d">Send Win+D</string>
+    <string name="finger_action_key_win_g">Send Win+G</string>
+    <string name="finger_action_key_ctrl_alt_tab">Send Ctrl+Alt+Tab</string>
+    <string name="finger_action_key_shift_tab">Send Shift+Tab</string>
+    <string name="finger_action_key_win_shift_left">Send Win+Shift+Left</string>
 </resources>
